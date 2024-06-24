@@ -8,10 +8,11 @@ import SlideArticles from './components/slide_articles';
 import SlideTestimonials from './components/slide_testimonials';
 
 const items = [
-  <img src='/images/banner-1.png' alt='banner'/>,
-  <img src='/images/banner-1.png' alt='banner'/>,
-  <img src='/images/banner-1.png' alt='banner'/>,
+  <img key={1} src='/images/banner-1.png' alt='banner'/>,
+  <img key={2} src='/images/banner-1.png' alt='banner'/>,
+  <img key={3} src='/images/banner-1.png' alt='banner'/>,
 ];
+
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
