@@ -44,6 +44,58 @@ export default function Home() {
     }
   ]
 
+  const slideBlog = [
+    {
+      id: 1,
+      images: '/images/blog_recent_1.png',
+      date: '10/10/2024',
+      headingBlog: 'Headline',
+      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+    },
+    {
+      id: 2,
+      images: '/images/blog_recent_2.png',
+      date: '10/10/2024',
+      headingBlog: 'Headline',
+      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+    },
+    {
+      id: 3,
+      images: '/images/blog_recent_1.png',
+      date: '10/10/2024',
+      headingBlog: 'Headline',
+      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+    },
+    {
+      id: 4,
+      images: '/images/blog_recent_2.png',
+      date: '10/10/2024',
+      headingBlog: 'Headline',
+      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+    },
+    {
+      id: 5,
+      images: '/images/blog_recent_1.png',
+      date: '10/10/2024',
+      headingBlog: 'Headline',
+      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+    },
+    {
+      id: 6,
+      images: '/images/blog_recent_2.png',
+      date: '10/10/2024',
+      headingBlog: 'Headline',
+      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+    },
+    {
+        id: 7,
+        images: '/images/blog_recent_1.png',
+        date: '10/10/2024',
+        headingBlog: 'Headline',
+        descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+      },
+  ];
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -71,7 +123,7 @@ export default function Home() {
       <div className={styles.section_3}>
         <div className={styles.select_menu_product}>
           <button 
-            className={`${styles.dropdownButton} ${isOpen ? styles.activeButton : ''}`} 
+            className={`${styles.dropdownButton} ${isOpen ? styles.activeButton : ''}`}  
             onClick={toggleDropdown}
           >
             {selectedMenu} <IoChevronDown />
@@ -124,7 +176,7 @@ export default function Home() {
         <div className={styles.space_between_heading}>
           <h1 className={styles.heading_main_white}>Other Articles</h1>
         </div>
-        <SlideArticles/>
+        <SlideArticles items={slideBlog}/>
         <div className={styles.divider}></div>
       </div>
       <div className={styles.section_6}>

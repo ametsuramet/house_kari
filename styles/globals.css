@@ -198,6 +198,9 @@
 .swiperArticles .swiper-wrapper{
   padding-bottom: 3.4vw;
 }
+.old_red_color .swiper-wrapper{
+  padding-bottom: 5vw;
+}
 .swiperArticles .swiper-slide{
   width: 22.4vw !important;
 }
@@ -206,7 +209,6 @@
   background-color: #FFFCF4;
   border-radius: 1.4vw;
   overflow: hidden;
-  box-shadow: 0px .3vw 1vw 0px #50000044;
 }
 .box_articles_images{
   width: 100%;
@@ -230,10 +232,11 @@
   font-size: .92vw;
   color: #797979;
   font-weight: 400;
+  margin-bottom: .6vw;
 }
 .box_articles_content h1{
-  margin-top: .6vw;
-  font-size: 1.55vw;
+  
+  font-size: 1.5vw;
   font-weight: 600;
   margin-bottom: .6vw;
 }
@@ -329,6 +332,9 @@
   left: 0;
   right: auto;
 }
+.creamColor{
+  background: linear-gradient(360deg, #ffe08a8e 0%, #fffdf891 100%);
+}
 
 .swiperArticles .swiper-pagination-fraction, .swiperArticles .swiper-pagination-custom, .swiperArticles .swiper-horizontal > .swiper-pagination-bullets, .swiperArticles .swiper-pagination-bullets.swiper-pagination-horizontal{
   bottom: 0 !important;
@@ -350,6 +356,13 @@
   border-radius: 100vw;
   opacity: 1 !important;
 }
+.old_red_color .swiper-pagination-bullet{
+  background: var(--old_red) !important;
+}
+.old_red_color .swiper-pagination-bullet-active{
+  background: var(--old_red) !important;
+}
+
 
 .mySwiperTestimonials{
   margin-top: 3.4vw !important;

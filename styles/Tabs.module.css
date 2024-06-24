@@ -1,0 +1,32 @@
+.tabs {
+    width: 100%;
+  }
+  
+  .tabHeaders {
+    display: flex;
+    justify-content: center;
+    gap: 1.4vw;
+    margin-bottom: 2.5vw;
+  }
+  
+  .tabHeader {
+    padding: .7vw 2vw;
+    cursor: pointer;
+    background: transparent;
+    border: .11vw solid var(--old_red);
+    border-radius: 100vw;
+    font-size: .89vw;
+    font-weight: 600;
+    color: var(--old_red);
+  }
+  
+  .tabHeader.active {
+    color: white;
+    border: .11vw solid transparent;
+    background-color: var(--red);
+  }
+  
+  .tabContent {
+    padding: 1vw;
+  }
+  
