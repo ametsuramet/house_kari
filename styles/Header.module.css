@@ -1,0 +1,271 @@
+.top_menu{
+    background: linear-gradient(270deg, #E60011 0%, #800009 100%);
+    display: flex;
+    justify-content: flex-end;
+    padding: .5vw 2.6vw;
+    width: 100%;
+    gap: 1.5vw;
+    align-items: center;
+}
+.heading_layout{
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 15;
+}
+.language {
+    position: relative;
+    display: inline-block;
+}
+  
+.language button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .2vw;
+    font-size: .8vw;
+    color: white;
+}
+  
+.language ul {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: max-content;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    display: none;
+    list-style: none;
+    z-index: 2;
+}
+  
+.language ul li {
+    width: 100%;
+}
+  
+.language ul li button {
+    width: 100%;
+    text-align: left;
+    color: var(--black);
+    border-bottom: .1vw solid rgb(226, 225, 225);
+    padding: .5vw 1vw;
+    transition: .3s all;
+}
+
+.language ul li:last-child button{
+    border-bottom: none;
+}
+
+.language ul li button:hover{
+    background-color: var(--red);
+    color: white;
+}
+
+.search_box{
+    background: #65131866;
+    border: .1vw solid white;
+    padding: 0 .5vw;
+    display: flex;
+    align-items: center;
+    border-radius: .3vw;
+    overflow: hidden;
+}
+.search_box input{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    padding: .3vw 0;
+    color: white;
+    font-size: .76vw;
+    font-weight: 300;
+}
+.search_box input::placeholder{
+    color: white;
+}
+.search_box svg{
+    color: white;
+    font-size: .86vw;
+}
+.header{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 1.3vw 2.6vw;
+    height: max-content;
+    align-items: center;
+    background-color: white;
+}
+.logo img{
+    width: 7.2vw;
+}
+  
+.nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2vw;
+}
+
+.nav ul li {
+    position: relative;
+}
+
+.nav ul li a{
+    text-decoration: none;
+    color: var(--black);
+    font-weight: 400;
+    cursor: pointer;
+    align-items: center;
+    font-size: 1.11vw;
+}
+
+.nav ul li span {
+    text-decoration: none;
+    color: var(--black);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 1.11vw;
+    gap: .3vw;
+}
+
+.nav ul li span svg{
+    font-size: 1vw;
+}
+
+.nav ul li a:hover,
+.nav ul li span:hover {
+    color: var(--red);
+}
+
+.nav ul li a.active {
+    color: var(--red) !important; /* Warna untuk link yang aktif */
+    font-weight: bold;
+}
+
+
+.nav ul li ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    padding: .6vw .7vw;
+    margin: 0;
+    z-index: 3;
+}
+
+.nav ul li ul li {
+    width: max-content;
+    font-size: 1.1vw;
+    margin: .6vw 0;
+    white-space: nowrap;
+}
+
+.nav ul li ul li a {
+    color: var(--black);
+    text-decoration: none;
+    display: block;
+}
+
+.nav ul li ul li a:hover {
+    color: var(--red);
+}
+  
+.show {
+    display: block !important;
+}
+  
+.link {
+    color: var(--black);
+    padding: 0 .6vw;
+    text-decoration: none;
+}
+  
+.fixed_menu{
+    width: 100%;
+    padding: 0 2.4vw;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 2.7vw;
+    left: 0;
+    z-index: 20;
+}
+.fixed_menu_box{
+    display: flex;
+    gap: 1vw;
+}
+
+.bg_transparent{
+    width: 2.7vw;
+    height: 2.7vw;
+    position: relative;
+    border-radius: 100vw;
+    border: .12vw solid #4C380F;
+    box-shadow: 0px 4px 14.7px 0px #0000001A;
+    cursor: pointer;
+    backdrop-filter: blur(1vw); /* Menentukan intensitas blur */
+    -webkit-backdrop-filter: blur(1vw);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.61) 0%, rgba(255, 255, 255, 0.74) 100%);
+    transition: .4s all;
+}
+.bg_transparent:hover{
+    transform: scale(1.1);
+}
+.bg_transparent svg{
+    font-size: 1.3vw;
+    color: #4C380F;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.bg_whatsapp{
+    width: 2.7vw;
+    height: 2.7vw;
+    position: relative;
+    border-radius: 100vw;
+    border: .12vw solid transparent;
+    background: linear-gradient(180deg, #43ED5F 27.5%, #1FCA41 100%);
+    cursor: pointer;
+    transition: .4s all;
+}
+.bg_whatsapp:hover{
+    transform: scale(1.1);
+}
+.bg_whatsapp svg{
+    font-size: 1.3vw;
+    color: white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.bg_ecommerce{
+    display: flex;
+    align-items: center;
+    gap: .6vw;
+    height: 2.7vw;
+    padding: 0 1vw;
+    border-radius: 100vw;
+    border: .12vw solid white;
+    background: #E1001180;
+    box-shadow: 0px 8px 14.7px 0px #B1161645;
+    color: white;
+    font-size: .87vw;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .4s all;
+}
+.bg_ecommerce:hover{
+    transform: scale(1.06);
+}
+.bg_ecommerce svg{
+    color: white;
+    font-size: 1.25vw;
+    margin-top: -.16vw;
+}
