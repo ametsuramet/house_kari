@@ -3,7 +3,7 @@ import styles from '@/styles/Slide.module.css';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { AiOutlineSearch } from "react-icons/ai";
 
-const Slide = ({ items, showNavigation = true, showPagination = true }) => {
+const Slide = ({ items = [], showNavigation = true, showPagination = true }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const goToSlide = (index) => {
