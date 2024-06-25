@@ -1,11 +1,12 @@
+import { useState } from 'react';
 import banner from '@/styles/Banner.module.css'
 import Head from 'next/head';
 import styles from '@/styles/Recipe.module.css'
 import SlideArticles from '../components/slide_articles';
 import Link from 'next/link';
-import { useState } from 'react';
 
-const recipeDetail = () => {
+
+const RecipeDetail = () => {
     const [isActive, setIsActive] = useState(false);
 
     const togglePopup = () => {
@@ -68,7 +69,7 @@ const recipeDetail = () => {
                         <div className={styles.section4_overlay}></div>
                     </div>
                     <div className={styles.section4_content}>
-                        <div className={styles.recipeDetail}>
+                        <div className={styles.RecipeDetail}>
                             <h1>Kari Kroket</h1>
                             <p>Untuk menciptakan mood yang baik sebelum mengawali hari, perlu menu bernutrisi dan lezat tetapi juga praktis. Seperti menu Baked Potatoes dari House Kari ala Jepang. Have a healthy morning Currymates!</p>
                         </div>
@@ -138,4 +139,4 @@ const recipeDetail = () => {
     );
 }
 
-export default recipeDetail
+export default RecipeDetail

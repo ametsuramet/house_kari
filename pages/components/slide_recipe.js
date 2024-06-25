@@ -12,7 +12,7 @@ import { MdOutlineStar } from "react-icons/md";
 import { Pagination } from 'swiper/modules';
 import Link from 'next/link';
 
-export default function SlideRecipe({ items }) {
+export default function SlideRecipe({ items = [] }) {
   return (
     <>
     <h1 className='headingRecipeSlide'>Our Featured Recipes</h1>

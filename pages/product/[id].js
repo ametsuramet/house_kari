@@ -113,8 +113,8 @@ const ProductDetails = () =>{
                             <div className={styles.section3_ecommerce}>
                                 <h2>Buy now at</h2>
                                 <div className={styles.section3_ecommerce_layout}>
-                                    {ecommerces.map((ecommerce, index) => (
-                                        <Link href="#"><button className={styles[ecommerce.nameEcommerce]} key={index}><img src={ecommerce.imageEcommerce} alt="House Kari" /></button></Link>
+                                    {ecommerces.map((ecommerce) => (
+                                        <Link href="#" key={ecommerce.id}><button className={styles[ecommerce.nameEcommerce]}><img src={ecommerce.imageEcommerce} alt="House Kari" /></button></Link>
                                     ))}
                                 </div>
                             </div>

@@ -10,7 +10,7 @@ import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
 import Link from 'next/link';
 
-export default function SlideArticles({ items, classNames, paginationClass }) {
+export default function SlideArticles({ items = [], classNames, paginationClass }) {
   const [isAtEnd, setIsAtEnd] = useState(false);
   const [isAtStart, setIsAtStart] = useState(true);
 
