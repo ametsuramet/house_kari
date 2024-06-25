@@ -4,7 +4,6 @@
   margin: 0;
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
-  transition: .4s all;
 }
 :root{
   --red: #E60011;
@@ -68,10 +67,10 @@
   justify-content: center !important;
   margin-left: -1.2vw !important;
 }
-.mySwiperProduct .swiper-slide{
+/* .mySwiperProduct .swiper-slide{
   transition: 1s all !important;
   
-}
+} */
 
 /* .mySwiperProduct .swiper-slide-active .imageContainer img{
   width: 90% !important;
@@ -485,4 +484,133 @@
   height: .6vw !important;
   border-radius: 100vw;
   opacity: 1 !important;
+}
+
+
+.mySwiperRecipe{
+  margin-top: 3.4vw !important;
+}
+.mySwiperRecipe .swiper-wrapper{
+  margin-left: -13.2vw;
+  padding-bottom: 4.6vw;
+  align-items: center;
+}
+.mySwiperRecipe .swiper-pagination-bullet{
+  width: .6vw !important;
+  height: .6vw !important;
+  display: inline-block;
+  border-radius: 100vw !important;
+  background: white !important;
+  opacity: 0.4 !important;
+  margin: 0 .35vw !important;
+}
+.mySwiperRecipe .swiper-pagination-bullet-active{
+  background-color: white !important;
+  width: .6vw !important;
+  height: .6vw !important;
+  border-radius: 100vw;
+  opacity: 1 !important;
+}
+.slideItemRecipe{
+  border-radius: 1.7vw;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background-color: #FFFCF4;
+}
+.contentRecipe h1{
+  font-size: 1.8vw;
+  margin-bottom: 1vw;
+  color: var(--old_red);
+}
+
+.contentRecipe button{
+  margin-top: 7.8vw;
+  padding: .8vw 2.4vw;
+  padding-bottom: .9vw;
+  border: none;
+  outline: none;
+  font-size: .89vw;
+  border-radius: 100vw;
+  background-color: var(--red);
+  font-weight: 600;
+  color: white;
+}
+.mySwiperRecipe .swiper-slide{
+  width: 22%;  
+}
+.mySwiperRecipe .swiper-slide .slideItemRecipe{
+  transform: scale(0.93);
+  opacity: .4;
+  background-color: #FFFCF4;
+}
+.mySwiperRecipe .swiper-slide .imageRecipe{
+  width: 100%;
+  height: 17vw;
+  position: relative;
+}
+.mySwiperRecipe .swiper-slide .contentRecipe{
+  padding:1.4vw 1.8vw;
+}
+.mySwiperRecipe .swiper-slide-active .contentRecipe{
+  padding:2.9vw 2.7vw;
+}
+.mySwiperRecipe .swiper-slide .contentRecipe h1{
+  font-size: 1.4vw;
+  margin-bottom: 1vw;
+}
+.mySwiperRecipe .swiper-slide .contentRecipe p{
+  font-size: .9vw;
+  color:#363636;
+}
+.mySwiperRecipe .swiper-slide .contentRecipe button{
+  margin-top: 3.6vw;
+  padding: .5vw 1.5vw;
+  padding-bottom: .6vw;
+  border: none;
+  outline: none;
+  font-size: .76vw;
+}
+.mySwiperRecipe .swiper-slide-active .contentRecipe button{
+  margin-top: 6.2vw;
+  padding: .8vw 2.4vw;
+  padding-bottom: .9vw;
+  border: none;
+  outline: none;
+  font-size: .89vw;
+}
+.mySwiperRecipe .swiper-slide-active{
+  width: 60% !important;
+}
+.mySwiperRecipe .swiper-slide-active .contentRecipe h1{
+  font-size: 1.8vw;
+  margin-bottom: 1vw;
+}
+.mySwiperRecipe .swiper-slide-active .contentRecipe p{
+  font-size: .97vw;
+  color:#363636;
+}
+.mySwiperRecipe .swiper-slide-active .slideItemRecipe{
+  transform: scale(1);
+  opacity: 1;
+}
+.mySwiperRecipe .swiper-slide-active .imageRecipe{
+  width: 100%;
+  height: 22.3vw;
+  position: relative;
+}
+.imageRecipe img{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  object-fit: cover;
+  object-position: center;
+}
+.headingRecipeSlide{
+  font-size: 1.8vw;
+  margin-bottom: 3.5vw;
+  color: var(--old_red);
+  padding: 0 10.5vw;
 }

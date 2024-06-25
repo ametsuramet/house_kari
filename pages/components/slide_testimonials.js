@@ -56,7 +56,7 @@ export default function SlideTestimonials() {
       <Swiper 
         slidesPerView={3}
         spaceBetween={0}
-        initialSlide={1}
+        loop={true}
         centeredSlides={true}
         pagination={{
           clickable:true
