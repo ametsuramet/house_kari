@@ -115,7 +115,7 @@ export default function Home() {
         <div className={styles.section_2_content}>
           <h1 className={styles.heading_main}>Profil Perusahaan</h1>
           <p className={styles.desc_main}>House Foods masuk ke Indonesia melalui PT House And Vox Indonesia dan memproduksi Kari Jepang halal pertama di Indonesia dengan merek House Kari ala Jepang dengan ukuran 935g yang diproduksi di pabrik PT Java Agri Tech, Semarang.</p>
-          <Link href=''><button>Pelajari Selengkapnya</button></Link>
+          <Link href='/company-profile'><button>Pelajari Selengkapnya</button></Link>
           <img src='/images/icon_section_2.png' alt='House Kari Website' className={styles.icon_section_2} />
           <img src='/images/pattern_section_2.png' alt='House Kari Website' className={styles.pattern_section_2} />
         </div>
@@ -166,7 +166,7 @@ export default function Home() {
                 <span>Posted {blog.date}</span>
                 <h1>{blog.headingBlog}</h1>
                 <p>{blog.descBlog}</p>
-                <Link href='#'><button>Learn More</button></Link>
+                <Link href='/article/1'><button>Learn More</button></Link>
               </div>
             </div>
           ))}

@@ -236,7 +236,7 @@ export default function SlideProduct() {
               <h1>{item.headingProduct}</h1>
               <div className='contectProductContainer'>
                 <p>{item.descProduct}</p>
-                <Link href={item.linkProduct}><button>Lihat Resep</button></Link>
+                <Link href='/recipe/1'><button>Lihat Resep</button></Link>
               </div>
             </div>
           </SwiperSlide>

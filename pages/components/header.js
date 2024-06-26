@@ -61,17 +61,18 @@ const Header = () => {
   };
 
   const audioPlayer = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(true); // Set default to true
+  const [isPlaying, setIsPlaying] = useState(true); // Atur nilai default ke true jika ingin memulai dengan memainkan audio
 
   useEffect(() => {
+    // Memulai audio ketika halaman dimuat pertama kali
     if (audioPlayer.current) {
       const playPromise = audioPlayer.current.play();
 
       if (playPromise !== undefined) {
         playPromise.then(() => {
-          setIsPlaying(true); // Ensure state is updated correctly
+          setIsPlaying(true);
         }).catch(error => {
-          console.error('Failed to play the audio:', error);
+          console.error('Gagal memainkan audio:', error);
           setIsPlaying(false);
         });
       }
@@ -79,10 +80,11 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
+    // Memulai atau menghentikan audio berdasarkan nilai isPlaying
     if (audioPlayer.current) {
       if (isPlaying) {
         audioPlayer.current.play().catch(error => {
-          console.error('Failed to play the audio:', error);
+          console.error('Gagal memainkan audio:', error);
           setIsPlaying(false);
         });
       } else {
@@ -91,9 +93,25 @@ const Header = () => {
     }
   }, [isPlaying]);
 
+  // Fungsi untuk mengubah nilai isPlaying saat tombol ditekan
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
   };
+
+  // Event listener untuk memulai audio saat interaksi pengguna
+  useEffect(() => {
+    const handleInteraction = () => {
+      setIsPlaying(true); // Atur isPlaying ke true saat ada interaksi pengguna
+    };
+
+    // Tambahkan event listener ke elemen document atau elemen lain yang sesuai
+    document.addEventListener('click', handleInteraction);
+
+    return () => {
+      // Hapus event listener saat komponen dibongkar
+      document.removeEventListener('click', handleInteraction);
+    };
+  }, []);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -253,7 +271,7 @@ const Header = () => {
       </div>
       <div className={styles.fixed_menu}>
         <div className={styles.fixed_menu_box}>
-          <audio ref={audioPlayer} src='/music/soundtrack.mp3' />
+          <audio ref={audioPlayer} src='/music/soundtrack.mp3' autoPlay/>
           <button onClick={togglePlay} className={styles.bg_transparent}>{isPlaying ? <SlVolume2 />:  <SlVolumeOff/>}</button>
         </div>
         <div className={styles.fixed_menu_box}>
