@@ -60,58 +60,27 @@ const Header = () => {
     // Perform any other action upon language change
   };
 
+  const [isPlaying, setIsPlaying] = useState(false);
   const audioPlayer = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(true); // Atur nilai default ke true jika ingin memulai dengan memainkan audio
 
   useEffect(() => {
-    // Memulai audio ketika halaman dimuat pertama kali
-    if (audioPlayer.current) {
-      const playPromise = audioPlayer.current.play();
+    // Mengatur ulang status pemutaran saat komponen dimuat ulang
+    audioPlayer.current.addEventListener('ended', () => setIsPlaying(false));
 
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          setIsPlaying(true);
-        }).catch(error => {
-          console.error('Gagal memainkan audio:', error);
-          setIsPlaying(false);
-        });
-      }
-    }
+    return () => {
+      audioPlayer.current.removeEventListener('ended', () => setIsPlaying(false));
+    };
   }, []);
 
-  useEffect(() => {
-    // Memulai atau menghentikan audio berdasarkan nilai isPlaying
-    if (audioPlayer.current) {
-      if (isPlaying) {
-        audioPlayer.current.play().catch(error => {
-          console.error('Gagal memainkan audio:', error);
-          setIsPlaying(false);
-        });
-      } else {
-        audioPlayer.current.pause();
-      }
-    }
-  }, [isPlaying]);
-
-  // Fungsi untuk mengubah nilai isPlaying saat tombol ditekan
   const togglePlay = () => {
+    if (isPlaying) {
+      audioPlayer.current.pause();
+    } else {
+      audioPlayer.current.play();
+    }
     setIsPlaying(!isPlaying);
   };
 
-  // Event listener untuk memulai audio saat interaksi pengguna
-  useEffect(() => {
-    const handleInteraction = () => {
-      setIsPlaying(true); // Atur isPlaying ke true saat ada interaksi pengguna
-    };
-
-    // Tambahkan event listener ke elemen document atau elemen lain yang sesuai
-    document.addEventListener('click', handleInteraction);
-
-    return () => {
-      // Hapus event listener saat komponen dibongkar
-      document.removeEventListener('click', handleInteraction);
-    };
-  }, []);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
