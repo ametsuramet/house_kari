@@ -36,7 +36,7 @@ export default function SlideRecipe({ items = [] }) {
               <div className='contentRecipe'>
                 <h1>{item.recipeHeading}</h1>
                 <p>{item.recipeDesc}</p>
-                <Link href='#'><button>Learn More</button></Link>
+                <Link href='/recipe/1'><button>Learn More</button></Link>
               </div>
             </div>
           </SwiperSlide>

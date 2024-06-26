@@ -17,6 +17,10 @@
     position: relative;
     display: inline-block;
 }
+.activeSpan {
+    font-weight: bold;
+    color: var(--red) !important; /* Change color to indicate active state */
+  }
   
 .language button {
     background: none;
@@ -195,6 +199,7 @@
 }
 .fixed_menu_box{
     display: flex;
+    align-items: flex-end;
     gap: 1vw;
 }
 
@@ -259,13 +264,97 @@
     font-size: .87vw;
     font-weight: 600;
     cursor: pointer;
-    transition: .4s all;
+    position: relative;
 }
-.bg_ecommerce:hover{
+/* .bg_ecommerce:hover{
     transform: scale(1.06);
-}
+} */
 .bg_ecommerce svg{
     color: white;
     font-size: 1.25vw;
     margin-top: -.16vw;
 }
+.bg_ecommerce.active{
+    margin-bottom: .5vw;
+    border: .12vw solid #9A0000;
+    padding-right: .34vw;
+    background: #E60011;
+}
+
+
+.ecommerceDropdown{
+    position: relative;
+    transition: .4s all;
+}
+.closeEcommerce {
+    background: white;
+    color: white;
+    border: .1vw solid #651318;
+    cursor: pointer;
+    width: 1.8vw;
+    height: 1.8vw;
+    border-radius: 100vw;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+  }
+  .closeEcommerce svg{
+    color: #651318;
+    font-size: 1.5vw;
+  }
+
+  .dropdown {
+    position: relative;
+    z-index: 1000;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: .4vw;
+    transition: .4s all;
+  }
+  
+  .dropdown.active {
+    opacity: 1;
+    max-height: 500px;
+    transition: .4s all;
+  }
+
+  .dropdown button{
+    width: 100%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: .4s all;
+    border-radius: 100vw;
+    height: 2vw;
+    position: relative;
+    padding: .55vw;
+    box-shadow: 0px 3px 7.7px 0px #B1161645;
+  }
+  .dropdown button img{
+    max-width: 3.6vw;
+    max-height: 3.6vw;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,  -50%);
+    object-fit: contain;
+  }
+  
+  .shopee{
+    background-color: #EE4D2D;
+  }
+  .tokopedia{
+    background-color: #42B549;
+  }
+  .blibli{
+    background-color: #0072FF;
+  }
+  .sayurbox{
+    background-color: #1D5B17;
+  }

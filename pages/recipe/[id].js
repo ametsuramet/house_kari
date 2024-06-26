@@ -14,7 +14,7 @@ const RecipeDetail = () => {
     };
 
     const recipeList = [
-        {
+        { 
           id: 1,
           images: '/images/recipe_image.png',
           headingBlog: 'Recipe Name',
@@ -46,6 +46,58 @@ const RecipeDetail = () => {
         },
       ]
 
+      const slideBlog = [
+        {
+          id: 1,
+          images: '/images/blog_recent_1.png',
+          date: 'Posted 10/10/2024',
+          headingBlog: 'Headline',
+          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+        },
+        {
+          id: 2,
+          images: '/images/blog_recent_2.png',
+          date: 'Posted 10/10/2024',
+          headingBlog: 'Headline',
+          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+        },
+        {
+          id: 3,
+          images: '/images/blog_recent_1.png',
+          date: 'Posted 10/10/2024',
+          headingBlog: 'Headline',
+          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+        },
+        {
+          id: 4,
+          images: '/images/blog_recent_2.png',
+          date: 'Posted 10/10/2024',
+          headingBlog: 'Headline',
+          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+        },
+        {
+          id: 5,
+          images: '/images/blog_recent_1.png',
+          date: 'Posted 10/10/2024',
+          headingBlog: 'Headline',
+          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+        },
+        {
+          id: 6,
+          images: '/images/blog_recent_2.png',
+          date: 'Posted 10/10/2024',
+          headingBlog: 'Headline',
+          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+        },
+        {
+            id: 7,
+            images: '/images/blog_recent_1.png',
+            date: 'Posted 10/10/2024',
+            headingBlog: 'Headline',
+            descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+          },
+      ];
+
       const secondColor = 'creamColor'
       const paginationStyle = 'old_red_color'
 
@@ -69,7 +121,7 @@ const RecipeDetail = () => {
                         <div className={styles.section4_overlay}></div>
                     </div>
                     <div className={styles.section4_content}>
-                        <div className={styles.RecipeDetail}>
+                        <div className={styles.recipeDetail}>
                             <h1>Kari Kroket</h1>
                             <p>Untuk menciptakan mood yang baik sebelum mengawali hari, perlu menu bernutrisi dan lezat tetapi juga praktis. Seperti menu Baked Potatoes dari House Kari ala Jepang. Have a healthy morning Currymates!</p>
                         </div>
@@ -125,7 +177,7 @@ const RecipeDetail = () => {
           <div className={styles.space_between_heading}>
               <h1 className={styles.heading_main_red}>Articles That Might Interest You</h1>
           </div>
-          <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={recipeList} />
+          <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={slideBlog} />
         </div>
         <div className={`${styles.popup} ${isActive ? styles.active : ''}`}>
             <div className={styles.popupContent}>

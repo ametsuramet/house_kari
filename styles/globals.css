@@ -115,7 +115,7 @@
 .mySwiperProduct .swiper-slide-active .slideItemProduct button{
   font-size: 1vw;
   display: block;
-  font-weight: 600;
+  font-weight: 700;
   margin: auto;
   width: max-content;
   background-color: var(--cream);
@@ -124,6 +124,13 @@
   color: var(--old_red);
   padding: .7vw 3.7vw;
   border-radius: 100vw;
+  border: .12vw solid transparent;
+}
+.mySwiperProduct .swiper-slide-active .slideItemProduct button:hover{
+  border: .12vw solid #651318;
+  background-color: white;
+  box-shadow: 0px 4px 12.1px 0px #6513184F;
+
 }
 .mySwiperProduct .swiper-slide{
   width: 26% !important;
@@ -554,6 +561,7 @@
   background-color: var(--red);
   font-weight: 600;
   color: white;
+  cursor: pointer;
 }
 .mySwiperRecipe .swiper-slide{
   width: 22%;  

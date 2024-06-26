@@ -96,6 +96,58 @@ export default function Recipe() {
     },
   ]
 
+  const slideBlog = [
+    {
+      id: 1,
+      images: '/images/blog_recent_1.png',
+      date: 'Posted 10/10/2024',
+      headingBlog: 'Headline',
+      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+    },
+    {
+      id: 2,
+      images: '/images/blog_recent_2.png',
+      date: 'Posted 10/10/2024',
+      headingBlog: 'Headline',
+      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+    },
+    {
+      id: 3,
+      images: '/images/blog_recent_1.png',
+      date: 'Posted 10/10/2024',
+      headingBlog: 'Headline',
+      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+    },
+    {
+      id: 4,
+      images: '/images/blog_recent_2.png',
+      date: 'Posted 10/10/2024',
+      headingBlog: 'Headline',
+      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+    },
+    {
+      id: 5,
+      images: '/images/blog_recent_1.png',
+      date: 'Posted 10/10/2024',
+      headingBlog: 'Headline',
+      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+    },
+    {
+      id: 6,
+      images: '/images/blog_recent_2.png',
+      date: 'Posted 10/10/2024',
+      headingBlog: 'Headline',
+      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+    },
+    {
+        id: 7,
+        images: '/images/blog_recent_1.png',
+        date: 'Posted 10/10/2024',
+        headingBlog: 'Headline',
+        descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+      },
+  ];
+
   const secondColor = 'creamColor'
   const paginationStyle = 'old_red_color'
 
@@ -143,7 +195,7 @@ export default function Recipe() {
           <div className={styles.space_between_heading}>
               <h1 className={styles.heading_main_red}>Articles That Might Interest You</h1>
           </div>
-          <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={recipeList} />
+          <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={slideBlog} />
       </div>
     </>
   );
