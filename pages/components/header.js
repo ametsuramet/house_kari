@@ -7,10 +7,12 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { IoChevronDown } from "react-icons/io5";
 import { SlVolume2, SlVolumeOff } from "react-icons/sl";
 import { PiShareNetwork } from "react-icons/pi";
-import { FaWhatsapp } from "react-icons/fa";
 import { BsCart2 } from "react-icons/bs";
 import { useRef } from 'react';
 import { IoCloseOutline } from "react-icons/io5";
+import { FaFacebookF, FaWhatsapp, FaTelegramPlane } from "react-icons/fa";
+import { FaLink } from "react-icons/fa6";
+
 
 
 const Header = () => {
@@ -60,27 +62,48 @@ const Header = () => {
     // Perform any other action upon language change
   };
 
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioPlayer = useRef(null);
+  const audioRef = useRef(typeof Audio !== 'undefined' ? new Audio('/music/soundtrack.mp3') : undefined);
+
+  const playAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
+  };
+
+  const pauseAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+  };
 
   useEffect(() => {
-    // Mengatur ulang status pemutaran saat komponen dimuat ulang
-    audioPlayer.current.addEventListener('ended', () => setIsPlaying(false));
+    const handleUserInteraction = () => {
+      playAudio();
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('keypress', handleUserInteraction);
+    };
+
+    document.addEventListener('click', handleUserInteraction);
+    document.addEventListener('keypress', handleUserInteraction);
 
     return () => {
-      audioPlayer.current.removeEventListener('ended', () => setIsPlaying(false));
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('keypress', handleUserInteraction);
     };
   }, []);
 
-  const togglePlay = () => {
-    if (isPlaying) {
-      audioPlayer.current.pause();
-    } else {
-      audioPlayer.current.play();
-    }
-    setIsPlaying(!isPlaying);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handleClickPlay = () => {
+    
+    setIsPlaying(false);
+    playAudio(); // Fungsi playAudio harus didefinisikan sesuai dengan logika aplikasi Anda
   };
 
+  const handleClickPause = () => {
+    setIsPlaying(true);
+    pauseAudio(); // Fungsi pauseAudio harus didefinisikan sesuai dengan logika aplikasi Anda
+  };
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -92,9 +115,20 @@ const Header = () => {
     setIsDropdownOpen(false);
   };
 
+  const [isDropdownOpenShare, setIsDropdownOpenShare] = useState(false);
+
+  const toggleDropdownShare = () => {
+    setIsDropdownOpenShare(!isDropdownOpenShare);
+  };
+
+  const closeDropdownShare= () => {
+    setIsDropdownOpenShare(false);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       closeDropdownEcommerce();
+      closeDropdownShare();
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -125,7 +159,30 @@ const Header = () => {
         nameEcommerce: 'sayurbox',
         imageEcommerce: '/images/sayurbox_logo.png',
     },
-]
+  ]
+
+  const share = [
+    {
+      id: 1,
+      nameMedia: 'whatsapp',
+      imageMedia: <FaWhatsapp/>,
+    },
+    {
+      id: 2,
+      nameMedia: 'facebook',
+      imageMedia: <FaFacebookF/>,
+    },
+    {
+      id: 3,
+      nameMedia: 'telegram',
+      imageMedia: <FaTelegramPlane/>,
+    },
+    {
+      id: 4,
+      nameMedia: 'copy',
+      imageMedia: <FaLink/>,
+    },
+  ]
 
   return (
     <>
@@ -240,11 +297,27 @@ const Header = () => {
       </div>
       <div className={styles.fixed_menu}>
         <div className={styles.fixed_menu_box}>
-          <audio ref={audioPlayer} src='/music/soundtrack.mp3' autoPlay/>
-          <button onClick={togglePlay} className={styles.bg_transparent}>{isPlaying ? <SlVolume2 />:  <SlVolumeOff/>}</button>
+          {/* <audio ref={audioPlayer} src='/music/soundtrack.mp3' autoPlay/> */}
+          <button
+            className={`${styles.bg_transparent} ${isPlaying ? styles.active : styles.nonActive}`}
+            onClick={handleClickPlay}
+            style={{ display: isPlaying ? 'block' : 'none' }}
+          ><SlVolume2/></button>
+          <button
+            className={`${styles.bg_transparent} ${isPlaying ? styles.nonActive : styles.active}`}
+            onClick={handleClickPause}
+            style={{ display: isPlaying ? 'none' : 'block' }}
+          ><SlVolumeOff/></button>
         </div>
         <div className={styles.fixed_menu_box}>
-          <button className={styles.bg_transparent}><PiShareNetwork /></button>
+          <div className={styles.ecommerceDropdown}>
+            <button onClick={toggleDropdownShare} className={`${styles.bg_transparent} ${isDropdownOpenShare ? styles.active : ''}`}><PiShareNetwork /></button>
+            <div className={`${styles.dropdown} ${isDropdownOpenShare ? styles.active : ''}`}>
+              {share.map((share) => (
+                  <Link href="#" key={share.id}><div className={`${styles.share_box} ${styles[share.nameMedia]}`}>{share.imageMedia}</div></Link>
+              ))}
+            </div>
+          </div>
           <button className={styles.bg_whatsapp}><FaWhatsapp /></button>
           <div className={styles.ecommerceDropdown}>
             <button onClick={toggleDropdownEcommerce} className={`${styles.bg_ecommerce} ${isDropdownOpen ? styles.active : ''}`}>
