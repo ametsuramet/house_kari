@@ -28,6 +28,11 @@
     object-fit: cover;
     object-position: center;
   }
+  @media (max-width:768px) {
+    .slideItem img{
+      height: 55vw;
+    }
+  }
   
   .navigation {
     position: absolute;
@@ -182,4 +187,44 @@
     backdrop-filter: blur(.2vw); /* Menentukan intensitas blur */
     -webkit-backdrop-filter: blur(.2vw);
     background: linear-gradient(180deg, rgba(255, 248, 221, 0.5) 0%, #FECF57 100%);
+  }
+
+  @media (max-width:768px) {
+    .product_banner{
+      left: 3.5vw;
+      bottom: 5vw;
+      border: .15vw solid white;
+      padding: 2vw;
+      border-radius: 3vw;
+    }
+    .product_banner_image{
+      width: 22vw;
+      height: 12vw;
+      border-radius: 1.4vw;
+    }
+    .product_banner_image img{
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .pagination {
+      bottom: 8vw;
+      gap: 1vw;
+    }
+    
+    .paginationButton {
+      width: 1.3vw;
+      margin: 0 .5vw;
+      height: 1.3vw;
+      background-color: white;
+      cursor: pointer;
+      transition: color 0.3s ease-in-out;
+      opacity: .6;
+    }
   }

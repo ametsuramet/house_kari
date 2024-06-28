@@ -108,6 +108,7 @@
 .nav ul {
     list-style: none;
     display: flex;
+    align-items: baseline;
     gap: 2vw;
 }
 
@@ -306,9 +307,6 @@
     cursor: pointer;
     position: relative;
 }
-/* .bg_ecommerce:hover{
-    transform: scale(1.06);
-} */
 .bg_ecommerce svg{
     color: white;
     font-size: 1.25vw;
@@ -397,4 +395,370 @@
   }
   .sayurbox{
     background-color: #1D5B17;
+  }
+  .divider_right{
+    display: none;
+  }
+  .hamburger{
+    display: none;
+  }
+  .nav .closeMenu{
+    display: none;
+  }
+  .nav .language{
+    display: none;
+  }
+
+  .bg_transparent_margin{
+    margin-bottom: 0 !important;
+}
+
+    .btnMobile{
+        display: none;
+    }
+
+    .searchMobile{
+        display: none;
+    }
+  @media (max-width:768px) {
+    .nav .language{
+        display: block;
+        margin-top: 8vw;
+      } 
+    .language button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1vw;
+        padding: 2.8vw 4vw;
+        font-size: 3.5vw;
+        color: white;
+        width: 100%;
+        background-color: #6513188c;
+        border-radius: 2vw;
+    }
+    .language button svg{
+        font-size: 3.3vw;
+    }
+     .language ul {
+        position: relative;
+        top: 100%;
+        right: 0;
+        width: max-content;
+        box-shadow:none;
+        background-color: transparent;
+        display: none;
+        list-style: none;
+        width: 100%;
+        margin-top: 2vw;
+        z-index: 2;
+    }
+    .show {
+        display: block !important;
+    }
+    .language ul li{
+        border: none;
+        padding: 0 !important;
+        margin: 0;
+        border: none !important;
+    }
+    .language ul li button {
+        width: 100%;
+        text-align: left;
+        border-bottom: none;
+        padding: 2.8vw 4vw;
+        transition: .3s all;
+        margin: 3vw 0;
+        background-color: #6513188c;
+        color: white;
+        border-radius: 2vw;
+    }
+    .closeMenu{
+        display: block !important;
+        position: absolute;
+        right: -12vw;
+        top: 3vw;
+        backdrop-filter: blur(1vw); /* Menentukan intensitas blur */
+    -webkit-backdrop-filter: blur(1vw);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.61) 0%, rgba(255, 255, 255, 0.74) 100%);
+        width: 9vw;
+        outline: none;
+        height: 9vw;
+        border-radius: 100vw;
+        border: .12vw solid #651318;
+      }
+    .closeMenu svg{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 6.9vw;
+        color:#651318;
+    }
+    .hamburger{
+        display: block;
+        background-color: transparent;
+        outline: none;
+        border: none;
+    }
+    .hamburger svg{
+        font-size: 4vw;
+        color: var(--red);
+    }
+    .nav_wrapper{
+        background-color: rgba(0, 0, 0, 0.562);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform: translateX(150%);
+        transition: .7s all;
+        opacity: 0;
+    }
+    .nav_wrapper.active{
+        opacity: 1;
+        transform: translateX(0);
+    }
+    .divider_right{
+        width: 1.7vw;
+        height: 100vh;
+        background: linear-gradient(269.85deg, #D08A22 -7.51%, #FFE620 48.54%, #CB811A 106.88%);
+        position: absolute;
+        right: 0vw;
+        top: 0;
+        display: block;
+    }
+    .top_menu{
+        display: none;
+    }
+    .nav{
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(90deg, #651318 0%, #B4000B 100%);
+        z-index: 1000;
+        padding: 4vw;
+        padding-right: 5.6vw;
+        z-index: 10;
+        transform: translateX(-500%);
+        transition: .7s all;
+    }
+    .nav_wrapper.active .nav{
+        transform: translateX(0);
+    }
+    .nav ul li {
+        position: relative;
+        width: 100%;
+        border-bottom: .12vw solid rgba(231, 228, 228, 0.404);
+    }
+    .nav ul{
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+        gap: 0;
+    }
+    .nav ul li a{
+        font-size: 4.2vw;
+        padding: 4.6vw 0;
+        display: block;
+        color: white;
+    }
+    .nav ul li span {
+        font-size: 4.2vw;
+        gap: 1vw;
+        padding: 4.6vw 0;
+        justify-content: space-between;
+        color: white;
+    }
+    .nav ul li span svg{
+        font-size: 3.5vw;
+    }
+    .nav ul li ul {
+        display: none;
+        position: relative;
+        top: 100%;
+        left: 0;
+        background-color: #6513188c;
+        margin: 0;
+        padding: 0;
+        z-index: 3;
+        border-top: .12vw solid rgb(231, 228, 228);
+    }
+    .nav ul li ul li {
+        width: 100%;
+        font-size: 1.1vw;
+        margin: 0 0;
+        padding: 0 3vw;
+        white-space: nowrap;
+    }
+    .nav ul li ul li a {
+        color: white;
+    }
+    .nav ul li ul li:last-child{
+        border: none;
+    }
+    .nav ul li a:hover,
+    .nav ul li span:hover {
+        color: white;
+    }
+    .nav ul li a.active {
+        color: #FFE620 !important; /* Warna untuk link yang aktif */
+        font-weight: bold;
+    }
+    .nav ul li ul li a:hover {
+        color: white;
+    }
+    .activeSpan {
+        font-weight: bold;
+        color:#FFE620 !important; /* Change color to indicate active state */
+    }
+    .fixed_menu{
+        width: 100%;
+        padding: 0 4vw;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        position: fixed;
+        bottom: 4vw;
+        left: 0;
+        z-index: 5;
+    }
+    .fixed_menu_box{
+        display: flex;
+        align-items: flex-end;
+        gap: 2vw;
+        flex-direction: column;
+    }
+    .bg_transparent{
+        width: 8vw;
+        height: 8vw;
+        border: .15vw solid #4C380F;
+    }
+    .bg_transparent svg{
+        font-size: 4vw;
+    }
+    .bg_transparent.active{
+        margin-bottom: 2vw;
+    }
+    .share_box{
+        width: 8vw;
+        height: 8vw;
+        border: .15vw solid #4C380F;
+    }
+    .share_box svg{
+        font-size: 4vw;
+    }
+    .dropdown {
+        gap: 1.7vw;
+    }
+    .bg_whatsapp{
+        width: 8vw;
+        height: 8vw;
+        border: .15vw solid transparent;
+    }
+    .bg_whatsapp svg{
+        font-size: 4vw;
+    }
+    .bg_ecommerce{
+        display: flex;
+        align-items: center;
+        gap: 1.3vw;
+        height: 8.5vw;
+        padding: 0 3vw;
+        border: .15vw solid white;
+        font-size: 3vw;
+    }
+    .bg_ecommerce svg{
+        font-size: 3vw;
+        margin-top: -.16vw;
+    }
+    .bg_transparent:hover{
+        transform: scale(1);
+    }
+    .bg_transparent_margin{
+        margin-bottom: 0 !important;
+    }
+    .dropdown button{
+        height: 7.8vw;
+        position: relative;
+        padding: .55vw;
+    }
+    .dropdown button img{
+        max-width: 17vw;
+        max-height: 17vw;
+    }
+    .bg_ecommerce.active{
+        margin-bottom: 1.8vw;
+        border: .15vw solid #9A0000;
+        padding-right: 1.2vw;
+    }
+    .closeEcommerce {
+        border: .13vw solid #651318;
+        width: 5vw;
+        height: 5vw;
+    }
+    .closeEcommerce svg{
+        font-size: 3.5vw;
+    }
+    .header{
+        padding: 3.8vw 4.6vw;
+    }
+    .logo img{
+        width: 17vw;
+    }
+    .btnMobile{
+        display: flex;
+        align-items: center;
+        gap: 2.6vw;
+    }
+    .searchBtn{
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
+    .searchBtn svg{
+        font-size: 4vw;
+        color: var(--red);
+    }
+
+    .searchMobile{
+        display: block;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+        padding: 0 0;
+        backdrop-filter: blur(1vw); /* Menentukan intensitas blur */
+        -webkit-backdrop-filter: blur(1vw);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.61) 0%, rgba(255, 255, 255, 0.74) 100%);
+        border: .16vw solid var(--red);
+        border-right: 0;
+        border-left: 0;
+        transition: .7s all;
+        transform: translateY(-100%);
+        overflow: hidden;
+        z-index: -100;
+    }
+    .searchMobile.active{
+        z-index: 1;
+        transform: translateY(0);
+        bottom: -9.8vw;
+    }
+    .searchMobile input{
+        width: 100%;
+        padding: 2.8vw 4.6vw;
+        border: none;
+        background-color: transparent;
+        outline: none;
+        color: #4C380F;
+    }
+    .searchMobile input::placeholder{
+        color: #4C380F;
+    }
   }

@@ -9,9 +9,11 @@ import { SlVolume2, SlVolumeOff } from "react-icons/sl";
 import { PiShareNetwork } from "react-icons/pi";
 import { BsCart2 } from "react-icons/bs";
 import { useRef } from 'react';
-import { IoCloseOutline } from "react-icons/io5";
+import { IoCloseOutline, IoSearchOutline } from "react-icons/io5";
 import { FaFacebookF, FaWhatsapp, FaTelegramPlane } from "react-icons/fa";
 import { FaLink } from "react-icons/fa6";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { MdSearch } from "react-icons/md";
 
 
 
@@ -184,6 +186,18 @@ const Header = () => {
     },
   ]
 
+  const [menuActive, setMenuActive] = useState(false);
+
+  const handleHamburger = () => {
+    setMenuActive(!menuActive);
+  }
+
+  const [searchActive, setSearchActive] = useState(false);
+
+  const handleSearch = () => {
+    setSearchActive(!searchActive);
+  }
+
   return (
     <>
       <Head>
@@ -219,95 +233,121 @@ const Header = () => {
           <div className={styles.logo}>
             <img src='/images/logo.png' alt="House Kari Logo" />
           </div>
-          <nav className={styles.nav}>
-            <ul>
-              <li className={styles.heading}>
-                <Link href="/" className={getLinkClass('/')} onClick={closeDropdown}>
-                  Home
-                </Link>
-              </li>
-              <li>
-                <span
-                  className={`${openDropdown === 'ourStory' || isActiveMenu(['/company-profile', '/company-history']) ? styles.activeSpan : ''}`}
-                  onClick={() => toggleDropdown('ourStory')}
-                >
-                  Our Story <IoChevronDown />
-                </span>
-                <ul className={openDropdown === 'ourStory' ? styles.show : ''}>
+          <div className={styles.btnMobile}>
+            <button className={styles.searchBtn} onClick={handleSearch}><MdSearch/></button>
+            <button className={styles.hamburger} onClick={handleHamburger}><RxHamburgerMenu/></button>
+          </div>
+          <div className={`${styles.nav_wrapper} ${menuActive ? styles.active : ''}`}>
+            <nav className={styles.nav}>
+              <ul>
+                <li className={styles.heading}>
+                  <Link href="/" className={getLinkClass('/')} onClick={closeDropdown}>
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <span
+                    className={`${openDropdown === 'ourStory' || isActiveMenu(['/company-profile', '/company-history']) ? styles.activeSpan : ''}`}
+                    onClick={() => toggleDropdown('ourStory')}
+                  >
+                    Our Story <IoChevronDown />
+                  </span>
+                  <ul className={openDropdown === 'ourStory' ? styles.show : ''}>
+                    <li>
+                      <Link href="/company-profile" className={getLinkClass('/company-profile')} onClick={closeDropdown}>
+                        Company Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/company-history" className={getLinkClass('/company-history')} onClick={closeDropdown}>
+                        Company History
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <Link href="/product" className={getLinkClass('/product')} onClick={closeDropdown}>
+                    Product
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/recipe" className={getLinkClass('/recipe')} onClick={closeDropdown}>
+                    Recipe
+                  </Link>
+                </li>
+                <li>
+                  <span
+                    className={`${openDropdown === 'article' || isActiveMenu(['/article', '/article/event', '/article/tips-trick', '/article/media-release']) ? styles.activeSpan : ''}`}
+                    onClick={() => toggleDropdown('article')}
+                  >
+                    Article <IoChevronDown />
+                  </span>
+                  <ul className={openDropdown === 'article' ? styles.show : ''}>
+                    <li>
+                      <Link href="/article" className={getLinkClass('/article')} onClick={closeDropdown}>
+                        Article
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/article/event" className={getLinkClass('/article/event')} onClick={closeDropdown}>
+                        Event
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/article/tips-trick" className={getLinkClass('/article/tips-trick')} onClick={closeDropdown}>
+                        Tips & Tricks
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/article/media-release" className={getLinkClass('/article/media-release')} onClick={closeDropdown}>
+                        Media Release
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <Link href="/contact" className={getLinkClass('/contact')} onClick={closeDropdown}>
+                    Contact
+                  </Link>
+                </li>
+              </ul>
+              <button className={styles.closeMenu} onClick={handleHamburger}><IoCloseOutline/></button>
+              <div className={styles.divider_right}></div>
+              <div className={styles.language}>
+                <button onClick={() => toggleDropdown('language')}>
+                  {language} <IoChevronDown />
+                </button>
+                <ul className={openDropdown === 'language' ? styles.show : ''}>
                   <li>
-                    <Link href="/company-profile" className={getLinkClass('/company-profile')} onClick={closeDropdown}>
-                      Company Profile
-                    </Link>
+                    <button onClick={() => handleLanguageChange('English')}>English</button>
                   </li>
                   <li>
-                    <Link href="/company-history" className={getLinkClass('/company-history')} onClick={closeDropdown}>
-                      Company History
-                    </Link>
+                    <button onClick={() => handleLanguageChange('Chinese')}>Chinese</button>
+                  </li>
+                  <li>
+                    <button onClick={() => handleLanguageChange('Indonesian')}>Indonesian</button>
                   </li>
                 </ul>
-              </li>
-              <li>
-                <Link href="/product" className={getLinkClass('/product')} onClick={closeDropdown}>
-                  Product
-                </Link>
-              </li>
-              <li>
-                <Link href="/recipe" className={getLinkClass('/recipe')} onClick={closeDropdown}>
-                  Recipe
-                </Link>
-              </li>
-              <li>
-                <span
-                  className={`${openDropdown === 'article' || isActiveMenu(['/article', '/article/event', '/article/tips-trick', '/article/media-release']) ? styles.activeSpan : ''}`}
-                  onClick={() => toggleDropdown('article')}
-                >
-                  Article <IoChevronDown />
-                </span>
-                <ul className={openDropdown === 'article' ? styles.show : ''}>
-                  <li>
-                    <Link href="/article" className={getLinkClass('/article')} onClick={closeDropdown}>
-                      Article
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/article/event" className={getLinkClass('/article/event')} onClick={closeDropdown}>
-                      Event
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/article/tips-trick" className={getLinkClass('/article/tips-trick')} onClick={closeDropdown}>
-                      Tips & Tricks
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/article/media-release" className={getLinkClass('/article/media-release')} onClick={closeDropdown}>
-                      Media Release
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <Link href="/contact" className={getLinkClass('/contact')} onClick={closeDropdown}>
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </nav>
+              </div>
+            </nav>
+          </div>
         </header>
+        <div className={`${styles.searchMobile} ${searchActive ? styles.active : ''}`}>
+          <input type='text' placeholder='Search'/>
+        </div>
       </div>
       <div className={styles.fixed_menu}>
         <div className={styles.fixed_menu_box}>
-          {/* <audio ref={audioPlayer} src='/music/soundtrack.mp3' autoPlay/> */}
           <button
-            className={`${styles.bg_transparent} ${isPlaying ? styles.active : styles.nonActive}`}
+            className={`${styles.bg_transparent} ${styles.bg_transparent_margin} ${isPlaying ? styles.active : styles.nonActive}`}
             onClick={handleClickPlay}
             style={{ display: isPlaying ? 'block' : 'none' }}
-          ><SlVolume2/></button>
+          ><SlVolumeOff/></button>
           <button
-            className={`${styles.bg_transparent} ${isPlaying ? styles.nonActive : styles.active}`}
+            className={`${styles.bg_transparent} ${styles.bg_transparent_margin} ${isPlaying ? styles.nonActive : styles.active}`}
             onClick={handleClickPause}
             style={{ display: isPlaying ? 'none' : 'block' }}
-          ><SlVolumeOff/></button>
+          ><SlVolume2/></button>
         </div>
         <div className={styles.fixed_menu_box}>
           <div className={styles.ecommerceDropdown}>

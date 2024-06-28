@@ -6,6 +6,7 @@ import { IoChevronDown } from "react-icons/io5";
 import { useState } from 'react';
 import SlideArticles from './components/slide_articles';
 import SlideTestimonials from './components/slide_testimonials';
+import { useEffect, useRef } from 'react';
 
 const items = [
   <img key={1} src='/images/banner-1.png' alt='banner'/>,
@@ -100,9 +101,113 @@ export default function Home() {
     setIsOpen(!isOpen);
   };
 
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+    // Handle overflow on body
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'; // Body tidak bisa di-scroll
+    } else {
+      document.body.style.overflow = 'auto'; // Body bisa di-scroll
+    }
+
+    // Cleanup function to reset overflow when component unmounts or isOpen changes
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }
+  }, [isOpen]);
+
   const handleSelectMenu = (menu) => {
     setSelectedMenu(menu);
     setIsOpen(false);
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsOpen(false);
+    };
+
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(`.${styles.dropdownMenu}`)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      document.addEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const [height, setHeight] = useState(360); // Default height
+  const [isMobile, setIsMobile] = useState(false);
+  const contentRef = useRef(null);
+  const startY = useRef(0); // Define startY as a useRef variable
+  const startHeight = useRef(0); 
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+
+    return () => {
+      window.removeEventListener('resize', checkIsMobile);
+    };
+  }, []);
+
+  useEffect(() => {
+    const contentElement = contentRef.current;
+    if (contentElement) {
+      if (height >= window.innerHeight) {
+        contentElement.style.maxHeight = '100vh';
+        contentElement.style.overflowY = 'scroll';
+      } else {
+        contentElement.style.maxHeight = `${height}px`;
+        contentElement.style.overflowY = 'hidden';
+      }
+    }
+  }, [height]);
+
+  const handleStart = (clientY) => {
+    if (!isMobile) return;
+    startY.current = clientY;
+    startHeight.current = height;
+  };
+
+  const handleMove = (clientY) => {
+    if (!isMobile) return;
+    const newHeight = startHeight.current - (clientY - startY.current);
+    const maxHeight = window.innerHeight; // Maksimal 100vh
+    setHeight(Math.max(360, Math.min(newHeight, maxHeight))); // Set minimum dan maksimum height
+  };
+
+  const handleTouchStart = (e) => {
+    handleStart(e.touches[0].clientY);
+  };
+
+  const handleTouchMove = (e) => {
+    handleMove(e.touches[0].clientY);
+  };
+
+  const handleMouseDown = (e) => {
+    handleStart(e.clientY);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
+  const handleMouseMove = (e) => {
+    handleMove(e.clientY);
+  };
+
+  const handleMouseUp = () => {
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
   };
 
   return (
@@ -114,13 +219,17 @@ export default function Home() {
         </div>
         <div className={styles.section_2_content}>
           <h1 className={styles.heading_main}>Profil Perusahaan</h1>
-          <p className={styles.desc_main}>House Foods masuk ke Indonesia melalui PT House And Vox Indonesia dan memproduksi Kari Jepang halal pertama di Indonesia dengan merek House Kari ala Jepang dengan ukuran 935g yang diproduksi di pabrik PT Java Agri Tech, Semarang.</p>
+          <p className={`${styles.desc_main}`}>House Foods masuk ke Indonesia melalui PT House And Vox Indonesia dan memproduksi Kari Jepang halal pertama di Indonesia dengan merek House Kari ala Jepang dengan ukuran 935g yang diproduksi di pabrik PT Java Agri Tech, Semarang.</p>
           <Link href='/company-profile'><button>Pelajari Selengkapnya</button></Link>
           <img src='/images/icon_section_2.png' alt='House Kari Website' className={styles.icon_section_2} />
           <img src='/images/pattern_section_2.png' alt='House Kari Website' className={styles.pattern_section_2} />
         </div>
-      </div>
+      </div> 
       <div className={styles.section_3}>
+        <div className={styles.section_3_heading}>
+          <h1 className={styles.heading_main}>Resep ala House Kari</h1>
+          <p className={`${styles.desc_main} ${styles.desc_main_margin}`}>Kumpulan resep sehari-hari dengan House kari ala Jepang</p>
+        </div>
         <div className={styles.select_menu_product}>
           <button 
             className={`${styles.dropdownButton} ${isOpen ? styles.activeButton : ''}`}  
@@ -128,23 +237,20 @@ export default function Home() {
           >
             {selectedMenu} <IoChevronDown />
           </button>
-          {isOpen && (
-            <div className={styles.dropdownMenu}>
-              {menuItems.map((menu, index) => (
-                <div
-                  key={index}
-                  className={`${styles.dropdownMenuItem} ${selectedMenu === menu ? styles.active : ''}`}
-                  onClick={() => handleSelectMenu(menu)}
-                >
-                  {menu}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-        <div className={styles.section_3_heading}>
-          <h1 className={styles.heading_main}>Resep ala House Kari</h1>
-          <p className={styles.desc_main}>Kumpulan resep sehari-hari dengan House kari ala Jepang</p>
+          <div  onTouchStart={handleTouchStart} 
+        onTouchMove={handleTouchMove}
+        onMouseDown={handleMouseDown} className={`${styles.dropdownMenu} ${isOpen ? styles.active : ''}`} style={{ height: isMobile ? `${height}px` : 'auto' }}>
+            <div className={styles.circle_menu}><div className={styles.circle_menu_box}></div></div>
+            {menuItems.map((menu, index) => (
+              <div
+                key={index}
+                className={`${styles.dropdownMenuItem} ${selectedMenu === menu ? styles.active : ''}`}
+                onClick={() => handleSelectMenu(menu)}
+              >
+                {menu}
+              </div>
+            ))}
+          </div>
         </div>
         <SlideProduct/>
         <div className={styles.divider}></div>

@@ -17,7 +17,7 @@ const Slide = ({ items = [], showNavigation = true, showPagination = true }) => 
   const prevSlide = () => {
     setActiveIndex((prevIndex) => (prevIndex === 0 ? items.length - 1 : prevIndex - 1));
   };
-
+ 
   return (
     <div className={styles.slide}>
       <div className={styles.slideWrapper} style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
