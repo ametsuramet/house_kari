@@ -518,7 +518,7 @@
   }
   .dropdownMenuItem:last-child{
     border-bottom: none;
-  }
+  } 
   .circle_menu{
     display: flex;
     justify-content: center;

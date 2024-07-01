@@ -50,6 +50,11 @@ const Header = () => {
     };
   }, []);
 
+  const clickMenu = () => {
+    closeDropdown();
+    handleHamburger();
+  };
+
   const getLinkClass = (href) => {
     return router.pathname === href ? `${styles.link} ${styles.active}` : styles.link;
   };
@@ -241,7 +246,7 @@ const Header = () => {
             <nav className={styles.nav}>
               <ul>
                 <li className={styles.heading}>
-                  <Link href="/" className={getLinkClass('/')} onClick={closeDropdown}>
+                  <Link href="/" className={getLinkClass('/')} onClick={clickMenu}>
                     Home
                   </Link>
                 </li>
@@ -254,24 +259,24 @@ const Header = () => {
                   </span>
                   <ul className={openDropdown === 'ourStory' ? styles.show : ''}>
                     <li>
-                      <Link href="/company-profile" className={getLinkClass('/company-profile')} onClick={closeDropdown}>
+                      <Link href="/company-profile" className={getLinkClass('/company-profile')} onClick={clickMenu}>
                         Company Profile
                       </Link>
                     </li>
                     <li>
-                      <Link href="/company-history" className={getLinkClass('/company-history')} onClick={closeDropdown}>
+                      <Link href="/company-history" className={getLinkClass('/company-history')} onClick={clickMenu}>
                         Company History
                       </Link>
                     </li>
                   </ul>
                 </li>
                 <li>
-                  <Link href="/product" className={getLinkClass('/product')} onClick={closeDropdown}>
+                  <Link href="/product" className={getLinkClass('/product')} onClick={clickMenu}>
                     Product
                   </Link>
                 </li>
                 <li>
-                  <Link href="/recipe" className={getLinkClass('/recipe')} onClick={closeDropdown}>
+                  <Link href="/recipe" className={getLinkClass('/recipe')} onClick={clickMenu}>
                     Recipe
                   </Link>
                 </li>
@@ -284,29 +289,29 @@ const Header = () => {
                   </span>
                   <ul className={openDropdown === 'article' ? styles.show : ''}>
                     <li>
-                      <Link href="/article" className={getLinkClass('/article')} onClick={closeDropdown}>
+                      <Link href="/article" className={getLinkClass('/article')} onClick={clickMenu}>
                         Article
                       </Link>
                     </li>
                     <li>
-                      <Link href="/article/event" className={getLinkClass('/article/event')} onClick={closeDropdown}>
+                      <Link href="/article/event" className={getLinkClass('/article/event')} onClick={clickMenu}>
                         Event
                       </Link>
                     </li>
                     <li>
-                      <Link href="/article/tips-trick" className={getLinkClass('/article/tips-trick')} onClick={closeDropdown}>
+                      <Link href="/article/tips-trick" className={getLinkClass('/article/tips-trick')} onClick={clickMenu}>
                         Tips & Tricks
                       </Link>
                     </li>
                     <li>
-                      <Link href="/article/media-release" className={getLinkClass('/article/media-release')} onClick={closeDropdown}>
+                      <Link href="/article/media-release" className={getLinkClass('/article/media-release')} onClick={clickMenu}>
                         Media Release
                       </Link>
                     </li>
                   </ul>
                 </li>
                 <li>
-                  <Link href="/contact" className={getLinkClass('/contact')} onClick={closeDropdown}>
+                  <Link href="/contact" className={getLinkClass('/contact')} onClick={clickMenu}>
                     Contact
                   </Link>
                 </li>

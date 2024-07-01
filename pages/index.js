@@ -258,8 +258,8 @@ const handleMouseUp = () => {
             {selectedMenu} <IoChevronDown />
           </button>
           <div  onTouchStart={handleTouchStart} 
-        onTouchMove={handleTouchMove}
-        onMouseDown={handleMouseDown} className={`${styles.dropdownMenu} ${isOpen ? styles.active : ''}`} style={{ height: isMobile ? `${height}px` : 'auto' }}>
+          onTouchMove={handleTouchMove}
+          onMouseDown={handleMouseDown} className={`${styles.dropdownMenu} ${isOpen ? styles.active : ''}`} style={{ height: isMobile ? `${height}px` : 'auto' }}>
             <div className={styles.circle_menu}><div className={styles.circle_menu_box}></div></div>
             {menuItems.map((menu, index) => (
               <div
