@@ -505,7 +505,7 @@
         border: none;
     }
     .hamburger svg{
-        font-size: 4vw;
+        font-size: 4.7vw;
         color: var(--red);
     }
     .nav_wrapper{
@@ -723,7 +723,7 @@
         outline: none;
     }
     .searchBtn svg{
-        font-size: 4vw;
+        font-size: 4.7vw;
         color: var(--red);
     }
 

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { FaFacebookF, FaInstagram, FaTiktok, FaLinkedin, FaYoutube } from "react-icons/fa";
 
 
-const Footer = () => {
+const Footer = () => { 
   return (
     <>
     <footer className={styles.footer}>

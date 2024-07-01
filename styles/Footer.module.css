@@ -31,6 +31,7 @@
     color: white;
     font-weight: 600;
     text-decoration: none;
+    display: block;
 }
 
 .social_footer{
@@ -65,4 +66,64 @@
     font-size: .9vw;
     color: #651318;
     font-weight: 400;
+}
+
+@media (max-width:768px) {
+    .footer{
+        grid-template-columns: repeat(1, 1fr);
+        padding: 10vw 8vw;
+        padding-bottom: 9vw;
+        position: relative;
+    }
+    .identity img{
+        width: 30vw;
+        margin-bottom: 3.4vw;
+    }
+    .identity_layout h1{
+        font-size: 3vw;
+        margin-bottom: .4vw;
+    }
+    .identity_layout p{
+        font-size: 2.9vw;
+        padding-right: 29vw;
+        margin-bottom: 1.2vw;
+    }
+    .identity_layout a{
+        font-size: 1.02vw;
+        color: white;
+        font-weight: 600;
+        text-decoration: none;
+        display: none;
+    }
+    .social_footer{
+        gap: 3vw;
+        margin-bottom: 0;
+        justify-content: flex-start;
+        margin-right: auto;
+        margin-left: inherit;
+        margin-top: 8.5vw;
+    }
+    .social_footer svg{
+        font-size: 4.5vw;
+    }
+    
+    .img_footer{
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+
+    }
+    .img_footer img{
+        width: 38vw;
+        margin-bottom: 0;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+    .copyright{
+        padding: 2.4vw;
+    }
+    .copyright span{
+        font-size: 2.5vw;
+    }
 }

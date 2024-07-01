@@ -7,6 +7,9 @@ import { useState } from 'react';
 import SlideArticles from './components/slide_articles';
 import SlideTestimonials from './components/slide_testimonials';
 import { useEffect, useRef } from 'react';
+import SlideProductMobile from './components/slide_product_mobile';
+import SlideArticlesMobile from './components/slide_articles_mobile';
+import SlideTestimonialsMobile from './components/slide_testimonials_mobile';
 
 const items = [
   <img key={1} src='/images/banner-1.png' alt='banner'/>,
@@ -143,72 +146,89 @@ export default function Home() {
   }, []);
 
   const [height, setHeight] = useState(360); // Default height
-  const [isMobile, setIsMobile] = useState(false);
-  const contentRef = useRef(null);
-  const startY = useRef(0); // Define startY as a useRef variable
-  const startHeight = useRef(0); 
+const [isMobile, setIsMobile] = useState(false);
+const contentRef = useRef(null);
+const startY = useRef(0); // Define startY as a useRef variable
+const startHeight = useRef(0);
+const lastY = useRef(0); // To track the last Y position
+const lastTime = useRef(0); // To track the last time for flick detection
 
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
+useEffect(() => {
+  const checkIsMobile = () => {
+    setIsMobile(window.innerWidth <= 768);
+  };
 
-    checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
+  checkIsMobile();
+  window.addEventListener('resize', checkIsMobile);
 
-    return () => {
-      window.removeEventListener('resize', checkIsMobile);
-    };
-  }, []);
+  return () => {
+    window.removeEventListener('resize', checkIsMobile);
+  };
+}, []);
 
-  useEffect(() => {
-    const contentElement = contentRef.current;
-    if (contentElement) {
-      if (height >= window.innerHeight) {
-        contentElement.style.maxHeight = '100vh';
-        contentElement.style.overflowY = 'scroll';
-      } else {
-        contentElement.style.maxHeight = `${height}px`;
-        contentElement.style.overflowY = 'hidden';
-      }
+useEffect(() => {
+  const contentElement = contentRef.current;
+  if (contentElement) {
+    if (height >= window.innerHeight) {
+      contentElement.style.maxHeight = '100vh';
+      contentElement.style.overflowY = 'scroll';
+    } else {
+      contentElement.style.maxHeight = `${height}px`;
+      contentElement.style.overflowY = 'hidden';
     }
-  }, [height]);
+  }
+}, [height]);
 
-  const handleStart = (clientY) => {
-    if (!isMobile) return;
-    startY.current = clientY;
-    startHeight.current = height;
-  };
+const handleStart = (clientY) => {
+  if (!isMobile) return;
+  startY.current = clientY;
+  startHeight.current = height;
+  lastY.current = clientY;
+  lastTime.current = Date.now();
+};
 
-  const handleMove = (clientY) => {
-    if (!isMobile) return;
-    const newHeight = startHeight.current - (clientY - startY.current);
-    const maxHeight = window.innerHeight; // Maksimal 100vh
-    setHeight(Math.max(360, Math.min(newHeight, maxHeight))); // Set minimum dan maksimum height
-  };
+const handleMove = (clientY) => {
+  if (!isMobile) return;
 
-  const handleTouchStart = (e) => {
-    handleStart(e.touches[0].clientY);
-  };
+  const currentTime = Date.now();
+  const deltaY = clientY - lastY.current;
+  const deltaTime = currentTime - lastTime.current;
 
-  const handleTouchMove = (e) => {
-    handleMove(e.touches[0].clientY);
-  };
+  // Update last positions and times
+  lastY.current = clientY;
+  lastTime.current = currentTime;
 
-  const handleMouseDown = (e) => {
-    handleStart(e.clientY);
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  };
+  const flickSpeed = deltaY / deltaTime;
 
-  const handleMouseMove = (e) => {
-    handleMove(e.clientY);
-  };
+  if (flickSpeed < -0.5) { // Adjust the threshold as needed for flick up
+    setHeight(window.innerHeight);
+  } else if (flickSpeed > 0.5) { // Adjust the threshold as needed for flick down
+    setHeight(360); // Default height
+  }
+};
 
-  const handleMouseUp = () => {
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mouseup', handleMouseUp);
-  };
+const handleTouchStart = (e) => {
+  handleStart(e.touches[0].clientY);
+};
+
+const handleTouchMove = (e) => {
+  handleMove(e.touches[0].clientY);
+};
+
+const handleMouseDown = (e) => {
+  handleStart(e.clientY);
+  document.addEventListener('mousemove', handleMouseMove);
+  document.addEventListener('mouseup', handleMouseUp);
+};
+
+const handleMouseMove = (e) => {
+  handleMove(e.clientY);
+};
+
+const handleMouseUp = () => {
+  document.removeEventListener('mousemove', handleMouseMove);
+  document.removeEventListener('mouseup', handleMouseUp);
+};
 
   return (
     <>
@@ -253,6 +273,7 @@ export default function Home() {
           </div>
         </div>
         <SlideProduct/>
+        <SlideProductMobile/>
         <div className={styles.divider}></div>
       </div>
       <div className={styles.section_4}>
@@ -277,11 +298,15 @@ export default function Home() {
             </div>
           ))}
         </div>
+        <div className={styles.heading_mobile_desc}>
+          <Link href='#'>Read more articles...</Link>
+        </div>
       </div>
       <div className={styles.section_5}>
         <div className={styles.space_between_heading}>
           <h1 className={styles.heading_main_white}>Other Articles</h1>
         </div>
+        <SlideArticlesMobile items={slideBlog} />
         <SlideArticles items={slideBlog}/>
         <div className={styles.divider}></div>
       </div>
@@ -327,6 +352,7 @@ export default function Home() {
             <h1 className={styles.heading_main}>Hear What They Say</h1>
           </div>
         </div>
+        <SlideTestimonialsMobile/>
         <SlideTestimonials/>
       </div>
     </>
