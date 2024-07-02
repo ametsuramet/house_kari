@@ -646,6 +646,9 @@
 .slideProductMobile{
   display: none !important;
 }
+.mySwiperRecipeMobile{
+  display: none !important;
+}
 
 @media (max-width:768px) {
   .mySwiperProduct{
@@ -994,6 +997,7 @@
   }
   .mySwiperRecipeMobile{
     padding: 0 6vw !important;
+    display: block !important;
   }
   .mySwiperRecipeMobile .swiper-slide{
     display: flex !important;
