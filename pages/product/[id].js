@@ -3,6 +3,7 @@ import styles from '@/styles/Product.module.css'
 import banner from '@/styles/Banner.module.css'
 import Link from "next/link"
 import SlideArticles from "../components/slide_articles"
+import SlideArticlesMobile from "../components/slide_articles_mobile"
 
 const ProductDetails = () =>{
     const ecommerces = [
@@ -13,7 +14,7 @@ const ProductDetails = () =>{
         },
         {
             id: 2,
-            nameEcommerce: 'tokopedia',
+            nameEcommerce: 'tokopedia', 
             imageEcommerce: '/images/tokopedia_logo.png',
         },
         {
@@ -148,6 +149,7 @@ const ProductDetails = () =>{
                 <div className={styles.space_between_heading}>
                     <h1 className={styles.heading_main_red}>Recipes That Might Interest You</h1>
                 </div>
+                <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={recipeList} />
                 <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={recipeList} />
             </div>
         </>

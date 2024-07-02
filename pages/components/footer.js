@@ -23,7 +23,7 @@ const Footer = () => {
         <Link href='#'><FaYoutube/></Link>
       </div>
       <div className={styles.img_footer}>
-        <img src='/images/img_footer.png' className='img_footer' alt='House Kari' />
+        <img src='/images/footer_img_product.png' className='img_footer' alt='House Kari' />
       </div>
     </footer>
     <div className={styles.copyright}>

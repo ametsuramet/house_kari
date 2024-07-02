@@ -277,27 +277,6 @@ const handleMouseUp = () => {
         <img src="/images/careers_icon.png" alt="House Kari" className={styles.careers_icon}/>
         <div className={styles.headingCareers}>
           <h1>Careers</h1>
-          {/* <div className={styles.select_menu_product}>
-            <button 
-              className={`${styles.dropdownButton} ${isOpen ? styles.activeButton : ''}`} 
-              onClick={toggleDropdown}
-            >
-              {selectedMenu} <IoChevronDown />
-            </button>
-            {isOpen && (
-              <div className={styles.dropdownMenu}>
-                {menuItems.map((menu, index) => (
-                  <div
-                    key={index}
-                    className={`${styles.dropdownMenuItem} ${selectedMenu === menu ? styles.active : ''}`}
-                    onClick={() => handleSelectMenu(menu)}
-                  >
-                    {menu}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div> */}
 
           <div className={styles.select_menu_product}>
             <button 
@@ -322,7 +301,6 @@ const handleMouseUp = () => {
             </div>
           </div>
 
-
         </div>
         <Swiper 
         autoHeight={true}
@@ -333,7 +311,6 @@ const handleMouseUp = () => {
           modules={[Pagination]} 
           className="swiperCareers"
         >
-          
           {chunkedCareers.map((careerChunk, slideIndex) => (
           <SwiperSlide key={slideIndex}>
             {careerChunk.map((career, index) => (

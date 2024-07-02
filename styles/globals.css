@@ -514,6 +514,7 @@
 
 .mySwiperRecipe{
   margin-top: 3.4vw !important;
+  display: block !important;
 }
 .mySwiperRecipe .swiper-wrapper{
   margin-left: -13.2vw;
@@ -639,6 +640,7 @@
   margin-bottom: 3.5vw;
   color: var(--old_red);
   padding: 0 10.5vw;
+  display: block;
 }
 
 .slideProductMobile{
@@ -982,5 +984,70 @@
   .swiperCareers .swiper-pagination-bullet-active{
     width: 2vw !important;
     height: 2vw !important;
+  }
+
+  .mySwiperRecipe{
+    display: none !important;
+  }
+  .headingRecipeSlide{
+    display: none;
+  }
+  .mySwiperRecipeMobile{
+    padding: 0 6vw !important;
+  }
+  .mySwiperRecipeMobile .swiper-slide{
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3.5vw;
+  }
+  .slideItemRecipe{
+    border-radius: 4vw;
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .recipeItem{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+   .imageRecipe{
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .contentRecipe{
+    padding: 5.3vw;
+  }
+  .contentRecipe h1{
+    font-size: 3.2vw;
+    margin-bottom: 2.7vw;
+  }
+  .contentRecipe p{
+    font-size: 2.7vw;
+    display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }
+  .contentRecipe button{
+    margin-top: 4.2vw;
+    padding: 1.9vw 6.7vw;
+    padding-bottom: 1.9vw;
+    font-size: 2.7vw;
+  }
+  .mySwiperRecipeMobile .swiper-pagination-bullet{
+    width: .6vw !important;
+    height: .6vw !important;
+    display: inline-block;
+    border-radius: 100vw !important;
+    background: white !important;
+    opacity: 0.4 !important;
+    margin: 0 .35vw !important;
+  }
+  .mySwiperRecipeMobile .swiper-pagination-bullet-active{
+    background-color: white !important;
+    width: .6vw !important;
+    height: .6vw !important;
+    border-radius: 100vw;
+    opacity: 1 !important;
   }
 }

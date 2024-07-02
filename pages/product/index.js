@@ -5,6 +5,7 @@ import JapaneseProduct from "../components/japaneseProduct";
 import Tabs from "../components/tab";
 import Link from "next/link";
 import SlideArticles from "../components/slide_articles";
+import SlideArticlesMobile from "../components/slide_articles_mobile";
 
 export default function Product() {
   const tabs = [
@@ -81,8 +82,9 @@ export default function Product() {
           <h1 className={styles.heading_main_white}>Recipes That Might Interest You</h1>
         </div>
         <SlideArticles items={recipeList} />
+        <SlideArticlesMobile items={recipeList} />
         <div className={styles.divider}></div>
       </div>
     </>
-  );
+  ); 
 }
