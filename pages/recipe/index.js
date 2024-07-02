@@ -4,6 +4,7 @@ import banner from '@/styles/Banner.module.css'
 import { useState, useEffect, useRef } from "react";
 import SlideRecipe from "../components/slide_recipe";
 import SlideArticles from "../components/slide_articles";
+import SlideArticlesMobile from "../components/slide_articles_mobile";
 import { IoChevronDown } from "react-icons/io5";
 
 export default function Recipe() {
@@ -352,6 +353,7 @@ export default function Recipe() {
           <h1 className={styles.heading_main_white}>Other Recipes</h1>
         </div>
         <SlideArticles items={recipeList} />
+        <SlideArticlesMobile items={recipeList}/>
         <div className={styles.divider}></div>
       </div>
       <div className={styles.section3}>
@@ -359,6 +361,7 @@ export default function Recipe() {
           <div className={styles.space_between_heading}>
               <h1 className={styles.heading_main_red}>Articles That Might Interest You</h1>
           </div>
+          <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={slideBlog}/>
           <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={slideBlog} />
       </div>
     </>

@@ -4,6 +4,7 @@ import Head from 'next/head';
 import styles from '@/styles/Recipe.module.css'
 import SlideArticles from '../components/slide_articles';
 import Link from 'next/link';
+import SlideArticlesMobile from '../components/slide_articles_mobile';
 
 
 const RecipeDetail = () => {
@@ -170,6 +171,7 @@ const RecipeDetail = () => {
             <h1 className={styles.heading_main_white}>Other Recipes</h1>
             </div>
             <SlideArticles items={recipeList} />
+            <SlideArticlesMobile items={recipeList} />
             <div className={styles.divider}></div>
         </div>
         <div className={styles.section3}>
@@ -177,6 +179,7 @@ const RecipeDetail = () => {
           <div className={styles.space_between_heading}>
               <h1 className={styles.heading_main_red}>Articles That Might Interest You</h1>
           </div>
+          <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={slideBlog} />
           <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={slideBlog} />
         </div>
         <div className={`${styles.popup} ${isActive ? styles.active : ''}`}>

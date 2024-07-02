@@ -71,6 +71,7 @@
   }
   .heading_main_red{
     color: var(--old_red);
+    font-size: 1.8vw;
   }
   .divider{
     width: 100%;
@@ -223,10 +224,10 @@
 
 .section5{
     background-color: #8A0008;
-  width: 100%;
-  padding: 54vw 0;
-  padding-bottom: 6.5vw;
-  position: relative;
+    width: 100%;
+    padding: 54vw 0;
+    padding-bottom: 6.5vw;
+    position: relative;
 }
 .popup{
     position: fixed;
@@ -259,7 +260,7 @@
     gap: 1vw;
 }
 .popupContent a{
-    width: 100%;
+    width: 100%; 
     display: block;
 }
 .popupContent button{
@@ -351,6 +352,15 @@
   }
 
 @media (max-width:768px) {
+    .section1{
+        padding: 1.7vw 0;
+        height: 76.4vw;
+      }
+      .sendok_recipe_slide{
+        left: 0;
+        top: 2vw;
+        width: 19.3vw;
+      }
     .tabs {
         text-align: center;
       }
@@ -428,4 +438,126 @@
       .dropdownMenuItem:last-child{
         border-bottom: none;
       }
+
+      .section2{
+        padding: 40vw 0;
+        padding-bottom: 11vw;
+        position: relative;
+    }
+
+    .space_between_heading{
+        margin-bottom: 3vw;
+        padding: 0 6vw;
+        justify-content: center;
+      }
+      .heading_main_white{
+        font-size: 4.1vw;
+        margin-bottom: 3.5vw;
+      }
+      .heading_main_red{
+        font-size: 4.1vw;
+        margin-bottom: 3.5vw;
+      }
+      .section_2_recipe_icon{
+        right: 0;
+        top: 29vw;
+        width: 30vw;
+    }
+
+    .section3{
+        padding: 12vw 0;
+        padding-bottom: 10vw;
+    }
+    .recipe_icon_section3{
+        bottom: 1.4vw;
+        width: 39vw;
+        z-index: 0;
+    }
+
+
+    .section4{
+        padding: 1.7vw 0;
+        height: 40vw;
+    }
+    .section4_layout{
+        top: 2.7vw;
+        padding: 0 6vw;
+    }
+    .section4_box{
+        border-radius: 5vw;
+    }
+    .section4_image{
+        height: 40vw;
+    }
+    .section4_content{
+        padding:5.5vw 6.5vw;
+    }
+    .headingRecipeDetail{
+        font-size: 3vw;
+        margin-bottom: 1.4vw;
+    }
+    .recipeDetail{
+        margin-bottom: 5vw;
+    }
+    .recipeDetail h1{
+        font-size: 4.2vw;
+        margin-bottom: 2.2vw;
+    }
+    .recipeDetail p{
+        font-size: 2.8vw;
+    }
+    .recipeBahan{
+        margin-bottom: 5vw;
+    }
+    .recipeBahan ul{
+        margin-left: 4vw;
+        grid-template-columns: repeat(1, 1fr);
+        padding-right: 5vw;
+    }
+    .recipeBahan ul li{
+        font-size: 2.8vw;
+        padding-right: 3vw;
+    }
+    .recipeBahan ul li::before{
+        width: .5vw;
+        left: -2.6vw;
+        height: .71vw;
+    }
+    .recipeCara ul{
+        margin-left: 4vw;
+    }
+    .recipeCara ul li{
+        font-size: 2.8vw;
+    }
+    .btn_download{
+        margin-top: 8vw;
+        padding: 2.4vw 7vw;
+        font-size: 2.9vw;
+        width: 75%;
+    }
+
+    .section5{
+        padding: 247vw 0;
+        padding-bottom: 11.5vw;
+    }
+    .popup{
+        width: 100%;
+        padding: 0 6vw;
+    }
+    .popupContent{
+        padding: 5vw 5vw;
+        border-radius: 5vw;
+        gap: 4vw;
+        width: 100%;
+    }
+    .popupContent button{
+        padding: 2.3vw 3vw;
+        font-size: 3.2vw;
+        transition: .4s all;
+    }
+    .closeButton{
+        right: 0vw;
+        top: -7.5vw;
+        font-size: 4vw;
+    }
 }

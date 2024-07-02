@@ -156,34 +156,34 @@ const Tabs = ({ tabs = [] }) => {
           <button
             key={index}
             className={`${styles.tabHeader} ${activeTab === index ? styles.active : ''}`}
-            onClick={() => handleTabClick(index)}
+            onClick={() => handleTabClick(index)} 
           >
             {tab.title}
           </button>
         ))}
       </div>
       <div className={styles.select_menu_product}>
-          <button 
-            className={`${styles.dropdownButton} ${isOpen ? styles.activeButton : ''}`}  
-            onClick={toggleDropdown}
-          >
-            {selectedMenu} <IoChevronDown />
-          </button>
-          <div onTouchStart={handleTouchStart} 
-          onTouchMove={handleTouchMove}
-          onMouseDown={handleMouseDown} className={`${styles.dropdownMenu} ${isOpen ? styles.active : ''}`} style={{ height: isMobile ? `${height}px` : 'auto' }}>
-            <div className={styles.circle_menu}><div className={styles.circle_menu_box}></div></div>
-            {menuItems.map((menu, index) => (
-              <div
-                key={index}
-                className={`${styles.dropdownMenuItem} ${selectedMenu === menu ? styles.active : ''}`}
-                onClick={() => handleSelectMenu(menu)}
-              >
-                {menu}
-              </div>
-            ))}
-          </div>
+        <button 
+          className={`${styles.dropdownButton} ${isOpen ? styles.activeButton : ''}`}  
+          onClick={toggleDropdown}
+        >
+          {selectedMenu} <IoChevronDown />
+        </button>
+        <div onTouchStart={handleTouchStart} 
+        onTouchMove={handleTouchMove}
+        onMouseDown={handleMouseDown} className={`${styles.dropdownMenu} ${isOpen ? styles.active : ''}`} style={{ height: isMobile ? `${height}px` : 'auto' }}>
+          <div className={styles.circle_menu}><div className={styles.circle_menu_box}></div></div>
+          {menuItems.map((menu, index) => (
+            <div
+              key={index}
+              className={`${styles.dropdownMenuItem} ${selectedMenu === menu ? styles.active : ''}`}
+              onClick={() => handleSelectMenu(menu)}
+            >
+              {menu}
+            </div>
+          ))}
         </div>
+      </div>
       <div className={styles.tabContent}>
         {tabs[activeTab] && tabs[activeTab].content}
       </div>

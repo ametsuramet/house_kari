@@ -804,7 +804,7 @@
     border-radius: 6vw;
   }
   .box_articles_images{
-    height: 35vw;
+    height: 48vw;
   }
   .box_articles_content{
     padding: 3.8vw 4.9vw;
@@ -999,6 +999,9 @@
     padding: 0 6vw !important;
     display: block !important;
   }
+  .mySwiperRecipeMobile .swiper-wrapper{
+    padding-bottom: 9.7vw !important;
+  }
   .mySwiperRecipeMobile .swiper-slide{
     display: flex !important;
     flex-direction: column !important;
@@ -1039,19 +1042,21 @@
     font-size: 2.7vw;
   }
   .mySwiperRecipeMobile .swiper-pagination-bullet{
-    width: .6vw !important;
-    height: .6vw !important;
+    width: 1.7vw !important;
+    height: 1.7vw !important;
     display: inline-block;
     border-radius: 100vw !important;
     background: white !important;
     opacity: 0.4 !important;
-    margin: 0 .35vw !important;
+    margin: 0 .85vw !important;
   }
   .mySwiperRecipeMobile .swiper-pagination-bullet-active{
     background-color: white !important;
-    width: .6vw !important;
-    height: .6vw !important;
+    width: 1.7vw !important;
+    height: 1.7vw !important;
     border-radius: 100vw;
     opacity: 1 !important;
   }
+
+  
 }

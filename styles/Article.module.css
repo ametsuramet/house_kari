@@ -23,7 +23,7 @@
     align-items: center;
     gap: 1vw;
     width: 55%;
-    margin: auto;
+    margin: auto; 
     margin-bottom: 2.8vw;
   }
   .section1_tab button{
@@ -134,10 +134,10 @@
 
   .section2{
     background-color: #8A0008;
-  width: 100%;
-  padding: 22vw 0;
-  padding-bottom: 5.5vw;
-  position: relative;
+    width: 100%;
+    padding: 22vw 0;
+    padding-bottom: 5.5vw;
+    position: relative;
 }
 .section_2_recipe_icon{
     position: absolute;
@@ -152,6 +152,7 @@
     margin-bottom: .5vw;
   }
   .heading_main_red{
+    font-size: 1.8vw;
     color: var(--old_red);
   }
   .divider{
@@ -259,4 +260,287 @@
 }
 .sectionDetail_content_layout img{
     width: 100%;
+}
+
+.select_menu_product {
+  position: relative;
+  display: none;
+}
+
+.dropdownButton {
+  background-color: white;
+  border: .1vw solid #651318;
+  border-radius: .5vw;
+  padding: .7vw .9vw;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: max-content;
+  outline: none;
+  font-size: .85vw;
+  font-weight: 700;
+  color: #651318;
+  gap: 1.3vw;
+  width: max-content;
+}
+.dropdownButton svg{
+  font-size: 1vw;
+}
+.dropdownButton.activeButton{
+  border-radius: .5vw .5vw 0 0;
+  border-bottom: none;
+  background-color: #FFFCF4;
+}
+
+.dropdownMenu {
+  position: absolute;
+  background-color: #fff;
+  border: .1vw solid #651318;
+  border-top: none;
+  width: 100%;
+  z-index: 1;
+  top: 100%;
+  left: 0;
+  border-radius: 0 0 .5vw .5vw;
+  z-index: 10;
+}
+
+.dropdownMenuItem {
+  cursor: pointer;
+  padding: .4vw .9vw;
+  font-size: .85vw;
+  color: #651318;
+} 
+.dropdownMenuItem:last-child{
+  border-radius: 0 0 .5vw .5vw;
+}
+
+.dropdownMenuItem:hover {
+  background-color: transparent;
+}
+
+.dropdownButton svg {
+  margin-left: .7vw;
+}
+
+@media (max-width:768px) {
+  .select_menu_product{
+    display: inline-block;
+    width: 100%;
+  }
+  .dropdownButton {
+    border: .12vw solid #651318;
+    border-radius: 2vw;
+    padding: 1.8vw 3.5vw;
+    font-size: 3vw;
+    margin: auto;
+    margin-bottom: 7.6vw;
+    gap: 1vw;
+  }
+  .dropdownButton svg{
+    font-size: 2.9vw;
+  }
+  .dropdownButton.activeButton{
+    border-radius: 2vw 2vw 2vw 2vw;
+    border: .12vw solid #651318;
+  }
+
+  .circle_menu{
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    padding: 2.7vw 0;
+    background-color: white;
+    width: 100%;
+    top: 0;
+    margin-bottom:1.7vw;
+    left: 0;
+  }
+  .circle_menu_box{
+    width: 16vw;
+    height: 1.2vw;
+    border-radius: 100vw;
+    background-color: #dbdbdb;
+  }
+
+  .dropdownMenu {
+    border: none;
+    border-top: none;
+    width: 100%;
+    z-index: 1;
+    position: fixed;
+    top: inherit;
+    bottom: 0;
+    left: 0;
+    border-radius: 6vw 6vw 0 0;
+    z-index: 18;
+    padding: 3vw 7vw;
+    padding-top: 0;
+    border-top: .1vw solid #dbdbdb;
+    display: inherit;
+    transform: translateY(150%);
+    transition: .4s all;
+    text-align: start;
+    z-index: 20;
+  }
+  .dropdownMenu.active{
+    display: inherit;
+    transform: translateY(0);
+    overflow-y: scroll;
+    
+  }
+  .dropdownMenuItem {
+    padding: 3.7vw 0;
+    font-size: 3.6vw;
+    border-bottom: .12vw solid #65131852;
+  }
+  .dropdownMenuItem:last-child{
+    border-bottom: none;
+  }
+
+  .section1_tab{
+    display: none;
+  }
+  .space_between_heading{
+    margin-bottom: 1.85vw;
+    padding: 0 6vw;
+    justify-content: center;
+  }
+  .desc_main_margin{
+    font-size: 4.1vw;
+  }
+  .heading_main{
+    font-size: 4.1vw;
+    margin-bottom: 3.6vw;
+  }
+  .blog_recent_layout{
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 5.4vw;
+    padding: 0 6vw;
+  }
+  .blog_recent_box{
+    border-radius: 3.4vw;
+  }
+  .blog_recent_image{
+    height: 40.7vw;
+  }
+  .blog_recent_content{
+    padding: 3.8vw 5.4vw;
+  }
+  .blog_recent_content span{
+    font-size: 2.5vw;
+  }
+  .blog_recent_content h1{
+    margin-top: 1.4vw;
+    font-size: 4.1vw;
+    margin-bottom: 1.3vw;
+  }
+  .blog_recent_content p{
+    font-size: 2.7vw;
+    display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    margin-bottom: 5vw;
+  }
+  .blog_recent_content button{
+    font-size: 2.7vw;
+    padding: 1.4vw 5vw;
+  }
+
+  .section1_layout{
+    padding: 4.5vw 0;
+  }
+  .section1{
+    height: 54.9vw;
+  }
+
+  .section2{
+    padding: 134vw 0;
+    padding-bottom: 12.5vw;
+  }
+  .heading_main_white{
+    font-size: 4.1vw;
+    margin-bottom: 3.6vw;
+  }
+  .heading_main_red{
+    font-size: 4.1vw;
+    margin-bottom: 3.6vw;
+  }
+
+  .section3{
+    padding: 14vw 0;
+    padding-bottom: 10vw;
+  }
+  .black_pepper_icon{
+    position: absolute;
+    left: 0;
+    bottom: 23vw;
+    width: 13.7vw;
+  }
+  .cinamon_icon{
+      position: absolute;
+      left: -8vw;
+      bottom: 0;
+      width: 30vw;
+      z-index: 2;
+  }
+  .product_detail_icon_2{
+      width: 35vw;
+      right: 0vw;
+      top: -10vw;
+  }
+  .dropdownMenuItem a{
+    text-decoration: none;
+    color:#651318;
+  }
+
+  .sectionDetail{
+    padding: 5vw 6vw;
+    padding-bottom: 7vw;
+  }
+
+  .sectionDetail_image{
+    margin-bottom: 3.5vw;
+  }
+  .sectionDetail_image img{
+    border-radius: 4vw;
+  }
+  .sectionDetail h1{
+    font-size: 4.1vw;
+    margin-bottom: 2.5vw;
+  }
+  .articleDate{
+      font-size: 2.6vw;
+      margin-bottom: 5.5vw;
+  }
+  .sectionDetail_content{
+      margin-bottom: 5vw;
+  }
+  .sectionDetail_content h3{
+      font-size: 2.8vw;
+      margin-bottom: 2.5vw;
+  }
+  .sectionDetail_content p{
+      font-size: 2.7vw;
+  }
+  .sectionDetail_content_layout{
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 5vw;
+  
+  }
+  .section6{
+    padding: 13vw 0;
+    padding-bottom: 14vw;
+  }
+  .article_detail_icon_2{
+    top: 2vw;
+    width: 15vw;
+  }
+  .article_detail_icon{
+    top: -8vw;
+    width: 40vw;
+  }
 }

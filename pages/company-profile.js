@@ -115,7 +115,7 @@ export default function CompanyProfile() {
   }
   }, [isOpen]);
 
-  const handleSelectMenu = (menu) => {
+  const handleSelectMenu = (menu) =>  {
     setSelectedMenu(menu);
     setIsOpen(false);
   };

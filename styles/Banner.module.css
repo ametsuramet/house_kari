@@ -32,9 +32,14 @@
         object-position: left;
     }
     .breadcrumbs{
-        padding: 3vw 5.5vw;
+        padding: 3vw 6vw;
     }
     .breadcrumbs p{
-        font-size: 2.9vw;
+        font-size: 2.9vw; 
+        display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 }

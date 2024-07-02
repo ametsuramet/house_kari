@@ -2,6 +2,7 @@ import Head from "next/head"
 import banner from '@/styles/Banner.module.css'
 import styles from '@/styles/Article.module.css'
 import SlideArticles from "../components/slide_articles"
+import SlideArticlesMobile from "../components/slide_articles_mobile";
 
 export default function ArticleDetail() {
     const slideBlog = [
@@ -107,6 +108,7 @@ export default function ArticleDetail() {
                 <div className={styles.space_between_heading}>
                     <h1 className={styles.heading_main_white}>Articles That Might Interest You</h1>
                 </div>
+                <SlideArticlesMobile items={slideBlog}/>
                 <SlideArticles items={slideBlog} />
                 <div className={styles.divider}></div>
             </div>
