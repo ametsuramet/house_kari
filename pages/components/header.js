@@ -76,7 +76,9 @@ const Header = () => {
 
   const playAudio = () => {
     if (audioRef.current) {
-      audioRef.current.play();
+      audioRef.current.play().catch(error => {
+        console.error('Error playing audio:', error);
+      });
     }
   };
 
@@ -117,6 +119,23 @@ const Header = () => {
     setIsPlaying(false);
     pauseAudio();
   };
+
+  useEffect(() => {
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
+    if (audioRef.current) {
+      audioRef.current.addEventListener('play', handlePlay);
+      audioRef.current.addEventListener('pause', handlePause);
+    }
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.removeEventListener('play', handlePlay);
+        audioRef.current.removeEventListener('pause', handlePause);
+      }
+    };
+  }, []);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -355,16 +374,20 @@ const Header = () => {
       </div>
       <div className={styles.fixed_menu}>
         <div className={styles.fixed_menu_box}>
+            <button
+            className={`${styles.bg_transparent} ${styles.bg_transparent_margin} ${isPlaying ? styles.nonActive : styles.active}`}
+            onClick={handleClickPlay}
+            style={{ display: isPlaying ? 'none' : 'block' }}
+          >
+            <SlVolumeOff />
+          </button>
           <button
             className={`${styles.bg_transparent} ${styles.bg_transparent_margin} ${isPlaying ? styles.active : styles.nonActive}`}
-            onClick={handleClickPlay}
-            style={{ display: isPlaying ? 'block' : 'none' }}
-          ><SlVolumeOff/></button>
-          <button
-            className={`${styles.bg_transparent} ${styles.bg_transparent_margin} ${isPlaying ? styles.nonActive : styles.active}`}
             onClick={handleClickPause}
-            style={{ display: isPlaying ? 'none' : 'block' }}
-          ><SlVolume2/></button>
+            style={{ display: isPlaying ? 'block' : 'none' }}
+          >
+            <SlVolume2 />
+          </button>
         </div>
         <div className={styles.fixed_menu_box}>
           <div className={styles.ecommerceDropdown}>
