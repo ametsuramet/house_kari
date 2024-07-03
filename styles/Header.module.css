@@ -198,7 +198,7 @@
     display: flex;
     justify-content: space-between;
     position: fixed;
-    bottom: 2.7vw;
+    bottom: 2vw;
     left: 0;
     z-index: 20;
 }
@@ -310,6 +310,9 @@
     font-weight: 600;
     cursor: pointer;
     position: relative;
+}
+.bg_ecommerce span{
+    display: block;
 }
 .bg_ecommerce svg{
     color: white;
@@ -634,16 +637,20 @@
         left: 0;
         z-index: 5;
     }
+    .ecommerceDropdown{
+        position: relative;
+        transition: .4s all;
+    }
     .fixed_menu_box{
         display: flex;
         align-items: flex-end;
         gap: 2vw;
-        flex-direction: column;
     }
     .bg_transparent{
         width: 8vw;
         height: 8vw;
         border: .15vw solid #4C380F;
+        transform: translateY(.8vw);
     }
     .bg_transparent svg{
         font-size: 4vw;
@@ -674,14 +681,23 @@
         display: flex;
         align-items: center;
         gap: 1.3vw;
-        height: 8.5vw;
-        padding: 0 3vw;
+        width: 8vw;
+        height: 8vw;
+        padding: 0 0;
         border: .15vw solid white;
-        font-size: 3vw;
+        font-size: 1vw;
+        position: relative;
+    }
+    .bg_ecommerce span{
+        display: none;
     }
     .bg_ecommerce svg{
-        font-size: 3vw;
+        font-size: 3.8vw;
         margin-top: -.16vw;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
     }
     .bg_transparent:hover{
         transform: scale(1);
@@ -695,8 +711,8 @@
         padding: .55vw;
     }
     .dropdown button img{
-        max-width: 17vw;
-        max-height: 17vw;
+        max-width: 6vw;
+        max-height: 6vw;
     }
     .bg_ecommerce.active{
         margin-bottom: 1.8vw;
@@ -704,12 +720,14 @@
         padding-right: 1.2vw;
     }
     .closeEcommerce {
-        border: .13vw solid #651318;
+        border: none;
         width: 5vw;
         height: 5vw;
+        background-color: #E60011;
     }
     .closeEcommerce svg{
-        font-size: 3.5vw;
+        font-size: 5.5vw;
+        color: white;
     }
     .header{
         padding: 3.8vw 4.6vw;

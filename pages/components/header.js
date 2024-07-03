@@ -72,7 +72,7 @@ const Header = () => {
     // Perform any other action upon language change
   };
 
-  const audioRef = useRef(typeof Audio !== 'undefined' ? new Audio('/music/soundtrack.mp3') : undefined);
+  const audioRef = useRef(typeof Audio !== 'undefined' ? new Audio('/music/soundtrack.wav') : undefined);
 
   const playAudio = () => {
     if (audioRef.current) {
@@ -375,7 +375,7 @@ const Header = () => {
           <button className={styles.bg_whatsapp}><FaWhatsapp /></button>
           <div className={styles.ecommerceDropdown}>
             <button onClick={toggleDropdownEcommerce} className={`${styles.bg_ecommerce} ${isDropdownOpen ? styles.active : ''}`}>
-              <BsCart2 /> eCommerce
+              <BsCart2 /> <span>eCommerce</span>
               {isDropdownOpen && <div className={styles.closeEcommerce} onClick={closeDropdownEcommerce}><IoCloseOutline/></div>}
             </button>
             <div className={`${styles.dropdown} ${isDropdownOpen ? styles.active : ''}`}>
