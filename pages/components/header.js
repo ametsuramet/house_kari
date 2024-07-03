@@ -72,7 +72,7 @@ const Header = () => {
     // Perform any other action upon language change
   };
 
-  const audioRef = useRef(typeof Audio !== 'undefined' ? new Audio('/music/soundtrack.wav') : undefined);
+  const audioRef = useRef(typeof Audio !== 'undefined' ? new Audio('/media/soundtrack.wav') : undefined);
 
   const playAudio = () => {
     if (audioRef.current) {
@@ -87,6 +87,10 @@ const Header = () => {
   };
 
   useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.loop = true; // Set the audio to loop
+    }
+
     const handleUserInteraction = () => {
       playAudio();
       document.removeEventListener('click', handleUserInteraction);
@@ -105,14 +109,13 @@ const Header = () => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const handleClickPlay = () => {
-    
-    setIsPlaying(false);
-    playAudio(); // Fungsi playAudio harus didefinisikan sesuai dengan logika aplikasi Anda
+    setIsPlaying(true);
+    playAudio();
   };
 
   const handleClickPause = () => {
-    setIsPlaying(true);
-    pauseAudio(); // Fungsi pauseAudio harus didefinisikan sesuai dengan logika aplikasi Anda
+    setIsPlaying(false);
+    pauseAudio();
   };
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

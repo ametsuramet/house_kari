@@ -640,6 +640,9 @@
     .ecommerceDropdown{
         position: relative;
         transition: .4s all;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     .fixed_menu_box{
         display: flex;
@@ -650,7 +653,7 @@
         width: 8vw;
         height: 8vw;
         border: .15vw solid #4C380F;
-        transform: translateY(.8vw);
+        transform: translateY(.3vw);
     }
     .bg_transparent svg{
         font-size: 4vw;
@@ -706,13 +709,14 @@
         margin-bottom: 0 !important;
     }
     .dropdown button{
-        height: 7.8vw;
+        width: 10.3vw;
+        height: 10vw;
         position: relative;
         padding: .55vw;
     }
     .dropdown button img{
-        max-width: 6vw;
-        max-height: 6vw;
+        max-width: 9vw;
+        max-height: 9vw;
     }
     .bg_ecommerce.active{
         margin-bottom: 1.8vw;
