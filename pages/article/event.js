@@ -228,21 +228,22 @@ export default function Event() {
 
   const handleMove = (clientY) => {
     if (!isMobile) return;
-
+  
     const currentTime = Date.now();
     const deltaY = clientY - lastY.current;
     const deltaTime = currentTime - lastTime.current;
-
+  
     // Update last positions and times
     lastY.current = clientY;
     lastTime.current = currentTime;
-
+  
     const flickSpeed = deltaY / deltaTime;
-
+  
     if (flickSpeed < -0.5) { // Adjust the threshold as needed for flick up
       setHeight(window.innerHeight);
     } else if (flickSpeed > 0.5) { // Adjust the threshold as needed for flick down
       setHeight(360); // Default height
+      setIsOpen(false); // Close dropdown when flicking down
     }
   };
 

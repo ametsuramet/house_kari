@@ -15,11 +15,10 @@ import { FaLink } from "react-icons/fa6";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { MdSearch } from "react-icons/md";
 
-
-
 const Header = () => {
   const router = useRouter();
   const [openDropdown, setOpenDropdown] = useState(null);
+  const searchMobileRef = useRef(null);
   const [language, setLanguage] = useState('English');
 
   const toggleDropdown = (menu) => {
@@ -35,10 +34,14 @@ const Header = () => {
       if (!event.target.closest(`.${styles.nav}`) && !event.target.closest(`.${styles.language}`)) {
         closeDropdown();
       }
+      if (searchMobileRef.current && !searchMobileRef.current.contains(event.target)) {
+        setSearchActive(false);
+      }
     };
 
     const handleScroll = () => {
       closeDropdown();
+      setSearchActive(false);
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -203,6 +206,10 @@ const Header = () => {
     setSearchActive(!searchActive);
   }
 
+  const handleClose = () => {
+    setSearchActive(false);
+  };
+
   return (
     <>
       <Head>
@@ -236,7 +243,9 @@ const Header = () => {
         </div>
         <header className={styles.header}>
           <div className={styles.logo}>
+            <Link href='/'>
             <img src='/images/logo.png' alt="House Kari Logo" />
+            </Link>
           </div>
           <div className={styles.btnMobile}>
             <button className={styles.searchBtn} onClick={handleSearch}><MdSearch/></button>
@@ -337,7 +346,7 @@ const Header = () => {
             </nav>
           </div>
         </header>
-        <div className={`${styles.searchMobile} ${searchActive ? styles.active : ''}`}>
+        <div ref={searchMobileRef} className={`${styles.searchMobile} ${searchActive ? styles.active : ''}`}>
           <input type='text' placeholder='Search'/>
         </div>
       </div>

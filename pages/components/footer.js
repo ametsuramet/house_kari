@@ -8,7 +8,7 @@ const Footer = () => {
     <>
     <footer className={styles.footer}>
       <div className={styles.identity}>
-        <img src='/images/logo.png' alt='House Kari Logo' />
+        <img src='/images/logo.png' alt='House Kari Logo' /> 
         <div className={styles.identity_layout}>
           <h1>PT HOUSE AND VOX INDONESIA</h1>
           <p>Atria @ Sudirman 17th Floor. Jendral Sudirman, Kav. 33A, Karet Tengsin, Tanah Abang, Jakarta Pusat 10220</p>

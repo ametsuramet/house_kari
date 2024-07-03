@@ -259,6 +259,80 @@
     width: 11.6vw;
   }
 
+  .custom_select {
+    position: relative;
+  }
+  
+  .select_value {
+    width: 100%;
+    font-size: .97vw;
+    font-style: italic;
+    padding: .6vw .85vw;
+    border-radius: .3vw;
+    outline: none;
+    background-color: #FFFCF4;
+    border: .12vw solid #5E5E5E;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    color: #651318;
+  }
+  .select_value svg{
+    font-size: 1vw;
+    color: #651318;
+  }
+  .select_value.active{
+    border-bottom: none;
+    background-color: #FFFCF4;
+    border-radius: .3vw .3vw 0 0;
+  }
+  .select_value.active svg{
+    transform: rotate(180deg);
+  }
+  
+  .options {
+    max-height: 0;
+    position: relative;
+    width: 100%;
+    background: #fff;
+    z-index: -1;
+    border-left: .12vw solid #5E5E5E;
+    border-right: .12vw solid #5E5E5E;
+    border-bottom: .12vw solid #5E5E5E;
+    border-radius: 0 0 .3vw .3vw;
+    overflow: hidden;
+    transition: .7s all;
+  }
+  
+  .options.active {
+    max-height: 500px;
+    z-index: 10;
+  }
+  
+  .option {
+    font-size: .97vw;
+    padding: .6vw .85vw;
+    cursor: pointer;
+    color: #651318;
+  }
+  .select_value span{
+    display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 4vw;
+  }
+  
+  .option.activeOption {
+    background-color: #f0f0f0;
+  }
+  .option:hover{
+    background-color: #f0f0f0;
+  }
+
   @media (max-width:768px) {
     .section1{
       grid-template-columns: 100%;
@@ -386,6 +460,45 @@
     .form_field_select svg{
       font-size: 1vw;
       color: #651318;
+    }
+    .options {
+      border-radius: 4vw 4vw 0 0;
+      height: max-content;
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      transform: translateY(100%);
+      padding: 6vw;
+    }
+    .options.active{
+      transform: translateY(0);
+      height: max-content;
+    }
+    .select_value {
+      font-size: 3.4vw;
+      padding: 2vw 4vw;
+      border-radius: 1.5vw;
+    }
+    .select_value.active{
+      border-radius: 1.5vw 1.5vw 0 0;
+    }
+    .select_value svg{
+      font-size: 3.4vw;
+    }
+    .option {
+      font-size: 3.8vw;
+      padding: 4vw 0;
+      border-bottom: .1vw solid rgba(0, 0, 0, 0.26);
+    }
+    .option.activeOption {
+      background-color: transparent;
+      font-weight: 600;
+    }
+    .option:hover{
+      background-color: transparent;
+    }
+    .option:last-child{
+      border-bottom: none;
     }
     .contact_icon_2{
       position: absolute;

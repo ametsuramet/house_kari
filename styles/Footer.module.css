@@ -1,8 +1,9 @@
 .footer{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 33% 25% 41%;
     width: 100%;
     padding: 3vw 10.5vw;
+    padding-right: 4vw;
     padding-bottom: 2vw;
     background-image: url(../public/images/footer_bg.png);
     background-size: cover;
@@ -52,8 +53,8 @@
     justify-content: flex-end;
 }
 .img_footer img{
-    width: 26vw;
-    margin-bottom: -2vw;
+    width: 100%;
+    margin-bottom: -1vw;
 }
 
 .copyright{
@@ -114,7 +115,7 @@
 
     }
     .img_footer img{
-        width: 38vw;
+        width: 47vw;
         margin-bottom: 0;
         position: absolute;
         right: 0;

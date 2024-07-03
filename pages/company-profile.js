@@ -199,6 +199,7 @@ const handleMove = (clientY) => {
     setHeight(window.innerHeight);
   } else if (flickSpeed > 0.5) { // Adjust the threshold as needed for flick down
     setHeight(360); // Default height
+    setIsOpen(false); // Close dropdown when flicking down
   }
 };
 

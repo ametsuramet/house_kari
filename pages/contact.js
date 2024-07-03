@@ -6,18 +6,30 @@ import { RxEnvelopeClosed } from "react-icons/rx";
 import { useState } from "react";
 import { IoChevronDownOutline } from "react-icons/io5";
 
-
 export default function Contact() {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
+
+  const [selectedOption1, setSelectedOption1] = useState('Choose...');
+  const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
+  const [selectedOption2, setSelectedOption2] = useState('Choose...');
+  const [isDropdownOpen2, setIsDropdownOpen2] = useState(false);
+  const [selectedOption3, setSelectedOption3] = useState('Choose...');
+  const [isDropdownOpen3, setIsDropdownOpen3] = useState(false);
+
+  const handleSelect = (setSelectedOption, setIsDropdownOpen, option) => {
+    setSelectedOption(option);
+    setIsDropdownOpen(false);
+  };
+
   return (
     <>
       <Head>
         <title>Contact</title>
-        <meta name="description" content="Learn more about us" />
+        <meta name="description" content="Learn more about us" /> 
       </Head>
       <div className={banner.bannerStyle}>
           <img src="/images/company_history_banner.png" alt="House Kari Website"/>
@@ -92,41 +104,86 @@ export default function Contact() {
             <h1>Be a Partner</h1>
             <form>
               <div className={styles.form_field}>
-                <label>Name</label>
-                <input type="text" placeholder="Name"/>
-              </div>
-              <div className={styles.form_field}>
-                <label>Partnership Type</label>
-                <div className={styles.form_field_select}>
-                  <select>
-                    <option>Reseller</option>
-                    <option>Customer</option>
-                  </select>
-                  <IoChevronDownOutline/>
-                </div>
+                <label>Email</label>
+                <input type="text" placeholder="Email"/>
               </div>
               <div className={styles.form_field}>
                 <label>Company Name</label>
                 <input type="text" placeholder="Company Name"/>
               </div>
               <div className={styles.form_field}>
+                <label>Name</label>
+                <input type="text" placeholder="Name"/>
+              </div>
+              <div className={styles.form_field}>
+                <label>Phone Number</label>
+                <input type="text" placeholder="Phone Number"/>
+              </div>
+
+              <div className={styles.form_field}>
+                <label>Choose...</label>
+                <div className={styles.custom_select}>
+                  <div className={`${styles.select_value} ${isDropdownOpen1 ? styles.active : ''}`} onClick={() => setIsDropdownOpen1(!isDropdownOpen1)}>
+                    {selectedOption1} <IoChevronDownOutline/>
+                  </div>
+                  <div className={`${styles.options} ${isDropdownOpen1 ? styles.active : ''}`}>
+                    {['Trading Company', 'Online Shop', 'Offline Distributor', 'HORECA'].map(option => (
+                      <div 
+                        key={option}
+                        className={`${styles.option} ${selectedOption1 === option ? styles.activeOption : ''}`}
+                        onClick={() => handleSelect(setSelectedOption1, setIsDropdownOpen1, option)}
+                      >
+                        {option}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.form_field}>
                 <label>Company Address</label>
                 <input type="text" placeholder="Company Address"/>
               </div>
+
               <div className={styles.form_field}>
-                <label>Inquiries</label>
-                <textarea placeholder="Inquiries"></textarea>
+                <label>How do you know House Kari ala Jepang?</label>
+                <div className={styles.custom_select}>
+                  <div className={`${styles.select_value} ${isDropdownOpen2 ? styles.active : ''}`} onClick={() => setIsDropdownOpen2(!isDropdownOpen2)}>
+                    {selectedOption2} <IoChevronDownOutline/>
+                  </div>
+                  <div className={`${styles.options} ${isDropdownOpen2 ? styles.active : ''}`}>
+                    {['Online Advertising', 'Offline Advertising (KRL, Bis, Mobil)', 'Supermarket', 'E-commerce', 'Rekan Kerja / Teman', 'Other'].map(option => (
+                      <div 
+                        key={option}
+                        className={`${styles.option} ${selectedOption2 === option ? styles.activeOption : ''}`}
+                        onClick={() => handleSelect(setSelectedOption2, setIsDropdownOpen2, option)}
+                      >
+                        {option}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <label className={styles.customCheckbox}>
-                <input
-                  type="checkbox"
-                  checked={isChecked}
-                  onChange={handleCheckboxChange}
-                  className={styles.hiddenCheckbox}
-                />
-                <span className={styles.customCheckmark}></span>
-                I have agree with the Privacy Policy
-              </label>
+
+              <div className={styles.form_field}>
+                <label>Why are you interested in becoming a reseller?</label>
+                <div className={styles.custom_select}>
+                  <div className={`${styles.select_value} ${isDropdownOpen3 ? styles.active : ''}`} onClick={() => setIsDropdownOpen3(!isDropdownOpen3)}>
+                    <span>{selectedOption3}</span> <IoChevronDownOutline/>
+                  </div>
+                  <div className={`${styles.options} ${isDropdownOpen3 ? styles.active : ''}`}>
+                    {['Pernah Membeli Kemasan Kecil dan Suka', 'Mengetahui target market untuk menu kari ala Jepang', 'Terdapat permintaan dari Customer', 'Mempunyai potensi yang baik di masa depan'].map(option => (
+                      <div 
+                        key={option}
+                        className={`${styles.option} ${selectedOption3 === option ? styles.activeOption : ''}`}
+                        onClick={() => handleSelect(setSelectedOption3, setIsDropdownOpen3, option)}
+                      >
+                        {option}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
               <button>Submit</button>
             </form>
           </div>
