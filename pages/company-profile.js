@@ -255,14 +255,14 @@ const handleMouseUp = () => {
           <img src="/images/filosofi_icon_1.png" alt="House Kari" className={styles.filosofi_icon_1}/>
           <img src="/images/filosofi_icon_2.png" alt="House Kari" className={styles.filosofi_icon_2}/>
           <h1>Filosofi</h1>
-          <p>“Kami ingin menjadi <b>‘mitra yang baik’</b> yang menghubungkan orang-orang melalui makanan dan <b>memberikan kebahagiaan </b> dalam kehidupan sehari-hari”</p>
+          <p>“Kami ingin menjadi <b>&apos;mitra yang baik&apos;</b> yang menghubungkan orang-orang melalui makanan dan <b>memberikan kebahagiaan </b> dalam kehidupan sehari-hari”</p>
           <div className={styles.divider}></div>
         </div>
       </div>
       <div className={styles.two_block}>
         <div className={styles.vision_box}>
           <h1>Visi</h1>
-          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.</p>
           <div className={styles.overlay_visi}></div>
         </div>
         <div className={styles.mision_box}>
