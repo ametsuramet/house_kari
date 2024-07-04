@@ -106,6 +106,7 @@
     background-position: center;
     padding: 8vw 6vw;
     position: relative;
+    height: 27vw;
   }
   .overlay_visi{
     background: #651318C7;
@@ -121,6 +122,13 @@
     font-size: 2.5vw;
     color: white;
     z-index: 1;
+    transform: scale(1);
+    transition: .4s all;
+  }
+  .vision_box:hover h1{
+    transform: scale(0);
+    position: absolute;
+    left: -500%;
   }
   .vision_box ul, .vision_box p{
     z-index: 1;
@@ -129,6 +137,21 @@
     font-size: 1.05vw;
     color: white;
     font-weight: 500;
+    text-align: center;
+    transform: scale(0);
+    transition: .4s all;
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    left: -220%;
+    z-index: -1;
+  }
+  .vision_box:hover p{
+    position: relative;
+    transform: scale(1);
+    opacity: 1;
+    left: inherit;
+    z-index: 1;
   }
   .mision_box{
     display: flex;
@@ -139,6 +162,7 @@
     background-size: cover;
     background-position: center;
     padding: 8vw 9vw;
+    height: 27vw;
     position: relative;
   }
   .overlay_misi{
@@ -157,9 +181,31 @@
     font-size: 2.5vw;
     color: #651318;
     z-index: 1;
-    margin-bottom: 1.3vw;
+    transform: scale(1);
+    transition: .4s all;
+  }
+  .mision_box:hover h1{
+    transform: scale(0);
+    position: absolute;
+    left: -500%;
   }
   .mision_box ul, .mision_box p{
+    z-index: 1;
+  }
+  .mision_box ul{
+    transform: scale(0);
+    transition: .4s all;
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    left: -220%;
+    z-index: -1;
+  }
+  .mision_box:hover ul{
+    position: relative;
+    transform: scale(1);
+    opacity: 1;
+    left: inherit;
     z-index: 1;
   }
   .mision_box p{
@@ -379,10 +425,10 @@
 
     .mision_box{
       padding: 12vw 12vw;
+      height: 53vw;
     }
     .mision_box h1{
       font-size: 4.1vw;
-      margin-bottom: 2.7vw;
     }
     .mision_box p{
       font-size: 2.8vw;

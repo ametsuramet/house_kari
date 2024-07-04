@@ -262,6 +262,7 @@ const handleMouseUp = () => {
       <div className={styles.two_block}>
         <div className={styles.vision_box}>
           <h1>Visi</h1>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
           <div className={styles.overlay_visi}></div>
         </div>
         <div className={styles.mision_box}>
