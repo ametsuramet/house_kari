@@ -304,6 +304,7 @@
   left: 0;
   border-radius: 0 0 .5vw .5vw;
   z-index: 10;
+  display: none;
 }
 
 .dropdownMenuItem {

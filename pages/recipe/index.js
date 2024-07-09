@@ -6,8 +6,20 @@ import SlideRecipe from "../components/slide_recipe";
 import SlideArticles from "../components/slide_articles";
 import SlideArticlesMobile from "../components/slide_articles_mobile";
 import { IoChevronDown } from "react-icons/io5";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 
 export default function Recipe() {
+  const { t } = useTranslation('common');
+
   const [activeTab, setActiveTab] = useState(0);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -60,22 +72,22 @@ export default function Recipe() {
 
   const tabs = [
     { 
-      title: 'Bread & Pastry', 
+      title:  t('categoryResep1'), 
       content: <SlideRecipe items={items}/>
     },
     { 
-      title: 'Vegetables', 
+      title: t('categoryResep2'), 
       content: <SlideRecipe items={items}/> 
     },
     { 
-      title: 'Meat', 
+      title: t('categoryResep3'), 
       content: <SlideRecipe items={items}/> 
     },
-    { title: 'Seafood', 
+    { title: t('categoryResep4'), 
       content: <SlideRecipe items={items}/> 
     },
     { 
-      title: 'Snacks', 
+      title: t('categoryResep5'), 
       content: <SlideRecipe items={items}/>  
     },
   ];
@@ -117,50 +129,50 @@ export default function Recipe() {
     {
       id: 1,
       images: '/images/blog_recent_1.png',
-      date: 'Posted 10/10/2024',
-      headingBlog: 'Headline',
+      date: `${t('posted')} 10/10/2024`,
+      headingBlog:  t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 2,
       images: '/images/blog_recent_2.png',
-      date: 'Posted 10/10/2024',
-      headingBlog: 'Headline',
+      date: `${t('posted')} 10/10/2024`,
+      headingBlog:  t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 3,
       images: '/images/blog_recent_1.png',
-      date: 'Posted 10/10/2024',
-      headingBlog: 'Headline',
+      date: `${t('posted')} 10/10/2024`,
+      headingBlog:  t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 4,
       images: '/images/blog_recent_2.png',
-      date: 'Posted 10/10/2024',
-      headingBlog: 'Headline',
+      date: `${t('posted')} 10/10/2024`,
+      headingBlog:  t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 5,
       images: '/images/blog_recent_1.png',
-      date: 'Posted 10/10/2024',
-      headingBlog: 'Headline',
+      date: `${t('posted')} 10/10/2024`,
+      headingBlog:  t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 6,
       images: '/images/blog_recent_2.png',
-      date: 'Posted 10/10/2024',
-      headingBlog: 'Headline',
+      date: `${t('posted')} 10/10/2024`,
+      headingBlog:  t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
         id: 7,
         images: '/images/blog_recent_1.png',
-        date: 'Posted 10/10/2024',
-        headingBlog: 'Headline',
+        date: `${t('posted')} 10/10/2024`,
+        headingBlog:  t('headline'),
         descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
       },
   ];
@@ -295,17 +307,19 @@ export default function Recipe() {
     document.removeEventListener('mouseup', handleMouseUp);
   };
 
+  const pageTitle = `House Kari | ${t('menu.recipe')}`;
+
   return (
     <>
       <Head>
-        <title>Recipe</title>
+        <title>{pageTitle}</title>
         <meta name="description" content="Learn more about us" />
       </Head>
       <div className={banner.bannerStyle}>
         <img src="/images/recipe_banner.png" alt="House Kari Website"/>
       </div>
       <div className={banner.breadcrumbs}>
-        <p>Home / <span>Recipe</span></p>
+        <p>{t('menu.home')} / <span>{t('menu.recipe')}</span></p>
       </div>
       <div className={styles.section1}>
         <img src="/images/sendok_recipe_slide.png" alt="House Kari" className={styles.sendok_recipe_slide}/>
@@ -351,7 +365,7 @@ export default function Recipe() {
       <div className={styles.section2}>
         <img src="/images/section_2_recipe_icon.png" alt="House Kari" className={styles.section_2_recipe_icon}/>
         <div className={styles.space_between_heading}>
-          <h1 className={styles.heading_main_white}>Other Recipes</h1>
+          <h1 className={styles.heading_main_white}>{t('otherRecipe')}</h1>
         </div>
         <SlideArticles items={recipeList} />
         <SlideArticlesMobile items={recipeList}/>
@@ -360,7 +374,7 @@ export default function Recipe() {
       <div className={styles.section3}>
           <img src="/images/recipe_icon_section3.png" className={styles.recipe_icon_section3} alt="House Kari"/>
           <div className={styles.space_between_heading}>
-              <h1 className={styles.heading_main_red}>Articles That Might Interest You</h1>
+              <h1 className={styles.heading_main_red}>{t('otherRecipeList')}</h1>
           </div>
           <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={slideBlog}/>
           <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={slideBlog} />

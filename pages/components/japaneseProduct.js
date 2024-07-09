@@ -1,8 +1,20 @@
 // components/JapaneseProduct.js
 import Link from 'next/link';
 import styles from '@/styles/Product.module.css';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 
 const JapaneseProduct = () => {
+  const { t } = useTranslation('common');
+
     const productItems = [
         {
           id: 1,
@@ -53,7 +65,7 @@ const JapaneseProduct = () => {
             <div className={styles.contentProduct}>
                 <h1>{product.headingProduct}</h1>
                 <span>{product.weight}</span>
-                <Link href={`/product/${product.id}`}><button>Learn More</button></Link>
+                <Link href={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
             </div>
         </div>
       ))}

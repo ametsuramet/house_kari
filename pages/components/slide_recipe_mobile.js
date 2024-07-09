@@ -12,10 +12,23 @@ import { MdOutlineStar } from "react-icons/md";
 import { Pagination } from 'swiper/modules';
 import Link from 'next/link';
 
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
+
 export default function SlideRecipeMobile({ items = [] }) {
+  const { t } = useTranslation('common');
+
   return (
     <>
-    <h1 className='headingRecipeSlideMobile'>Our Featured Recipes</h1>
+    <h1 className='headingRecipeSlideMobile'>{t('featuredRecipe')}</h1>
       <Swiper 
         slidesPerView={3}
         spaceBetween={0}
@@ -36,7 +49,7 @@ export default function SlideRecipeMobile({ items = [] }) {
               <div className='contentRecipe'>
                 <h1>{item.recipeHeading}</h1>
                 <p>{item.recipeDesc}</p>
-                <Link href='/recipe/1'><button>Learn More</button></Link>
+                <Link href='/recipe/1'><button>{t('section1Home.learnMore')}</button></Link>
               </div>
             </div>
           </SwiperSlide>

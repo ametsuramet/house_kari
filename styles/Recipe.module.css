@@ -99,17 +99,14 @@
 
 .section4{
     width: 100%;
-    padding: 1.7vw 0;
+    padding: 0 0;
     position: relative;
-    height: 26vw;
-    background: linear-gradient(360deg, #FFEAAE 0%, #FFFFFF 100%);
+    height: max-content;
 }
 .section4_layout{
     width: 100%;
-    position: absolute;
-    left: 0;
-    top: 1vw;
-    padding: 0 17vw;
+    position: relative;
+    padding: 0 0;
     z-index: 4;
 }
 .section4_box{
@@ -118,10 +115,23 @@
     border-radius: 2vw;
     overflow: hidden;
 }
+.section4_image_layout{
+  background: linear-gradient(360deg, #FFEAAE 0%, #FFFFFF 100%);
+  width: 100%;
+  padding: 0 17vw;
+  padding-top: 1.2vw;
+}
+.section4_content_layout{
+  width: 100%;
+  padding: 0 17vw;
+  background-color: #8A0008;
+}
 .section4_image{
     width: 100%;
     height: 25.02vw;
     position: relative;
+    border-radius: 2vw 2vw 0 0;
+    overflow: hidden;
 }
 .section4_image img{
     position: absolute;
@@ -146,6 +156,7 @@
 .section4_content{
     padding:1.9vw 2.6vw;
     background-color: #FFFCF4;
+    border-radius: 0 0 2vw 2vw;
 }
 .recipeDetail{
     margin-bottom: 1vw;
@@ -225,7 +236,7 @@
 .section5{
     background-color: #8A0008;
     width: 100%;
-    padding: 54vw 0;
+    padding: 5.5vw 0;
     padding-bottom: 6.5vw;
     position: relative;
 }
@@ -476,21 +487,26 @@
 
 
     .section4{
-        padding: 1.7vw 0;
-        height: 40vw;
+        padding: 0 0;
+        height: max-content;
     }
-    .section4_layout{
-        top: 2.7vw;
-        padding: 0 6vw;
+    .section4_image_layout{
+      padding: 0 6vw;
+      padding-top: 4vw;
+    }
+    .section4_content_layout{
+      padding: 0 6vw;
     }
     .section4_box{
         border-radius: 5vw;
     }
     .section4_image{
         height: 40vw;
+        border-radius: 5vw 5vw 0 0;
     }
     .section4_content{
         padding:5.5vw 6.5vw;
+        border-radius: 0 0 5vw 5vw;
     }
     .headingRecipeDetail{
         font-size: 3vw;
@@ -537,7 +553,7 @@
     }
 
     .section5{
-        padding: 247vw 0;
+        padding: 17vw 0;
         padding-bottom: 11.5vw;
     }
     .popup{

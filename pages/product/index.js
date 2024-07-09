@@ -6,8 +6,20 @@ import Tabs from "../components/tab";
 import Link from "next/link";
 import SlideArticles from "../components/slide_articles";
 import SlideArticlesMobile from "../components/slide_articles_mobile";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 
 export default function Product() {
+  const { t } = useTranslation('common');
+
   const tabs = [
     { 
       title: 'Japanese Product', 
@@ -60,17 +72,19 @@ export default function Product() {
     },
   ]
 
+  const pageTitle = `House Kari | ${t('menu.product')}`;
+
   return (
     <>
       <Head>
-        <title>Product</title>
+        <title>{pageTitle}</title> 
         <meta name="description" content="Learn more about us" />
       </Head>
       <div className={banner.bannerStyle}>
         <img src="/images/product_page_banner.png" alt="House Kari Website"/>
       </div>
       <div className={banner.breadcrumbs}>
-        <p>Home / <span>Product</span></p>
+        <p>{t('menu.home')} / <span>{t('menu.product')}</span></p> 
       </div>
       <div className={styles.section1}>
         <img src="/images/tab_icon_image.png" alt="House Kari" className={styles.tab_icon_image}/>
@@ -79,7 +93,7 @@ export default function Product() {
       </div>
       <div className={styles.section2}>
         <div className={styles.space_between_heading}>
-          <h1 className={styles.heading_main_white}>Recipes That Might Interest You</h1>
+          <h1 className={styles.heading_main_white}>{t('headingRecipe')}</h1>
         </div>
         <SlideArticles items={recipeList} />
         <SlideArticlesMobile items={recipeList} />

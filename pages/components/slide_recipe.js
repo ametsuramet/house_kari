@@ -11,8 +11,20 @@ import { MdOutlineStar } from "react-icons/md";
 // import required modules
 import { Pagination } from 'swiper/modules';
 import Link from 'next/link';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 
 export default function SlideRecipe({ items = [] }) {
+  const { t } = useTranslation('common');
+
   const chunkArray = (arr, chunkSize) => {
     const result = [];
     for (let i = 0; i < arr.length; i += chunkSize) {
@@ -24,7 +36,7 @@ export default function SlideRecipe({ items = [] }) {
   const pairedItems = chunkArray(items, 2); 
   return (
     <>
-    <h1 className='headingRecipeSlide'>Our Featured Recipes</h1>
+    <h1 className='headingRecipeSlide'>{t('featuredRecipe')}</h1>
       <Swiper 
         slidesPerView={3}
         spaceBetween={0}
@@ -45,7 +57,7 @@ export default function SlideRecipe({ items = [] }) {
               <div className='contentRecipe'>
                 <h1>{item.recipeHeading}</h1>
                 <p>{item.recipeDesc}</p>
-                <Link href='/recipe/1'><button>Learn More</button></Link>
+                <Link href='/recipe/1'><button>{t('section1Home.learnMore')}</button></Link>
               </div>
             </div>
           </SwiperSlide>
@@ -74,7 +86,7 @@ export default function SlideRecipe({ items = [] }) {
                   <div className="contentRecipe">
                     <h1>{item.recipeHeading}</h1>
                     <p>{item.recipeDesc}</p>
-                    <Link href="/recipe/1"><button>Learn More</button></Link>
+                    <Link href="/recipe/1"><button>{t('section1Home.learnMore')}</button></Link>
                   </div>
                 </div>
               

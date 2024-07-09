@@ -8,8 +8,20 @@ import 'swiper/css/pagination';
 // import required modules
 import { Pagination } from 'swiper/modules';
 import Link from 'next/link';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 
 export default function SlideArticlesMobile({ items = [], classNames, paginationClass }) {
+  const { t } = useTranslation('common');
+
   const [isAtEnd, setIsAtEnd] = useState(false);
   const [isAtStart, setIsAtStart] = useState(true);
 
@@ -28,7 +40,7 @@ export default function SlideArticlesMobile({ items = [], classNames, pagination
   };
 
   return (
-    <>
+    <> 
       <Swiper
         slidesPerView={'auto'}
         spaceBetween={23}
@@ -50,7 +62,7 @@ export default function SlideArticlesMobile({ items = [], classNames, pagination
                 {blog.date && <span>{blog.date}</span>}
                 <h1>{blog.headingBlog}</h1>
                 <p>{blog.descBlog}</p>
-                <Link href=''><button>Learn More</button></Link>
+                <Link href=''><button>{t('section1Home.learnMore')}</button></Link>
               </div>
             </div>
           </SwiperSlide>

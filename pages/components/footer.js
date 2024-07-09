@@ -1,9 +1,20 @@
 import styles from '@/styles/Footer.module.css';
 import Link from 'next/link';
 import { FaFacebookF, FaInstagram, FaTiktok, FaLinkedin, FaYoutube } from "react-icons/fa";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
 
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 
 const Footer = () => { 
+  const { t } = useTranslation('common');
+
   return (
     <>
     <footer className={styles.footer}>
@@ -11,8 +22,8 @@ const Footer = () => {
         <img src='/images/logo.png' alt='House Kari Logo' /> 
         <div className={styles.identity_layout}>
           <h1>PT HOUSE AND VOX INDONESIA</h1>
-          <p>Atria @ Sudirman 17th Floor. Jendral Sudirman, Kav. 33A, Karet Tengsin, Tanah Abang, Jakarta Pusat 10220</p>
-          <Link href='#'>Privacy Policy</Link>
+          <p>{t('address')}</p>
+          <Link href='#'>{t('privacyPolicy')}</Link>
         </div>
       </div>
       <div className={styles.social_footer}>
@@ -27,7 +38,7 @@ const Footer = () => {
       </div>
     </footer>
     <div className={styles.copyright}>
-      <span>Copyright © 2024 House Japanese Curry | All Rights Reserved</span>
+      <span>{t('copyright')}</span>
     </div>
     </>
   );

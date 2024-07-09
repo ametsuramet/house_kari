@@ -1,8 +1,9 @@
 import "@/styles/globals.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
+import { appWithTranslation } from 'next-i18next';
 
-export default function App({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   return (
     <>
       <Header />
@@ -13,3 +14,5 @@ export default function App({ Component, pageProps }) {
     </>
   );
 }
+
+export default appWithTranslation(App);

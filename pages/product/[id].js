@@ -4,8 +4,46 @@ import banner from '@/styles/Banner.module.css'
 import Link from "next/link"
 import SlideArticles from "../components/slide_articles"
 import SlideArticlesMobile from "../components/slide_articles_mobile"
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+
+const products = [
+    { id: '1', name: 'Product 1' },
+    { id: '2', name: 'Product 2' },
+    // Tambahkan produk lainnya
+  ];
+
+export async function getStaticPaths() {
+    // Buat jalur berdasarkan produk yang tersedia
+    const paths = products.map((product) => ({
+      params: { id: product.id },
+      locale: 'id', // Mengatur default bahasa ke Indonesia
+    }));
+  
+    // Jika menggunakan beberapa bahasa, tambahkan jalur untuk setiap bahasa
+    const locales = ['id', 'en', 'zh'];
+    const allPaths = paths.flatMap((path) =>
+      locales.map((locale) => ({ ...path, locale }))
+    );
+  
+    return { paths: allPaths, fallback: false };
+  }
+  
+  export async function getStaticProps({ params, locale }) {
+    // Ambil data produk berdasarkan ID
+    const product = products.find((p) => p.id === params.id);
+  
+    return {
+      props: {
+        product,
+        ...(await serverSideTranslations(locale, ['common'])),
+      },
+    };
+  }
 
 const ProductDetails = () =>{
+    const { t } = useTranslation('common');
+
     const ecommerces = [
         {
           id: 1,
@@ -86,17 +124,19 @@ const ProductDetails = () =>{
     const secondColor = 'creamColor'
     const paginationStyle = 'old_red_color'
 
+    const pageTitle = `House Kari | ${t('menu.product')} A`;
+
     return(
         <>
             <Head>
-                <title>Product A</title>
+                <title>{pageTitle}</title>
                 <meta name="description" content="Learn more about us" />
             </Head>
             <div className={banner.bannerStyle}>
                 <img src="/images/product_page_banner.png" alt="House Kari Website"/>
             </div>
             <div className={banner.breadcrumbs}>
-                <p>Home / product / <span>Product A</span></p>
+                <p>{t('menu.home')} / {t('menu.product')} / <span>{t('menu.product')} A</span></p>
             </div>
             <div className={styles.section3}>
                 <div className={styles.section3_layout}>
@@ -108,11 +148,10 @@ const ProductDetails = () =>{
                         <div className={styles.section3_content}>
                             <h1>House Kari ala Jepang Original 300g</h1>
                             <div className={styles.section3_content_desc}>
-                                <p>House Kari ala Jepang Spicy adalah bumbu saus padat dengan bahan rempah-rempah berkualitas dalam kemasan 300g yang dapat menyajikan hingga 16 porsi makanan kari pedas. Rasa asli kari Jepang pedas sejak tahun 1913 dengan rasa yang ringan dan tekstur kuah yang kental tanpa santan. Bumbu saus padat atau curry roux juga bisa dinikmati dengan berbagai cara seperti taburan nasi, bahan sop, mie, pasta, bakpao, atau bumbunya daging dan saus celup.</p>
-                                <p>House Kari ala Jepang Bersertifikat HALAL dari Indonesia sejak tahun 2016 telah menjadi distributor utama bahan baku menu kari Jepang di beberapa Hotel, Restoran dan Katering di Indonesia, Malaysia, Singapura, dan Dubai.</p>
+                                <p dangerouslySetInnerHTML={{ __html: t('productDetailDesc') }}></p>
                             </div>
                             <div className={styles.section3_ecommerce}>
-                                <h2>Buy now at</h2>
+                                <h2>{t('beliSekarang')}</h2>
                                 <div className={styles.section3_ecommerce_layout}>
                                     {ecommerces.map((ecommerce) => (
                                         <Link href="#" key={ecommerce.id}><button className={styles[ecommerce.nameEcommerce]}><img src={ecommerce.imageEcommerce} alt="House Kari" /></button></Link>
@@ -125,7 +164,7 @@ const ProductDetails = () =>{
             </div>
             <div className={styles.section4}>
                 <div className={styles.section4_heading}>
-                    <h1>Other Product you Might Like</h1>
+                    <h1>{t('otherProduct')}</h1>
                 </div>
                 <div className={styles.productLayout}>
                     {productItems.map((product, index) => (
@@ -136,7 +175,7 @@ const ProductDetails = () =>{
                             <div className={styles.contentProduct}>
                                 <h1>{product.headingProduct}</h1>
                                 <span>{product.weight}</span>
-                                <Link href={`/product/${product.id}`}><button>Learn More</button></Link>
+                                <Link href={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
                             </div>
                         </div>
                     ))}
@@ -147,7 +186,7 @@ const ProductDetails = () =>{
                 <img src="/images/product_detail_icon.png" className={styles.product_detail_icon} alt="House Kari"/>
                 <img src="/images/product_detail_icon_2.png" className={styles.product_detail_icon_2} alt="House Kari"/>
                 <div className={styles.space_between_heading}>
-                    <h1 className={styles.heading_main_red}>Recipes That Might Interest You</h1>
+                    <h1 className={styles.heading_main_red}>{t('headingRecipe')}</h1>
                 </div>
                 <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={recipeList} />
                 <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={recipeList} />

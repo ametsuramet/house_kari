@@ -281,6 +281,7 @@
   .select_value svg{
     font-size: 1vw;
     color: #651318;
+    transition: .4s all;
   }
   .select_value.active{
     border-bottom: none;

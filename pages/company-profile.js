@@ -12,8 +12,20 @@ import 'swiper/css/pagination';
 
 import { Pagination } from 'swiper/modules';
 import Link from "next/link";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 
 export default function CompanyProfile() {
+  const { t } = useTranslation('common');
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState('Marketing');
 
@@ -22,63 +34,54 @@ export default function CompanyProfile() {
     'Social Media Specialist',
   ];
 
-  // const toggleDropdown = () => {
-  //   setIsOpen(!isOpen);
-  // };
-
-  // const handleSelectMenu = (menu) => {
-  //   setSelectedMenu(menu);
-  //   setIsOpen(false);
-  // };
-
   const careers = [
     {
       id: 1,
       headingCareers: 'Marketing Staff',
       date: '20/05/2024',
-      descCareers: 'Marketing Staff short description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu.....Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing'
+      descCareers: t('descCareers')
     },
     {
       id: 2,
       headingCareers: 'Social Media Specialist',
       date: '20/05/2024',
-      descCareers: 'Marketing Staff short description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu.....Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing'
+      descCareers: t('descCareers')
     },
     {
       id: 3,
       headingCareers: 'Marketing Staff',
       date: '20/05/2024',
-      descCareers: 'Marketing Staff short description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu.....Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing'
+      descCareers: t('descCareers')
     },
     {
       id: 4,
       headingCareers: 'Social Media Specialist',
       date: '20/05/2024',
-      descCareers: 'Marketing Staff short description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu.....Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing'
+      descCareers: t('descCareers')
     },
     {
       id: 5,
       headingCareers: 'Marketing Staff',
       date: '20/05/2024',
-      descCareers: 'Marketing Staff short description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu.....Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing'
+      descCareers: t('descCareers')
     },
     {
       id: 6,
       headingCareers: 'Social Media Specialist',
       date: '20/05/2024',
-      descCareers: 'Marketing Staff short description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu.....Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing'
+      descCareers: t('descCareers')
     },
     {
       id: 7,
       headingCareers: 'Marketing Staff',
       date: '20/05/2024',
-      descCareers: 'Marketing Staff short description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu.....Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing'
+      descCareers: t('descCareers')
     },
     {
       id: 8,
       headingCareers: 'Social Media Specialist',
       date: '20/05/2024',
-      descCareers: 'Marketing Staff short description Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu.....Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing, consectetur adipiscing elit. Nullam mattis vel dui consectetur adipiscing'
+      descCareers: t('descCareers')
     },
   ]
 
@@ -226,17 +229,19 @@ const handleMouseUp = () => {
   document.removeEventListener('mouseup', handleMouseUp);
 };
 
+const pageTitle = `House Kari | ${t('menu.companyProfile')}`;
+
   return (
     <>
       <Head>
-        <title>House Kari | Company Profile</title>
+        <title>{pageTitle}</title>
         <meta name="description" content="Learn more about us" />
       </Head>
       <div className={banner.bannerStyle}>
         <img src="/images/company_profile_banner.png" alt="House Kari Website"/>
       </div>
       <div className={banner.breadcrumbs}>
-        <p>Home / Our Story / <span>Company Profile</span></p>
+        <p>{t('menu.home')} / {t('menu.ourStory')} / <span>{t('menu.companyProfile')}</span></p>
       </div>
       <div className={styles.bg_section}>
         <div className={styles.section1}>
@@ -245,32 +250,32 @@ const handleMouseUp = () => {
           </div>
           <div className={styles.section1_content}>
             <h1>PT. HOUSE AND VOX INDONESIA</h1>
-            <h3>Sebuah Group Perusahaan dari House Foods Group INC</h3>
-            <p>House Foods merupakan sebuah perusahaan produsen makanan ternama yang menguasai pangsa pasar penjualan kari ala Jepang di Jepang. House Foods mulai memasuki pasar Indonesia sejak tahun 2016 dengan memperkenalkan produk unggulan mereka yaitu House Kari ala Jepang yang telah memiliki sertifikasi halal dari LPPOM MUI. Kari ala Jepang halal ini tidak hanya dipasarkan di Indonesia saja namun juga sudah merambah ke beberapa negara tetangga seperti Singapura dan Malaysia.</p>
-            <p>Keistimewaan Kari Jepang yaitu tidak mengandung santan dan dengan rasa yang mild bisa dinikmati seluruh anggota keluarga. Kari ala Jepang halal berukuran 935 gr dapat disajikan untuk 50 porsi dan memang target pemasarannya adalah horeca. Selain melalui distributor utama, produk ini sudah bisa didapatkan di beberapa supermarket di Jakarta seperti Grand Lucky dan juga di beberapa situs belanja online di Indonesia.</p>
+            <h3>{t('profileSubHeading')}</h3>
+            <p>{t('profiledesc1')}</p>
+            <p>{t('profiledesc2')}</p>
           </div>
         </div>
         <div className={styles.section2}>
           <img src="/images/pattern_center.png" alt="House Kari" className={styles.pattern_center}/>
           <img src="/images/filosofi_icon_1.png" alt="House Kari" className={styles.filosofi_icon_1}/>
           <img src="/images/filosofi_icon_2.png" alt="House Kari" className={styles.filosofi_icon_2}/>
-          <h1>Filosofi</h1>
-          <p>“Kami ingin menjadi <b>&apos;mitra yang baik&apos;</b> yang menghubungkan orang-orang melalui makanan dan <b>memberikan kebahagiaan </b> dalam kehidupan sehari-hari”</p>
+          <h1>{t('filosofi')}</h1>
+          <p dangerouslySetInnerHTML={{ __html: t('filosofiText') }}></p>
           <div className={styles.divider}></div>
         </div>
       </div>
       <div className={styles.two_block}>
         <div className={styles.vision_box}>
-          <h1>Visi</h1>
-          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.</p>
+          <h1>{t('visi')}</h1>
+          <p>{t('visiText')}</p>
           <div className={styles.overlay_visi}></div>
         </div>
         <div className={styles.mision_box}>
-          <h1>Misi</h1>
+          <h1>{t('misi')}</h1>
           <ul>
-            <li>Untuk Mengejar Menyediakan Produk Berkualitas Tinggi Untuk Pasar Halal Di Seluruh Dunia</li>
-            <li>Menjadikan Tubuh Dan Jiwa yang Sehat Melalui Inovasi</li>
-            <li>Untuk Menjalin Dan Mengembangkan Koordinasi Dan Kemitraan Yang Baik Antara Stakeholder Dan Pelanggan</li>
+            <li>{t('listMisi.listMisiOne')}</li>
+            <li>{t('listMisi.listMisiTwo')}</li>
+            <li>{t('listMisi.listMisiThree')}</li>
           </ul>
           <div className={styles.overlay_misi}></div>
         </div>
@@ -278,8 +283,7 @@ const handleMouseUp = () => {
       <div className={styles.careers}>
         <img src="/images/careers_icon.png" alt="House Kari" className={styles.careers_icon}/>
         <div className={styles.headingCareers}>
-          <h1>Careers</h1>
-
+          <h1>{t('careers')}</h1>
           <div className={styles.select_menu_product}>
             <button 
               className={`${styles.dropdownButton} ${isOpen ? styles.activeButton : ''}`}  
@@ -321,9 +325,9 @@ const handleMouseUp = () => {
                 <p>{career.descCareers}</p>
                 <div className={styles.btnCareers}>
                   <div className={styles.dateCareers}>
-                    <span>Ends {career.date}</span>
+                    <span>{t('ends')} {career.date}</span>
                   </div>
-                  <Link href='/'><button>Apply</button></Link>
+                  <Link href='/'><button>{t('apply')}</button></Link>
                 </div>
               </div>
             ))}

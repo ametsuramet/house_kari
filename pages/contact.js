@@ -5,19 +5,31 @@ import { LuPhoneCall } from "react-icons/lu";
 import { RxEnvelopeClosed } from "react-icons/rx";
 import { useState } from "react";
 import { IoChevronDownOutline } from "react-icons/io5";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 
 export default function Contact() {
+  const { t } = useTranslation('common');
+
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
 
-  const [selectedOption1, setSelectedOption1] = useState('Choose...');
+  const [selectedOption1, setSelectedOption1] = useState(`${t('choose')}...`);
   const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
-  const [selectedOption2, setSelectedOption2] = useState('Choose...');
+  const [selectedOption2, setSelectedOption2] = useState(`${t('choose')}...`);
   const [isDropdownOpen2, setIsDropdownOpen2] = useState(false);
-  const [selectedOption3, setSelectedOption3] = useState('Choose...');
+  const [selectedOption3, setSelectedOption3] = useState(`${t('choose')}...`);
   const [isDropdownOpen3, setIsDropdownOpen3] = useState(false);
 
   const handleSelect = (setSelectedOption, setIsDropdownOpen, option) => {
@@ -25,17 +37,19 @@ export default function Contact() {
     setIsDropdownOpen(false);
   };
 
+  const pageTitle = `House Kari | ${t('menu.contact')}`;
+
   return (
     <>
       <Head>
-        <title>Contact</title>
+        <title>{pageTitle}</title>
         <meta name="description" content="Learn more about us" /> 
       </Head>
       <div className={banner.bannerStyle}>
           <img src="/images/company_history_banner.png" alt="House Kari Website"/>
       </div>
       <div className={banner.breadcrumbs}>
-          <p>Home / <span>Contact</span></p>
+          <p>{t('menu.home')} / <span>{t('menu.contact')}</span></p>
       </div>
       <div className={styles.section1}>
         <div className={styles.divider}></div>
@@ -45,25 +59,25 @@ export default function Contact() {
         <div className={styles.section1_layout}>
           <img src="/images/contact_icon.png" alt="House Kari" className={styles.contact_icon}/>
           <div className={styles.section1_form}>
-            <h1>Contact Us</h1>
+            <h1>{t('contactUs')}</h1>
             <form>
               <div className={styles.form_field_double}>
                 <div className={styles.form_field}>
-                  <label>Name</label>
-                  <input type="text" placeholder="Name"/>
+                  <label>{t('nameForm')}</label>
+                  <input type="text" placeholder={t('nameForm')}/>
                 </div>
                 <div className={styles.form_field}>
-                  <label>Phone Number</label>
-                  <input type="number" placeholder="Phone Number"/>
+                  <label>{t('numberForm')}</label>
+                  <input type="number" placeholder={t('numberForm')}/>
                 </div>
               </div>
               <div className={styles.form_field}>
-                <label>Email</label>
-                <input type="email" placeholder="Email"/>
+                <label>{t('emailForm')}</label>
+                <input type="email" placeholder={t('emailForm')}/>
               </div>
               <div className={styles.form_field}>
-                <label>Inquiries</label>
-                <textarea placeholder="Inquiries"></textarea>
+                <label>{t('inquiriesForm')}</label>
+                <textarea placeholder={t('inquiriesForm')}></textarea>
               </div>
               <label className={styles.customCheckbox}>
                 <input
@@ -73,17 +87,17 @@ export default function Contact() {
                   className={styles.hiddenCheckbox}
                 />
                 <span className={styles.customCheckmark}></span>
-                I have agree with the Privacy Policy
+                {t('haveAgree')}
               </label>
-              <button>Submit</button>
+              <button>{t('submitBtn')}</button>
             </form>
           </div>
           <div className={styles.addressDetail}>
             <h3>PT HOUSE AND VOX INDONESIA</h3>
-            <p>Atria @ Sudirman 17th Floor. Jendral Sudirman, Kav. 33A, Karet Tengsin, Tanah Abang, Jakarta Pusat 10220</p>
+            <p>{t('address')}</p>
           </div>
           <div className={styles.contact_detail}>
-            <h3>Kontak</h3>
+            <h3>{t('menu.contact')}</h3>
             <div className={styles.contact_layout}>
               <div className={styles.contact_box}>
                   <LuPhoneCall/>
@@ -101,33 +115,33 @@ export default function Contact() {
         <div className={styles.section2_layout}>
           <img src="/images/contact_icon_2.png" alt="House Kari" className={styles.contact_icon_2}/>
           <div className={`${styles.section1_form} ${styles.section1_form_second}`}>
-            <h1>Be a Partner</h1>
+            <h1>{t('bePartner')}</h1>
             <form>
               <div className={styles.form_field}>
-                <label>Email</label>
-                <input type="text" placeholder="Email"/>
+                <label>{t('emailForm')}</label>
+                <input type="text" placeholder={t('emailForm')}/>
               </div>
               <div className={styles.form_field}>
-                <label>Company Name</label>
-                <input type="text" placeholder="Company Name"/>
+                <label>{t('companyName')}</label>
+                <input type="text" placeholder={t('companyName')}/>
               </div>
               <div className={styles.form_field}>
-                <label>Name</label>
-                <input type="text" placeholder="Name"/>
+                <label>{t('nameForm')}</label>
+                <input type="text" placeholder={t('nameForm')}/>
               </div>
               <div className={styles.form_field}>
-                <label>Phone Number</label>
-                <input type="text" placeholder="Phone Number"/>
+                <label>{t('numberForm')}</label>
+                <input type="text" placeholder={t('numberForm')}/>
               </div>
 
               <div className={styles.form_field}>
-                <label>Choose...</label>
+                <label>{t('choose')}...</label>
                 <div className={styles.custom_select}>
                   <div className={`${styles.select_value} ${isDropdownOpen1 ? styles.active : ''}`} onClick={() => setIsDropdownOpen1(!isDropdownOpen1)}>
                     {selectedOption1} <IoChevronDownOutline/>
                   </div>
                   <div className={`${styles.options} ${isDropdownOpen1 ? styles.active : ''}`}>
-                    {['Trading Company', 'Online Shop', 'Offline Distributor', 'HORECA'].map(option => (
+                    {[`${t('tradingCompany')}`, `${t('onlineShop')}`, `${t('offlineDistributor')}`, 'HORECA'].map(option => (
                       <div 
                         key={option}
                         className={`${styles.option} ${selectedOption1 === option ? styles.activeOption : ''}`}
@@ -141,18 +155,18 @@ export default function Contact() {
               </div>
 
               <div className={styles.form_field}>
-                <label>Company Address</label>
-                <input type="text" placeholder="Company Address"/>
+                <label>{t('companyAddress')}</label>
+                <input type="text" placeholder={t('companyAddress')}/>
               </div>
 
               <div className={styles.form_field}>
-                <label>How do you know House Kari ala Jepang?</label>
+                <label>{t('howDo')}</label>
                 <div className={styles.custom_select}>
                   <div className={`${styles.select_value} ${isDropdownOpen2 ? styles.active : ''}`} onClick={() => setIsDropdownOpen2(!isDropdownOpen2)}>
                     {selectedOption2} <IoChevronDownOutline/>
                   </div>
                   <div className={`${styles.options} ${isDropdownOpen2 ? styles.active : ''}`}>
-                    {['Online Advertising', 'Offline Advertising (KRL, Bis, Mobil)', 'Supermarket', 'E-commerce', 'Rekan Kerja / Teman', 'Other'].map(option => (
+                    {[`${t('onlineAdvertising')}`, `${t('offlineAdvertising')}`, `${t('supermarket')}`, `${t('ecommerce')}`, `${t('rekan')}`, `${t('other')}`].map(option => (
                       <div 
                         key={option}
                         className={`${styles.option} ${selectedOption2 === option ? styles.activeOption : ''}`}
@@ -166,13 +180,13 @@ export default function Contact() {
               </div>
 
               <div className={styles.form_field}>
-                <label>Why are you interested in becoming a reseller?</label>
+                <label>{t('whyAre')}</label>
                 <div className={styles.custom_select}>
                   <div className={`${styles.select_value} ${isDropdownOpen3 ? styles.active : ''}`} onClick={() => setIsDropdownOpen3(!isDropdownOpen3)}>
                     <span>{selectedOption3}</span> <IoChevronDownOutline/>
                   </div>
                   <div className={`${styles.options} ${isDropdownOpen3 ? styles.active : ''}`}>
-                    {['Pernah Membeli Kemasan Kecil dan Suka', 'Mengetahui target market untuk menu kari ala Jepang', 'Terdapat permintaan dari Customer', 'Mempunyai potensi yang baik di masa depan'].map(option => (
+                    {[`${t('whyAre1')}`, `${t('whyAre2')}`, `${t('whyAre3')}`, `${t('whyAre4')}`].map(option => (
                       <div 
                         key={option}
                         className={`${styles.option} ${selectedOption3 === option ? styles.activeOption : ''}`}
@@ -184,7 +198,7 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
-              <button>Submit</button>
+              <button>{t('submitBtn')}</button>
             </form>
           </div>
         </div>

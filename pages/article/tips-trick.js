@@ -6,21 +6,33 @@ import SlideArticles from "../components/slide_articles";
 import { useEffect, useRef, useState } from "react";
 import { IoChevronDown } from "react-icons/io5";
 import SlideArticlesMobile from "../components/slide_articles_mobile";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 
 export default function TipsTricks() {
+  const { t } = useTranslation('common');
+
   const recentBlog = [
     {
       id: 1,
       images: '/images/blog_recent_1.png',
       date: '10/10/2024',
-      headingBlog: 'Headline',
+      headingBlog: t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 2,
       images: '/images/blog_recent_2.png',
       date: '10/10/2024',
-      headingBlog: 'Headline',
+      headingBlog: t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     }
   ]
@@ -62,50 +74,50 @@ export default function TipsTricks() {
     {
       id: 1,
       images: '/images/blog_recent_1.png',
-      date: 'Posted 10/10/2024',
-      headingBlog: 'Headline',
+      date: `${t('posted')} 10/10/2024`,
+      headingBlog:  t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 2,
       images: '/images/blog_recent_2.png',
-      date: 'Posted 10/10/2024',
-      headingBlog: 'Headline',
+      date: `${t('posted')} 10/10/2024`,
+      headingBlog:  t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 3,
       images: '/images/blog_recent_1.png',
-      date: 'Posted 10/10/2024',
-      headingBlog: 'Headline',
+      date: `${t('posted')} 10/10/2024`,
+      headingBlog:  t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 4,
       images: '/images/blog_recent_2.png',
-      date: 'Posted 10/10/2024',
-      headingBlog: 'Headline',
+      date: `${t('posted')} 10/10/2024`,
+      headingBlog:  t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 5,
       images: '/images/blog_recent_1.png',
-      date: 'Posted 10/10/2024',
-      headingBlog: 'Headline',
+      date: `${t('posted')} 10/10/2024`,
+      headingBlog:  t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 6,
       images: '/images/blog_recent_2.png',
-      date: 'Posted 10/10/2024',
-      headingBlog: 'Headline',
+      date: `${t('posted')} 10/10/2024`,
+      headingBlog:  t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
         id: 7,
         images: '/images/blog_recent_1.png',
-        date: 'Posted 10/10/2024',
-        headingBlog: 'Headline',
+        date: `${t('posted')} 10/10/2024`,
+        headingBlog:  t('headline'),
         descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
       },
   ];
@@ -271,17 +283,19 @@ export default function TipsTricks() {
     document.removeEventListener('mouseup', handleMouseUp);
   };
 
+  const pageTitle = `House Kari | ${t('menu.tipsTricks')}`;
+
   return (
     <>
       <Head>
-        <title>Tips & Tricks</title>
+        <title>{pageTitle}</title>
         <meta name="description" content="Learn more about us" />
       </Head>
       <div className={banner.bannerStyle}>
         <img src="/images/article_banner.png" alt="House Kari Website"/>
       </div>
       <div className={banner.breadcrumbs}>
-        <p>Home / Article / <span>Tips & Tricks</span></p>
+        <p>{t('menu.home')} / {t('menu.article')} / <span>{t('menu.tipsTricks')}</span></p>
       </div>
       <div onTouchStart={handleTouchStart} 
         onTouchMove={handleTouchMove}
@@ -301,14 +315,14 @@ export default function TipsTricks() {
         <img src="/images/black_pepper_icon.png" alt="House Kari" className={styles.black_pepper_icon}/>
         <div className={styles.section1_layout}>
           <div className={styles.section1_tab}>
-            <Link href='/article'><button>Article</button></Link>
-            <Link href='/article/tips-trick'><button className={styles.activeTab}>Tips & Tricks</button></Link>
-            <Link href='/article/event'><button>Event</button></Link>
-            <Link href='/article/media-release'><button>Media Release</button></Link>
+            <Link href='/article'><button>{t('menu.article')}</button></Link>
+            <Link href='/article/tips-trick'><button className={styles.activeTab}>{t('menu.tipsTricks')}</button></Link>
+            <Link href='/article/event'><button>{t('menu.event')}</button></Link>
+            <Link href='/article/media-release'><button>{t('menu.mediaRelease')}</button></Link>
           </div>
           <div className={styles.section1_box}>
             <div className={styles.space_between_heading}>
-              <h1 className={styles.heading_main}>Newest Articles</h1>
+              <h1 className={styles.heading_main}>{t('newestArticle')}</h1>
             </div>
             <div className={styles.blog_recent_layout}>
               {recentBlog.map((blog, index) => (
@@ -317,10 +331,10 @@ export default function TipsTricks() {
                     <img src={blog.images} alt={blog.headingBlog}/>
                   </div>
                   <div className={styles.blog_recent_content}>
-                    <span>Posted {blog.date}</span>
+                    <span>{t('posted')} {blog.date}</span>
                     <h1>{blog.headingBlog}</h1>
                     <p>{blog.descBlog}</p>
-                    <Link href='/article/tips-trick/1'><button>Learn More</button></Link>
+                    <Link href='/article/tips-trick/1'><button>{t('section1Home.learnMore')}</button></Link>
                   </div>
                 </div>
               ))}
@@ -330,7 +344,7 @@ export default function TipsTricks() {
       </div>
       <div className={styles.section2}>
         <div className={styles.space_between_heading}>
-          <h1 className={styles.heading_main_white}>Other Articles</h1>
+          <h1 className={styles.heading_main_white}>{t('otherArticle')}</h1>
         </div>
         <div className={styles.select_menu_product}>
           <button 
@@ -348,7 +362,7 @@ export default function TipsTricks() {
           <img src="/images/cinamon_icon.png" alt="House Kari" className={styles.cinamon_icon}/>
           <img src="/images/product_detail_icon_2.png" alt="House Kari" className={styles.product_detail_icon_2}/>
           <div className={styles.space_between_heading}>
-              <h1 className={styles.heading_main_red}>Recipes That Might Interest You</h1>
+              <h1 className={styles.heading_main_red}>{t('headingRecipe')}</h1>
           </div>
           <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={recipeList} />
           <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={recipeList} />

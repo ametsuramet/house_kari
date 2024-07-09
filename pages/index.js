@@ -10,6 +10,8 @@ import { useEffect, useRef } from 'react';
 import SlideProductMobile from './components/slide_product_mobile';
 import SlideArticlesMobile from './components/slide_articles_mobile';
 import SlideTestimonialsMobile from './components/slide_testimonials_mobile';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const items = [
   <img key={1} src='/images/banner-1.png' alt='banner'/>,
@@ -17,18 +19,26 @@ const items = [
   <img key={3} src='/images/banner-1.png' alt='banner'/>,
 ];
 
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
 
 export default function Home() {
+  const { t } = useTranslation('common');
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedMenu, setSelectedMenu] = useState('Menu Makan Siang');
+  const [selectedMenu, setSelectedMenu] = useState(t('section2Menu.makanSiang'));
 
   const menuItems = [
-    'Menu Makan Siang',
-    'Menu Sarapan',
-    'Menu Snack',
-    'Menu Seafood',
-    'Menu Roti',
-    'Menu Sayuran',
+    { label: t('section2Menu.makanSiang') },
+    { label: t('section2Menu.makanSarapan') },
+    { label: t('section2Menu.makanSnack') },
+    { label: t('section2Menu.makanSeafood') },
+    { label: t('section2Menu.makanRoti') },
+    { label: t('section2Menu.makanSayuran') },
   ];
 
   const recentBlog = [
@@ -36,14 +46,14 @@ export default function Home() {
       id: 1,
       images: '/images/blog_recent_1.png',
       date: '10/10/2024',
-      headingBlog: 'Headline',
+      headingBlog: t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 2,
       images: '/images/blog_recent_2.png',
       date: '10/10/2024',
-      headingBlog: 'Headline',
+      headingBlog: t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     }
   ]
@@ -53,51 +63,51 @@ export default function Home() {
       id: 1,
       images: '/images/blog_recent_1.png',
       date: '10/10/2024',
-      headingBlog: 'Headline',
+      headingBlog: t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 2,
       images: '/images/blog_recent_2.png',
       date: '10/10/2024',
-      headingBlog: 'Headline',
+      headingBlog: t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 3,
       images: '/images/blog_recent_1.png',
       date: '10/10/2024',
-      headingBlog: 'Headline',
+      headingBlog: t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 4,
       images: '/images/blog_recent_2.png',
       date: '10/10/2024',
-      headingBlog: 'Headline',
+      headingBlog: t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 5,
       images: '/images/blog_recent_1.png',
       date: '10/10/2024',
-      headingBlog: 'Headline',
+      headingBlog: t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
       id: 6,
       images: '/images/blog_recent_2.png',
       date: '10/10/2024',
-      headingBlog: 'Headline',
+      headingBlog: t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     },
     {
-        id: 7,
-        images: '/images/blog_recent_1.png',
-        date: '10/10/2024',
-        headingBlog: 'Headline',
-        descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-      },
+      id: 7,
+      images: '/images/blog_recent_1.png',
+      date: '10/10/2024',
+      headingBlog: t('headline'),
+      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+  },
   ];
 
   const toggleDropdown = () => {
@@ -121,7 +131,7 @@ export default function Home() {
   }, [isOpen]);
 
   const handleSelectMenu = (menu) => {
-    setSelectedMenu(menu);
+    setSelectedMenu(menu.label);
     setIsOpen(false);
   };
 
@@ -239,17 +249,17 @@ const handleMouseUp = () => {
           <img src='/images/section_2_image.png' alt='House Kari Story' />
         </div>
         <div className={styles.section_2_content}>
-          <h1 className={styles.heading_main}>Profil Perusahaan</h1>
-          <p className={`${styles.desc_main}`}>House Foods masuk ke Indonesia melalui PT House And Vox Indonesia dan memproduksi Kari Jepang halal pertama di Indonesia dengan merek House Kari ala Jepang dengan ukuran 935g yang diproduksi di pabrik PT Java Agri Tech, Semarang.</p>
-          <Link href='/company-profile'><button>Pelajari Selengkapnya</button></Link>
+          <h1 className={styles.heading_main}>{t('section1Home.profilPerusahaan')}</h1>
+          <p className={`${styles.desc_main}`}>{t('section1Home.profilPerusahaanDesc')}</p>
+          <Link href='/company-profile'><button>{t('section1Home.learnMore')}</button></Link>
           <img src='/images/icon_section_2.png' alt='House Kari Website' className={styles.icon_section_2} />
           <img src='/images/pattern_section_2.png' alt='House Kari Website' className={styles.pattern_section_2} />
         </div>
       </div> 
       <div className={styles.section_3}>
         <div className={styles.section_3_heading}>
-          <h1 className={styles.heading_main}>Resep ala House Kari</h1>
-          <p className={`${styles.desc_main} ${styles.desc_main_margin}`}>Kumpulan resep sehari-hari dengan House kari ala Jepang</p>
+          <h1 className={styles.heading_main}>{t('section2Home.resepAla')}</h1>
+          <p className={`${styles.desc_main} ${styles.desc_main_margin}`}>{t('section2Home.resepAlaDesc')}</p>
         </div>
         <div className={styles.select_menu_product}>
           <button 
@@ -265,10 +275,10 @@ const handleMouseUp = () => {
             {menuItems.map((menu, index) => (
               <div
                 key={index}
-                className={`${styles.dropdownMenuItem} ${selectedMenu === menu ? styles.active : ''}`}
+                className={`${styles.dropdownMenuItem} ${selectedMenu === menu.label ? styles.active : ''}`}
                 onClick={() => handleSelectMenu(menu)}
               >
-                {menu}
+                {menu.label}
               </div>
             ))}
           </div>
@@ -281,8 +291,8 @@ const handleMouseUp = () => {
         <img src='/images/section_4_icon_1.png' alt='House Kari' className={styles.section_4_icon_1} />
         <img src='/images/section_4_icon_2.png' alt='House Kari' className={styles.section_4_icon_2} />
         <div className={styles.space_between_heading}>
-          <h1 className={styles.heading_main}>Newest Articles</h1>
-          <p className={styles.desc_main_margin}>Read more articles...</p>
+          <h1 className={styles.heading_main}>{t('newestArticle')}</h1>
+          <p className={styles.desc_main_margin}>{t('readMoreArticle')}...</p>
         </div>
         <div className={styles.blog_recent_layout}>
           {recentBlog.map((blog, index) => (
@@ -291,21 +301,21 @@ const handleMouseUp = () => {
                 <img src={blog.images} alt={blog.headingBlog}/>
               </div>
               <div className={styles.blog_recent_content}>
-                <span>Posted {blog.date}</span>
+                <span>{t('posted')} {blog.date}</span>
                 <h1>{blog.headingBlog}</h1>
                 <p>{blog.descBlog}</p>
-                <Link href='/article/1'><button>Learn More</button></Link>
+                <Link href='/article/1'><button>{t('section1Home.learnMore')}</button></Link>
               </div>
             </div>
           ))}
         </div>
         <div className={styles.heading_mobile_desc}>
-          <Link href='#'>Read more articles...</Link>
+          <Link href='#'>{t('readMoreArticle')}...</Link>
         </div>
       </div>
       <div className={styles.section_5}>
         <div className={styles.space_between_heading}>
-          <h1 className={styles.heading_main_white}>Other Articles</h1>
+          <h1 className={styles.heading_main_white}>{t('otherArticle')}</h1>
         </div>
         <SlideArticlesMobile items={slideBlog} />
         <SlideArticles items={slideBlog}/>
@@ -317,30 +327,30 @@ const handleMouseUp = () => {
           </div>
           <div className={styles.section_6_form}>
             <div className={styles.section_6_heading}>
-              <h1 className={styles.heading_main}>Write a Review, Get a Curry!</h1>
-              <p className={styles.desc_main_margin}>Write a review and have a chance to win House Kari ala Jepang! Write and upload your testimony now!</p>
+              <h1 className={styles.heading_main}>{t('headingForm')}</h1>
+              <p className={styles.desc_main_margin}>{t('headingFormDesc')}</p>
             </div>
             <form className={styles.form}>
               <div className={styles.form_fields}>
-                <label>Name</label>
-                <input type='text' placeholder='Name'/>
+                <label>{t('nameForm')}</label>
+                <input type='text' placeholder={t('nameForm')}/>
               </div>
               <div className={styles.form_fields}>
-                <label>Phone Number</label>
-                <input type='number' placeholder='Phone Number'/>
+                <label>{t('numberForm')}</label>
+                <input type='number' placeholder={t('numberForm')}/>
               </div>
               <div className={styles.form_fields}>
-                <label>Review</label>
-                <textarea placeholder='Review'></textarea>
+                <label>{t('reviewForm')}</label>
+                <textarea placeholder={t('reviewForm')}></textarea>
               </div>
               <div className={styles.form_fields_row}>
                 <div className={styles.fileInputWrapper}>
                   <input type="file" id="file-input" className={styles.fileInput} />
                   <label htmlFor="file-input" className={styles.customFileLabel}>
-                    + Upload File
+                    + {t('unggahFile')}
                   </label>
                 </div>
-                <button>Submit</button>
+                <button>{t('submitBtn')}</button>
               </div>
             </form>
           </div>
@@ -350,7 +360,7 @@ const handleMouseUp = () => {
         <img src='/images/ginger_icon.png' alt='House Kari' className={styles.ginger_icon}/>
         <div className={styles.padding_container}>
           <div className={styles.space_between_heading}>
-            <h1 className={styles.heading_main}>Hear What They Say</h1>
+            <h1 className={styles.heading_main}>{t('testimoniHeading')}</h1>
           </div>
         </div>
         <SlideTestimonialsMobile/>
