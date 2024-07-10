@@ -79,10 +79,10 @@ export default function PrivacyPolicy() {
                         <li>{t('teksPrivacy27')}</li>
                     </ul>
                 </li>
-                <li>{t('teksPrivacy28')}</li>
-                <li>
-                    {t('teksPrivacy29')}
+                <li>{t('teksPrivacy28')}<br/>
+                    <p>{t('teksPrivacy29')}</p>
                     <ul>
+                            
                         <li>{t('teksPrivacy30')}</li>
                         <li>{t('teksPrivacy31')}</li>
                         <li>{t('teksPrivacy32')}</li>
