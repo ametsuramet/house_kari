@@ -87,14 +87,14 @@
     .identity_layout p{
         font-size: 2.9vw;
         padding-right: 29vw;
-        margin-bottom: 1.2vw;
+        margin-bottom: 4.2vw;
     }
     .identity_layout a{
-        font-size: 1.02vw;
+        font-size: 2.9vw;
         color: white;
         font-weight: 600;
         text-decoration: none;
-        display: none;
+        display: block;
     }
     .social_footer{
         gap: 3vw;
