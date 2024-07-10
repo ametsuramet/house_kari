@@ -23,7 +23,7 @@ const Footer = () => {
         <div className={styles.identity_layout}>
           <h1>PT HOUSE AND VOX INDONESIA</h1>
           <p>{t('address')}</p>
-          <Link href='#'>{t('privacyPolicy')}</Link>
+          <Link href='/privacy-policy'>{t('privacyPolicy')}</Link>
         </div>
       </div>
       <div className={styles.social_footer}>
