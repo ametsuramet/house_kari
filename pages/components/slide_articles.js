@@ -21,7 +21,7 @@ export async function getStaticProps({ locale }) {
 }
 
 export default function SlideArticles({ items = [], classNames, paginationClass }) {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
 
   const [isAtEnd, setIsAtEnd] = useState(false);
   const [isAtStart, setIsAtStart] = useState(true);
@@ -39,6 +39,34 @@ export default function SlideArticles({ items = [], classNames, paginationClass 
       setIsAtStart(false);
     }
   };
+
+  const getRecipeTitle = (blog) => {
+      switch (i18n.language) {
+          case 'en':
+              return blog.title_en || blog.title;
+          case 'zh':
+              return blog.title_chi || blog.title;
+          default:
+              return blog.title;
+      }
+  };
+
+  const getDescriptionName = (blog) => {
+    switch (i18n.language) {
+      case 'en':
+        return blog.description_en || blog.description;
+      case 'zh':
+        return blog.description_chi || blog.description;
+      default:
+        return blog.description;
+    }
+  };
+  const stripPTags = (html) => {
+    if (!html) return ''; // Check if html is undefined or null
+  
+    return html.replace(/<p[^>]*>|<\/p>/g, '');
+  };
+  
 
   return (
     <>
@@ -58,12 +86,12 @@ export default function SlideArticles({ items = [], classNames, paginationClass 
           <SwiperSlide key={index}>
             <div className='box_articles_slide'>
               <div className='box_articles_images'>
-                <img src={blog.images} alt={blog.headingBlog} />
+                <img src={`https://prahwa.net/storage/${blog.image}`} alt={blog.name} />
               </div>
               <div className='box_articles_content'>
                 {blog.date && <span>{blog.date}</span>}
-                <h1>{blog.headingBlog}</h1>
-                <p>{blog.descBlog}</p>
+                <h1 dangerouslySetInnerHTML={{ __html: getRecipeTitle(blog) }}></h1>
+                <p dangerouslySetInnerHTML={{ __html: stripPTags(getDescriptionName(blog)) }}></p>
                 <Link href=''><button>{t('section1Home.learnMore')}</button></Link>
               </div>
             </div>

@@ -65,6 +65,7 @@ export default function SlideRecipe({ items = [] }) {
       </Swiper>
 
       <Swiper 
+      autoHeight={true}
         slidesPerView={1}
         spaceBetween={30}
         loop={true}

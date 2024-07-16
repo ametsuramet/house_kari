@@ -573,7 +573,8 @@
 }
 .mySwiperRecipe .swiper-slide .imageRecipe{
   width: 100%;
-  height: 17vw;
+  height: 20vw;
+  object-fit: cover;
   position: relative;
 }
 .mySwiperRecipe .swiper-slide .contentRecipe{
@@ -589,6 +590,11 @@
 .mySwiperRecipe .swiper-slide .contentRecipe p{
   font-size: .9vw;
   color:#363636;
+  display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 5;
+      overflow: hidden;
+      text-overflow: ellipsis;
 }
 .mySwiperRecipe .swiper-slide .contentRecipe button{
   margin-top: 3.6vw;
@@ -616,6 +622,11 @@
 .mySwiperRecipe .swiper-slide-active .contentRecipe p{
   font-size: .97vw;
   color:#363636;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 11;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .mySwiperRecipe .swiper-slide-active .slideItemRecipe{
   transform: scale(1);
@@ -623,7 +634,7 @@
 }
 .mySwiperRecipe .swiper-slide-active .imageRecipe{
   width: 100%;
-  height: 22.3vw;
+  height: 26vw;
   position: relative;
 }
 .imageRecipe img{

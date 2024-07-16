@@ -8,6 +8,16 @@ import SlideArticlesMobile from "../components/slide_articles_mobile";
 import { IoChevronDown } from "react-icons/io5";
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+import axios from "axios";
+import Link from "next/link";
+import React from 'react';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+import { Pagination } from 'swiper/modules';
 
 export async function getStaticProps({ locale }) {
   return {
@@ -18,7 +28,7 @@ export async function getStaticProps({ locale }) {
 }
 
 export default function Recipe() {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -37,93 +47,38 @@ export default function Recipe() {
     setIsOpen(!isOpen);
   };
 
-  const items = [
-    {
-      id: 1,
-      images: '/images/recipe_image_2.png',
-      recipeHeading: 'Recipe A',
-      recipeDesc: 'Recipe short description, lorem ipsum Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu'
-    },
-    {
-        id: 2,
-        images: '/images/recipe_image_2.png',
-        recipeHeading: 'Recipe A',
-        recipeDesc: 'Recipe short description, lorem ipsum Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu'
-    },
-    {
-        id: 3,
-        images: '/images/recipe_image_2.png',
-        recipeHeading: 'Recipe A',
-        recipeDesc: 'Recipe short description, lorem ipsum Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu'
-    },
-    {
-      id: 4,
-      images: '/images/recipe_image_2.png',
-      recipeHeading: 'Recipe A',
-      recipeDesc: 'Recipe short description, lorem ipsum Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu'
-    },
-    {
-      id: 5,
-      images: '/images/recipe_image_2.png',
-      recipeHeading: 'Recipe A',
-      recipeDesc: 'Recipe short description, lorem ipsum Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu'
-    },
-  ];
-
-  const tabs = [
-    { 
-      title:  t('categoryResep1'), 
-      content: <SlideRecipe items={items}/>
-    },
-    { 
-      title: t('categoryResep2'), 
-      content: <SlideRecipe items={items}/> 
-    },
-    { 
-      title: t('categoryResep3'), 
-      content: <SlideRecipe items={items}/> 
-    },
-    { title: t('categoryResep4'), 
-      content: <SlideRecipe items={items}/> 
-    },
-    { 
-      title: t('categoryResep5'), 
-      content: <SlideRecipe items={items}/>  
-    },
-  ];
-
-  const recipeList = [
-    {
-      id: 1,
-      images: '/images/recipe_image.png',
-      headingBlog: 'Recipe Name',
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 2,
-      images: '/images/recipe_image.png',
-      headingBlog: 'Recipe Name',
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 3,
-      images: '/images/recipe_image.png',
-      headingBlog: 'Recipe Name',
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 4,
-      images: '/images/recipe_image.png',
-      headingBlog: 'Recipe Name',
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 5,
-      images: '/images/recipe_image.png',
-      headingBlog: 'Recipe Name',
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-  ]
+  // const recipeList = [
+  //   {
+  //     id: 1,
+  //     images: '/images/recipe_image.png',
+  //     headingBlog: 'Recipe Name',
+  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+  //   },
+  //   {
+  //     id: 2,
+  //     images: '/images/recipe_image.png',
+  //     headingBlog: 'Recipe Name',
+  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+  //   },
+  //   {
+  //     id: 3,
+  //     images: '/images/recipe_image.png',
+  //     headingBlog: 'Recipe Name',
+  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+  //   },
+  //   {
+  //     id: 4,
+  //     images: '/images/recipe_image.png',
+  //     headingBlog: 'Recipe Name',
+  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+  //   },
+  //   {
+  //     id: 5,
+  //     images: '/images/recipe_image.png',
+  //     headingBlog: 'Recipe Name',
+  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+  //   },
+  // ]
 
   const slideBlog = [
     {
@@ -179,135 +134,107 @@ export default function Recipe() {
 
   const secondColor = 'creamColor'
   const paginationStyle = 'old_red_color'
-
-  useEffect(() => {
-    if (window.innerWidth <= 768) {
-    // Handle overflow on body
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'; // Body tidak bisa di-scroll
-    } else {
-      document.body.style.overflow = 'auto'; // Body bisa di-scroll
-    }
-
-    // Cleanup function to reset overflow when component unmounts or isOpen changes
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }
-  }, [isOpen]);
-
-  const handleSelectMenu = (menu) => {
-    setSelectedMenu(menu);
-    setIsOpen(false);
-  };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsOpen(false);
-    };
-
-    const handleClickOutside = (event) => {
-      if (!event.target.closest(`.${styles.dropdownMenu}`)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      document.addEventListener('mousedown', handleClickOutside);
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  const [height, setHeight] = useState(360); // Default height
-  const [isMobile, setIsMobile] = useState(false);
-  const contentRef = useRef(null);
-  const startY = useRef(0); // Define startY as a useRef variable
-  const startHeight = useRef(0);
-  const lastY = useRef(0); // To track the last Y position
-  const lastTime = useRef(0); // To track the last time for flick detection
-
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
-
-    return () => {
-      window.removeEventListener('resize', checkIsMobile);
-    };
-  }, []);
-
-  useEffect(() => {
-    const contentElement = contentRef.current;
-    if (contentElement) {
-      if (height >= window.innerHeight) {
-        contentElement.style.maxHeight = '100vh';
-        contentElement.style.overflowY = 'scroll';
-      } else {
-        contentElement.style.maxHeight = `${height}px`;
-        contentElement.style.overflowY = 'hidden';
-      }
-    }
-  }, [height]);
-
-  const handleStart = (clientY) => {
-    if (!isMobile) return;
-    startY.current = clientY;
-    startHeight.current = height;
-    lastY.current = clientY;
-    lastTime.current = Date.now();
-  };
-
-  const handleMove = (clientY) => {
-    if (!isMobile) return;
-  
-    const currentTime = Date.now();
-    const deltaY = clientY - lastY.current;
-    const deltaTime = currentTime - lastTime.current;
-  
-    // Update last positions and times
-    lastY.current = clientY;
-    lastTime.current = currentTime;
-  
-    const flickSpeed = deltaY / deltaTime;
-  
-    if (flickSpeed < -0.5) { // Adjust the threshold as needed for flick up
-      setHeight(window.innerHeight);
-    } else if (flickSpeed > 0.5) { // Adjust the threshold as needed for flick down
-      setHeight(360); // Default height
-      setIsOpen(false); // Close dropdown when flicking down
-    }
-  };
-
-  const handleTouchStart = (e) => {
-    handleStart(e.touches[0].clientY);
-  };
-
-  const handleTouchMove = (e) => {
-    handleMove(e.touches[0].clientY);
-  };
-
-  const handleMouseDown = (e) => {
-    handleStart(e.clientY);
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  };
-
-  const handleMouseMove = (e) => {
-    handleMove(e.clientY);
-  };
-
-  const handleMouseUp = () => {
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mouseup', handleMouseUp);
-  };
-
   const pageTitle = `House Kari | ${t('menu.recipe')}`;
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('/api/recipe-categories');
+        setCategories(response.data.data); // Set the first tab as active by default
+        setActiveTab(response.data.data[0]?.id); 
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchProducts = async (id) => {
+      try {
+        const response = await axios.get(`/api/recipeByCategories/${id}`);
+        setProducts(response.data.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    // Fetch products initially for the first tab
+    if (activeTab !== null) {
+      fetchProducts(activeTab);
+    }
+  }, [activeTab]);
+
+  const getCategoryName = (category) => {
+    switch (i18n.language) {
+      case 'en':
+        return category.name_en || category.name;
+      case 'zh':
+        return category.name_chi || category.name;
+      default:
+        return category.name;
+    }
+  };
+
+  const getProductName = (product) => {
+    switch (i18n.language) {
+      case 'en':
+        return product.title_en || product.title;
+      case 'zh':
+        return product.title_chi || product.title;
+      default:
+        return product.title;
+    }
+  };
+
+  const getDescriptionName = (product) => {
+    switch (i18n.language) {
+      case 'en':
+        return product.description_en || product.description;
+      case 'zh':
+        return product.description_chi || product.description;
+      default:
+        return product.description;
+    }
+  };
+
+  const handleSetActiveTab = (id) => {
+    setActiveTab(id);
+  };
+
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  const stripPTags = (html) => {
+    return html.replace(/<p[^>]*>|<\/p>/g, '');
+};
+
+const [recipeList, setRecipeList] = useState([]);
+
+    useEffect(() => {
+        const fetchRecipes = async () => {
+            try {
+                const response = await axios.get('/api/all-recipes');
+                setRecipeList(response.data.data);
+            } catch (error) {
+                console.error('Error fetching recipes:', error);
+            }
+        };
+
+        fetchRecipes();
+    }, []);
+
+    const getRecipeTitle = (recipe) => {
+      switch (i18n.language) {
+          case 'en':
+              return recipe.title_en || recipe.title;
+          case 'zh':
+              return recipe.title_chi || recipe.title;
+          default:
+              return recipe.title;
+      }
+  };
 
   return (
     <>
@@ -325,40 +252,46 @@ export default function Recipe() {
         <img src="/images/sendok_recipe_slide.png" alt="House Kari" className={styles.sendok_recipe_slide}/>
         <div className={styles.tabContainer}>
           <div className={styles.tabHeaders}>
-            {tabs.map((tab, index) => (
+            {categories.map(category => (
               <button
-                key={index}
-                className={`${styles.tabHeader} ${index === activeTab ? styles.active : ''}`}
-                onClick={() => setActiveTab(index)}
+                key={category.id}
+                onClick={() => handleSetActiveTab(category.id)}
+                className={`${styles.tabHeader} ${activeTab === category.id ? styles.active : ''}`}
               >
-                {tab.title} 
+                {getCategoryName(category)}
               </button>
             ))}
           </div>
-          <div className={styles.select_menu_product}>
-            <button 
-              className={`${styles.dropdownButton} ${isOpen ? styles.activeButton : ''}`}  
-              onClick={toggleDropdown}
-            >
-              {selectedMenu} <IoChevronDown />
-            </button>
-            <div onTouchStart={handleTouchStart} 
-            onTouchMove={handleTouchMove}
-            onMouseDown={handleMouseDown} className={`${styles.dropdownMenu} ${isOpen ? styles.active : ''}`} style={{ height: isMobile ? `${height}px` : 'auto' }}>
-              <div className={styles.circle_menu}><div className={styles.circle_menu_box}></div></div>
-              {menuItems.map((menu, index) => (
-                <div
-                  key={index}
-                  className={`${styles.dropdownMenuItem} ${selectedMenu === menu ? styles.active : ''}`}
-                  onClick={() => handleSelectMenu(menu)}
-                >
-                  {menu}
-                </div>
-              ))}
-            </div>
-          </div>
           <div className={styles.tabContent}>
-            {tabs[activeTab].content}
+          <h1 className='headingRecipeSlide'>{t('featuredRecipe')}</h1>
+            <Swiper 
+              slidesPerView={3}
+              spaceBetween={0}
+              loop={true}
+              centeredSlides={true}
+              pagination={{
+              clickable:true
+              }}
+              modules={[Pagination]}
+              className="mySwiperRecipe"
+            >
+              {products
+            .filter(product => product.category_id === activeTab)
+            .map(product => (
+                <SwiperSlide key={product.id}>
+                    <div className='slideItemRecipe'>
+                        <div className='imageRecipe'>
+                            <img src={`https://prahwa.net/storage/${product.image}`} alt={product.name} />
+                        </div>
+                        <div className='contentRecipe'>
+                            <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getProductName(product)) }}></h1>
+                            <p dangerouslySetInnerHTML={{ __html: getDescriptionName(product) }}></p>
+                            <Link href={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+                        </div>
+                    </div>
+                </SwiperSlide>
+            ))}
+            </Swiper>
           </div>
         </div>
       </div>
@@ -367,7 +300,10 @@ export default function Recipe() {
         <div className={styles.space_between_heading}>
           <h1 className={styles.heading_main_white}>{t('otherRecipe')}</h1>
         </div>
-        <SlideArticles items={recipeList} />
+        <SlideArticles items={recipeList.map(recipe => ({
+            ...recipe,
+            title: stripPTags(getRecipeTitle(recipe)),
+        }))} />
         <SlideArticlesMobile items={recipeList}/>
         <div className={styles.divider}></div>
       </div>

@@ -66,7 +66,7 @@ const JapaneseProduct = () => {
                 <h1>{product.headingProduct}</h1>
                 <span>{product.weight}</span>
                 <Link href={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
-            </div>
+            </div> 
         </div>
       ))}
     </div>

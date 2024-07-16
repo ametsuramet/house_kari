@@ -246,7 +246,7 @@ const pageTitle = `House Kari | ${t('menu.companyProfile')}`;
       <div className={styles.bg_section}>
         <div className={styles.section1}>
           <div className={styles.section1_image}>
-            <img src="/images/section_2_image.png" alt="House Kari Website" />
+            <img src="/images/company_profile_section.png" alt="House Kari Website" />
           </div>
           <div className={styles.section1_content}>
             <h1>PT. HOUSE AND VOX INDONESIA</h1>
