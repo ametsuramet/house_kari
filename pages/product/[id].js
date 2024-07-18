@@ -11,10 +11,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export async function getStaticPaths() {
-  const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
   
   try {
-    const response = await fetch(`${baseUrl}/api/product`);
+    const response = await fetch(`/api/product`);
     const data = await response.json();
 
     const products = data.data || data;
@@ -36,10 +35,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params, locale }) {
-  const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
   
   try {
-    const response = await fetch(`${baseUrl}/api/product-detail/${params.id}`);
+    const response = await fetch(`/api/product-detail/${params.id}`);
     const data = await response.json();
     const product = data.data;
 
