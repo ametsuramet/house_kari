@@ -160,6 +160,10 @@
     width: 100%;
     position: relative;
     height: 20.5vw;
+    display: block;
+  }
+  .section3Mobile{
+    display: none;
   }
   .section3_layout{
     width: 100%;
@@ -215,7 +219,7 @@
     margin-bottom: 1.14vw;
   }
   .section3_ecommerce{
-    margin-top: .1vw;
+    margin-top: 2vw;
   }
   .section3_ecommerce h2{
     font-size: 1.3vw;
@@ -237,6 +241,7 @@
     height: 1.9vw;
     position: relative;
     padding: .55vw;
+    color: white;
   }
   .shopee{
     background-color: #EE4D2D;
@@ -312,13 +317,57 @@
 }
 
 @media (max-width:768px) {
+  .tabs {
+    width: 100%;
+    z-index: 3;
+    padding-top: 4vw;
+  }
+  .tabHeaders {
+    display: flex;
+    justify-content: center;
+    gap: 2.8vw;
+    padding: 0 6vw;
+    margin-bottom: 6.5vw;
+    width: max-content;
+  }
+  .tabHeadersLayout{
+    width: 100%;
+    overflow-x: scroll;
+  }
+  .tabHeadersLayout::-webkit-scrollbar{
+    display: none;
+  }
+  .tabHeader {
+    padding: 1.7vw 5vw;
+    cursor: pointer;
+    background: transparent;
+    border: .11vw solid var(--old_red);
+    border-radius: 100vw; 
+    font-size: 3.5vw;
+    font-weight: 600;
+    color: var(--old_red);
+    outline: none;
+  }
+  .tabContent {
+    padding: 0;
+  }
   .section1{
-    padding: 2.4vw 6vw;
+    padding: 2.4vw 0;
     padding-bottom: 5.5vw;
   }
+  .productLayoutBox{
+    width: 100%;
+    overflow-x: scroll;
+  }
+  .productLayoutBox::-webkit-scrollbar{
+    display: none;
+  }
   .productLayout{
+    display: flex;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 3.4vw;
+    padding: 0 6vw;
+    width: max-content;
   }
   .boxProduct{
     border-radius: 4vw;
@@ -326,14 +375,19 @@
   }
   .imageProduct{
     width: 100%;
-    height: 27vw;
+    height: 33vw;
     padding: 3vw 3vw;
   }
   .contentProduct{
-    padding: 3vw;
+    padding: 4vw 3vw;
   }
   .contentProduct h1{
     font-size: 3.4vw;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .contentProduct span{
     font-size: 2.7vw;
@@ -376,18 +430,37 @@
     margin-bottom: 1.8vw;
   }
   .section3{
-    height: 100.5vw;
+    height:max-content;
+    display: none;
+  }
+  .section3Mobile{
+    display: block;
+    padding: 0 0;
+  }
+  .section3_box_mobile{
+    background-image: url(../public/images/bg_product_details.png);
+    background-position: center;
+    background-size: cover;
+    padding: 0 6vw;
+    padding-top: 4vw;
   }
   .section3_layout{
+    padding: 0 0;
+    position: relative;
+    top: 0;
+  }
+  .section3_box_mobile_content{
     padding: 0 6vw;
-    top: 5.6vw;
+    background: linear-gradient(90deg, #651318 0%, #B4000B 100%);
   }
   .section3_box{
     grid-template-columns: repeat(1, 1fr);
-    border-radius: 6vw;
+    border-radius: 0;
   }
   .section3_image{
     height: 74vw;
+    border-radius: 8vw 8vw 0 0;
+    overflow: hidden;
   }
   .section3_image img{
     width: 82%;
@@ -395,6 +468,8 @@
   }
   .section3_content{
     padding:5.5vw 6vw;
+    background-color: #fffcf4;
+    border-radius: 0 0 8vw 8vw;
   }
   .section3_content h1{
     font-size: 4.1vw;
@@ -436,15 +511,16 @@
   }
 
   .section4{
-    padding: 4.8vw 6vw;
-    padding-top: 92vw;
-    padding-bottom: 7.5vw;
+    padding: 4.8vw 0;
+    padding-top: 14vw;
+    padding-bottom: 12.5vw;
   }
   .section4_heading{
-    margin-bottom: 6vw;
+    margin-bottom: 8vw;
   }
   .section4_heading h1{
     font-size: 4.1vw;
+    
   }
 
   .section5{

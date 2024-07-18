@@ -54,39 +54,6 @@ export default function Product() {
     fetchProducts();
   }, []);
 
-  // const recipeList = [
-  //   {
-  //     id: 1,
-  //     images: '/images/recipe_image.png',
-  //     headingBlog: 'Recipe Name',
-  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-  //   },
-  //   {
-  //     id: 2,
-  //     images: '/images/recipe_image.png',
-  //     headingBlog: 'Recipe Name',
-  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-  //   },
-  //   {
-  //     id: 3,
-  //     images: '/images/recipe_image.png',
-  //     headingBlog: 'Recipe Name',
-  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-  //   },
-  //   {
-  //     id: 4,
-  //     images: '/images/recipe_image.png',
-  //     headingBlog: 'Recipe Name',
-  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-  //   },
-  //   {
-  //     id: 5,
-  //     images: '/images/recipe_image.png',
-  //     headingBlog: 'Recipe Name',
-  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-  //   },
-  // ]
-
   const pageTitle = `House Kari | ${t('menu.product')}`;
 
   const getCategoryName = (category) => {
@@ -157,33 +124,37 @@ const [recipeList, setRecipeList] = useState([]);
         <img src="/images/tab_icon_image.png" alt="House Kari" className={styles.tab_icon_image}/>
         <img src="/images/tab_icon_image2.png" alt="House Kari" className={styles.tab_icon_image2}/>
         <div className={styles.tabs}>
-          <div className={styles.tabHeaders}>
-            {categories.map(category => (
-              <button
-                key={category.id}
-                onClick={() => setActiveTab(category.id)}
-                className={`${styles.tabHeader} ${activeTab === category.id ? styles.active : ''}`}
-              >
-                {getCategoryName(category)}
-              </button>
-            ))}
+          <div className={styles.tabHeadersLayout}>
+            <div className={styles.tabHeaders}>
+              {categories.map(category => (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveTab(category.id)}
+                  className={`${styles.tabHeader} ${activeTab === category.id ? styles.active : ''}`}
+                >
+                  {getCategoryName(category)}
+                </button>
+              ))}
+            </div>
           </div>
           <div className={styles.tabContent}>
-            <div className={styles.productLayout}>
-              {products
-              .filter(product => product.category_id === activeTab)
-              .map(product => (
-                <div key={product.id} className={styles.boxProduct}>
-                  <div className={styles.imageProduct}>
-                      <img src={`https://prahwa.net/storage/${product.image}`} alt={product.name} />
+            <div className={styles.productLayoutBox}>
+              <div className={styles.productLayout}>
+                {products
+                .filter(product => product.category_id === activeTab)
+                .map(product => (
+                  <div key={product.id} className={styles.boxProduct}>
+                    <div className={styles.imageProduct}>
+                        <img src={`https://prahwa.net/storage/${product.image}`} alt={product.name} />
+                    </div>
+                    <div className={styles.contentProduct}>
+                        <h1>{getProductName(product)}</h1>
+                        <span>{product.weight}g</span>
+                        <Link href={`/product/[id]`} as={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+                    </div> 
                   </div>
-                  <div className={styles.contentProduct}>
-                      <h1>{getProductName(product)}</h1>
-                      <span>{product.weight}g</span>
-                      <Link href={`/product/[id]`} as={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
-                  </div> 
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>

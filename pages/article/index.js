@@ -8,6 +8,7 @@ import { IoChevronDown } from "react-icons/io5";
 import SlideArticlesMobile from "../components/slide_articles_mobile";
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+import axios from "axios";
 
 export async function getStaticProps({ locale }) {
   return {
@@ -18,10 +19,25 @@ export async function getStaticProps({ locale }) {
 }
 
 export default function Article() {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState('Article');
+
+  const [recipeList, setRecipeList] = useState([]);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+        try {
+            const response = await axios.get('/api/all-recipes');
+            setRecipeList(response.data.data);
+        } catch (error) {
+            console.error('Error fetching recipes:', error);
+        }
+    };
+
+    fetchRecipes();
+}, []);
 
   const recentBlog = [
     {
@@ -38,39 +54,6 @@ export default function Article() {
       headingBlog: t('headline'),
       descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
     }
-  ]
-
-  const recipeList = [
-    {
-      id: 1,
-      images: '/images/recipe_image.png',
-      headingBlog: 'Recipe Name',
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 2,
-      images: '/images/recipe_image.png',
-      headingBlog: 'Recipe Name',
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 3,
-      images: '/images/recipe_image.png',
-      headingBlog: 'Recipe Name',
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 4,
-      images: '/images/recipe_image.png',
-      headingBlog: 'Recipe Name',
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 5,
-      images: '/images/recipe_image.png',
-      headingBlog: 'Recipe Name',
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
   ]
 
   const slideBlog = [
@@ -282,6 +265,25 @@ export default function Article() {
     document.removeEventListener('mouseup', handleMouseUp);
   };
 
+  const getRecipeTitle = (recipe) => {
+    switch (i18n.language) {
+        case 'en':
+            return recipe.title_en || recipe.title;
+        case 'zh':
+            return recipe.title_chi || recipe.title;
+        default:
+            return recipe.title;
+    }
+};
+
+const stripPTags = (html) => {
+  if (typeof html === 'string') {
+    return html.replace(/<p[^>]*>|<\/p>/g, '');
+  } else {
+    return html;
+  }
+};
+
   const pageTitle = `House Kari | ${t('menu.article')}`;
 
   return (
@@ -363,8 +365,16 @@ export default function Article() {
           <div className={styles.space_between_heading}>
               <h1 className={styles.heading_main_red}>{t('headingRecipe')}</h1>
           </div>
-          <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={recipeList} />
-          <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={recipeList} />
+          {/* <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={recipeList} />
+          <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={recipeList} /> */}
+          <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={recipeList.map(recipe => ({
+          ...recipe,
+              title: stripPTags(getRecipeTitle(recipe)),
+          }))} />
+          <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={recipeList.map(recipe => ({
+              ...recipe,
+              title: stripPTags(getRecipeTitle(recipe)),
+          }))} />
       </div>
     </>
   );

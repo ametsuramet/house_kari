@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import banner from '@/styles/Banner.module.css'
 import Head from 'next/head';
 import styles from '@/styles/Recipe.module.css'
@@ -7,82 +7,125 @@ import Link from 'next/link';
 import SlideArticlesMobile from '../components/slide_articles_mobile';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
-const recipes = [
-    { id: '1', name: 'Product 1' },
-    { id: '2', name: 'Product 2' },
-    // Tambahkan produk lainnya
-  ];
+const API_RECIPE_DETAIL_URL = process.env.NEXT_PUBLIC_API_RECIPE_DETAIL_URL || 'http://localhost:3000/api/recipe-detail';
 
-export async function getStaticPaths() {
-    // Buat jalur berdasarkan produk yang tersedia
-    const paths = recipes.map((recipe) => ({
-      params: { id: recipe.id },
-      locale: 'id', // Mengatur default bahasa ke Indonesia
-    }));
-  
-    // Jika menggunakan beberapa bahasa, tambahkan jalur untuk setiap bahasa
-    const locales = ['id', 'en', 'zh'];
-    const allPaths = paths.flatMap((path) =>
-      locales.map((locale) => ({ ...path, locale }))
-    );
-  
-    return { paths: allPaths, fallback: false };
-  }
-  
-  export async function getStaticProps({ params, locale }) {
-    // Ambil data produk berdasarkan ID
-    const recipe = recipes.find((p) => p.id === params.id);
-  
+export async function getServerSideProps(context) {
+  const { id } = context.params;
+
+  try {
+    const response = await fetch(`${API_RECIPE_DETAIL_URL}/${id}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch product detail');
+    }
+    const recipe = await response.json();
+
+    console.log('Product Detail API Response:', recipe); // Log the API response
+
     return {
       props: {
+        ...(await serverSideTranslations(context.locale, ['common'])),
         recipe,
-        ...(await serverSideTranslations(locale, ['common'])),
+      },
+    };
+  } catch (error) {
+    console.error('Fetch product error:', error);
+    return {
+      props: {
+        ...(await serverSideTranslations(context.locale, ['common'])),
+        recipe: null,
       },
     };
   }
+}
+
+// const recipes = [
+//     { id: '1', name: 'Product 1' },
+//     { id: '2', name: 'Product 2' },
+//     // Tambahkan produk lainnya
+//   ];
+
+// export async function getStaticPaths() {
+//     // Buat jalur berdasarkan produk yang tersedia
+//     const paths = recipes.map((recipe) => ({
+//       params: { id: recipe.id },
+//       locale: 'id', // Mengatur default bahasa ke Indonesia
+//     }));
+  
+//     // Jika menggunakan beberapa bahasa, tambahkan jalur untuk setiap bahasa
+//     const locales = ['id', 'en', 'zh'];
+//     const allPaths = paths.flatMap((path) =>
+//       locales.map((locale) => ({ ...path, locale }))
+//     );
+  
+//     return { paths: allPaths, fallback: false };
+//   }
+  
+//   export async function getStaticProps({ params, locale }) {
+//     // Ambil data produk berdasarkan ID
+//     const recipe = recipes.find((p) => p.id === params.id);
+  
+//     return {
+//       props: {
+//         recipe,
+//         ...(await serverSideTranslations(locale, ['common'])),
+//       }, 
+//     };
+//   }
 
 const RecipeDetail = () => {
-    const { t } = useTranslation('common');
-
+    const { t, i18n } = useTranslation('common');
+    const router = useRouter();
+    const { id } = router.query;
+    const [loading, setLoading] = useState(true);
     const [isActive, setIsActive] = useState(false);
+    const [detail, setDetail] = useState(null);
+
+    const [recipeList, setRecipeList] = useState([]);
+
+    useEffect(() => {
+      const fetchRecipes = async () => {
+        try {
+          const response = await axios.get('/api/all-recipes');
+          const recipes = response.data.data;
+  
+          // Filter out recipes with the same ID as router.query.id
+          const filteredRecipes = recipes.filter(recipe => recipe.id !== Number(id));
+          
+          setRecipeList(filteredRecipes);
+        } catch (error) {
+          console.error('Error fetching recipes:', error);
+        }
+      };
+  
+      if (id) {
+        fetchRecipes();
+      }
+    }, [id]);
+
+    useEffect(() => {
+      const fetchProduct = async () => {
+        if (id) {
+          try {
+            const response = await axios.get(`${API_RECIPE_DETAIL_URL}/${id}`);
+            setDetail(response.data.data); // Perhatikan pengaturan data detail di sini
+            setLoading(false);
+            console.log('Fetched product:', response.data.data);
+          } catch (error) {
+            console.error('Error fetching product:', error);
+            setLoading(false);
+          }
+        }
+      };
+    
+      fetchProduct();
+    }, [id]);
 
     const togglePopup = () => {
         setIsActive(!isActive); 
     };
-
-    const recipeList = [
-        { 
-          id: 1,
-          images: '/images/recipe_image.png',
-          headingBlog: 'Recipe Name',
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-        {
-          id: 2,
-          images: '/images/recipe_image.png',
-          headingBlog: 'Recipe Name',
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-        {
-          id: 3,
-          images: '/images/recipe_image.png',
-          headingBlog: 'Recipe Name',
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-        {
-          id: 4,
-          images: '/images/recipe_image.png',
-          headingBlog: 'Recipe Name',
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-        {
-          id: 5,
-          images: '/images/recipe_image.png',
-          headingBlog: 'Recipe Name',
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-      ]
 
       const slideBlog = [
         {
@@ -136,10 +179,90 @@ const RecipeDetail = () => {
           },
       ];
 
+      if (router.isFallback || loading) {
+        return <p>Loading...</p>;
+      }
+      
+      if (!detail) {
+        return <p>Product not found</p>;
+      }
+
       const secondColor = 'creamColor'
       const paginationStyle = 'old_red_color'
 
-      const pageTitle = `House Kari | ${t('menu.recipe')} A`;
+      const getProductName = (detail) => {
+        switch (i18n.language) {
+          case 'en':
+            return detail.title_en || detail.title;
+          case 'zh':
+            return detail.title_chi || detail.title;
+          default:
+            return detail.title;
+        }
+      };
+
+      const getDescName = (detail) => {
+        switch (i18n.language) {
+          case 'en':
+            return detail.description_en || detail.description;
+          case 'zh':
+            return detail.description_chi || detail.description;
+          default:
+            return detail.description;
+        }
+      };
+
+      const getIngredients = (detail) => {
+        switch (i18n.language) {
+          case 'en':
+            return detail.ingredients_en || detail.ingredients;
+          case 'zh':
+            return detail.ingredients_chi || detail.ingredients;
+          default:
+            return detail.ingredients;
+        }
+      };
+
+      const renderIngredients = (ingredients) => {
+        return { __html: ingredients }; // Memasukkan teks HTML ke dalam objek dengan __html
+      };
+
+      const getHowTo = (detail) => {
+        switch (i18n.language) {
+          case 'en':
+            return detail.howToMake_en || detail.howToMake;
+          case 'zh':
+            return detail.howToMake_chi || detail.howToMake;
+          default:
+            return detail.howToMake;
+        }
+      };
+
+      const getRecipeTitle = (recipe) => {
+        switch (i18n.language) {
+            case 'en':
+                return recipe.title_en || recipe.title;
+            case 'zh':
+                return recipe.title_chi || recipe.title;
+            default:
+                return recipe.title;
+        }
+    };
+
+      const renderhowToMake = (howToMake) => {
+        return { __html: howToMake }; // Memasukkan teks HTML ke dalam objek dengan __html
+      };
+
+      const stripPTags = (html) => {
+        if (typeof html === 'string') {
+          return html.replace(/<p[^>]*>|<\/p>/g, '');
+        } else {
+          return html;
+        }
+      };
+
+      // const pageTitle = `House Kari | ${t('menu.recipe')} A`;
+      const pageTitle = detail ? `House Kari | ${stripPTags(getProductName(detail))}` : 'House Kari';
 
     return(
         <>
@@ -151,56 +274,29 @@ const RecipeDetail = () => {
             <img src="/images/recipe_banner.png" alt="House Kari Website"/>
         </div>
         <div className={banner.breadcrumbs}>
-            <p>{t('menu.home')} / {t('menu.recipe')} / <span>{t('kariKroket')}</span></p>
+            <p>{t('menu.home')} / {t('menu.recipe')} / <span>{stripPTags(getProductName(detail))}</span></p>
         </div>
         <div className={styles.section4}>
             <div className={styles.section4_layout}>
                   <div className={styles.section4_image_layout}>
                     <div className={styles.section4_image}>
-                        <img src='/images/recipe_detail.png' alt='House Kari'/>
+                        <img src={`https://prahwa.net/storage/${detail.image}`} alt={detail.name} />
                         <div className={styles.section4_overlay}></div>
                     </div>
                   </div>
                   <div className={styles.section4_content_layout}>
                     <div className={styles.section4_content}>
                         <div className={styles.recipeDetail}>
-                            <h1>{t('kariKroket')}</h1>
-                            <p>{t('resepDetailDesc')}</p>
+                            <h1>{stripPTags(getProductName(detail))}</h1>
+                            <p>{stripPTags(getDescName(detail))}</p>
                         </div>
                         <div className={styles.recipeBahan}>
                             <h3 className={styles.headingRecipeDetail}>{t('bahan')}</h3>
-                            <ul>
-                                <li>{t('listBahan1')}</li>
-                                <li>{t('listBahan2')}</li>
-                                <li>{t('listBahan3')}</li>
-                                <li>{t('listBahan4')}</li>
-                                <li>{t('listBahan5')}</li>
-                                <li>{t('listBahan6')}</li>
-                                <li>{t('listBahan7')}</li>
-                                <li>{t('listBahan8')}</li>
-                                <li>{t('listBahan9')}</li>
-                                <li>{t('listBahan10')}</li>
-                                <li>{t('listBahan11')}</li>
-                                <li>{t('listBahan12')}</li>
-                                <li>{t('listBahan13')}</li>
-                                <li>{t('listBahan14')}</li>
-                                <li>{t('listBahan15')}</li>
-                            </ul>
+                            <div dangerouslySetInnerHTML={renderIngredients(getIngredients(detail))}></div>
                         </div>
                         <div className={styles.recipeCara}>
                             <h3 className={styles.headingRecipeDetail}>{t('caraBuat')}</h3>
-                            <ul>
-                                <li>{t('listCaraBuat1')}</li>
-                                <li>{t('listCaraBuat2')}</li>
-                                <li>{t('listCaraBuat3')}</li>
-                                <li>{t('listCaraBuat4')}</li>
-                                <li>{t('listCaraBuat5')}</li>
-                                <li>{t('listCaraBuat6')}</li>
-                                <li>{t('listCaraBuat7')}</li>
-                                <li>{t('listCaraBuat8')}</li>
-                                <li>{t('listCaraBuat9')}</li>
-                                <li>{t('listCaraBuat10')}</li>
-                            </ul>
+                            <div dangerouslySetInnerHTML={renderhowToMake(getHowTo(detail))}></div>
                         </div>
                     </div>
                     <button onClick={togglePopup} className={styles.btn_download}>{t('download')}</button>
@@ -211,8 +307,14 @@ const RecipeDetail = () => {
             <div className={styles.space_between_heading}>
             <h1 className={styles.heading_main_white}>{t('otherRecipe')}</h1>
             </div>
-            <SlideArticles items={recipeList} />
-            <SlideArticlesMobile items={recipeList} />
+            <SlideArticles items={recipeList.map(recipe => ({
+            ...recipe,
+                title: stripPTags(getRecipeTitle(recipe)),
+            }))} />
+            <SlideArticlesMobile items={recipeList.map(recipe => ({
+                ...recipe,
+                title: stripPTags(getRecipeTitle(recipe)),
+            }))} />
             <div className={styles.divider}></div>
         </div>
         <div className={styles.section3}>
@@ -225,9 +327,22 @@ const RecipeDetail = () => {
         </div>
         <div className={`${styles.popup} ${isActive ? styles.active : ''}`}>
             <div className={styles.popupContent}>
-                <Link href='#'><button>Western Cookbook</button></Link>
-                <Link href='#'><button>Chinese Cookbook</button></Link>
-                <Link href='#'><button>Indonesian Cookbook</button></Link>
+              {detail.coockbook_en && (
+                <Link href={`https://prahwa.net/storage/${detail.coockbook_en}`} target='_blank'>
+                  <button>Western Cookbook</button>
+                </Link>
+              )}
+              {detail.coockbook_chi && (
+                <Link href={`https://prahwa.net/storage/${detail.coockbook_chi}`} target='_blank'>
+                  <button>Chinese Cookbook</button>
+                </Link>
+              )}
+              {detail.coockbook && (
+                <Link href={`https://prahwa.net/storage/${detail.coockbook}`} target='_blank'>
+                  <button>Indonesian Cookbook</button>
+                </Link>
+              )}
+
                 <span onClick={togglePopup} className={styles.closeButton}>X</span>
             </div>
         </div>

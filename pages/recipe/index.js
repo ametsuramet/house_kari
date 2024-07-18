@@ -275,7 +275,7 @@ const [recipeList, setRecipeList] = useState([]);
                         <div className='contentRecipe'>
                           <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getProductName(recipe)) }}></h1>
                           <p dangerouslySetInnerHTML={{ __html: getDescriptionName(recipe) }}></p>
-                          <Link href={`#`}><button>{t('section1Home.learnMore')}</button></Link>
+                          <Link href={`/recipe/[id]`} as={`/recipe/${recipe.id}`}><button>{t('section1Home.learnMore')}</button></Link>
                         </div>
                       </div>
                     </SwiperSlide>
@@ -307,7 +307,7 @@ const [recipeList, setRecipeList] = useState([]);
                           <div className="contentRecipe">
                             <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getProductName(recipe)) }}></h1>
                             <p dangerouslySetInnerHTML={{ __html: getDescriptionName(recipe) }}></p>
-                            <Link href={`/product/${recipe.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+                            <Link href={`/recipe/[id]`} as={`/recipe/${recipe.id}`}><button>{t('section1Home.learnMore')}</button></Link>
                           </div>
                         </div>
                     </div>

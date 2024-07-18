@@ -247,6 +247,10 @@
   top: 0;
   object-fit: cover;
   object-position: center;
+  transition: .4s all;
+}
+.box_articles_images:hover img{
+  transform: scale(1.1);
 }
 .box_articles_content{
   padding: 1.2vw 1.2vw;

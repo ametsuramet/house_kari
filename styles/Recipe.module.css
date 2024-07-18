@@ -210,6 +210,9 @@
     color: #363636;
     list-style-type: decimal;
 }
+.recipeCara ul li ul li{
+  list-style: circle;
+}
 .section4_layout a{
     text-decoration: none;
 }
@@ -472,8 +475,8 @@
       }
       .section_2_recipe_icon{
         right: 0;
-        top: 29vw;
-        width: 30vw;
+        top: 22vw;
+        width: 35vw;
     }
 
     .section3{
