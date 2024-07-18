@@ -27,11 +27,16 @@ export async function getStaticProps({ locale }) {
   };
 }
 
+const chunkArray = (arr, chunkSize) => {
+  const result = [];
+  for (let i = 0; i < arr.length; i += chunkSize) {
+    result.push(arr.slice(i, i + chunkSize));
+  }
+  return result;
+};
+
 export default function Recipe() {
   const { t, i18n } = useTranslation('common');
-
-  const [activeTab, setActiveTab] = useState(0);
-
   const [isOpen, setIsOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState('Bread & Pastry');
 
@@ -46,39 +51,6 @@ export default function Recipe() {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-
-  // const recipeList = [
-  //   {
-  //     id: 1,
-  //     images: '/images/recipe_image.png',
-  //     headingBlog: 'Recipe Name',
-  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-  //   },
-  //   {
-  //     id: 2,
-  //     images: '/images/recipe_image.png',
-  //     headingBlog: 'Recipe Name',
-  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-  //   },
-  //   {
-  //     id: 3,
-  //     images: '/images/recipe_image.png',
-  //     headingBlog: 'Recipe Name',
-  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-  //   },
-  //   {
-  //     id: 4,
-  //     images: '/images/recipe_image.png',
-  //     headingBlog: 'Recipe Name',
-  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-  //   },
-  //   {
-  //     id: 5,
-  //     images: '/images/recipe_image.png',
-  //     headingBlog: 'Recipe Name',
-  //     descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-  //   },
-  // ]
 
   const slideBlog = [
     {
@@ -136,12 +108,19 @@ export default function Recipe() {
   const paginationStyle = 'old_red_color'
   const pageTitle = `House Kari | ${t('menu.recipe')}`;
 
+  const [recipes, setRecipes] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [activeTab, setActiveTab] = useState(0); // State untuk menyimpan indeks tab aktif
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get('/api/recipe-categories');
-        setCategories(response.data.data); // Set the first tab as active by default
-        setActiveTab(response.data.data[0]?.id); 
+        const categoriesData = response.data.data;
+        setCategories(categoriesData);
+        if (categoriesData.length > 0) {
+          setSelectedCategory(categoriesData[0].id);
+        }
       } catch (error) {
         console.error('Error fetching categories:', error);
       }
@@ -151,20 +130,18 @@ export default function Recipe() {
   }, []);
 
   useEffect(() => {
-    const fetchProducts = async (id) => {
+    const fetchRecipes = async () => {
+      if (!selectedCategory) return;
       try {
-        const response = await axios.get(`/api/recipeByCategories/${id}`);
-        setProducts(response.data.data);
+        const response = await axios.get(`/api/recipeByCategories/${selectedCategory}`);
+        setRecipes(response.data.data);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error fetching recipes:', error);
       }
     };
 
-    // Fetch products initially for the first tab
-    if (activeTab !== null) {
-      fetchProducts(activeTab);
-    }
-  }, [activeTab]);
+    fetchRecipes();
+  }, [selectedCategory]);
 
   const getCategoryName = (category) => {
     switch (i18n.language) {
@@ -177,25 +154,25 @@ export default function Recipe() {
     }
   };
 
-  const getProductName = (product) => {
+  const getProductName = (recipe) => {
     switch (i18n.language) {
       case 'en':
-        return product.title_en || product.title;
+        return recipe.title_en || recipe.title;
       case 'zh':
-        return product.title_chi || product.title;
+        return recipe.title_chi || recipe.title;
       default:
-        return product.title;
+        return recipe.title;
     }
   };
 
-  const getDescriptionName = (product) => {
+  const getDescriptionName = (recipe) => {
     switch (i18n.language) {
       case 'en':
-        return product.description_en || product.description;
+        return recipe.description_en || recipe.description;
       case 'zh':
-        return product.description_chi || product.description;
+        return recipe.description_chi || recipe.description;
       default:
-        return product.description;
+        return recipe.description;
     }
   };
 
@@ -207,8 +184,12 @@ export default function Recipe() {
   const [categories, setCategories] = useState([]);
 
   const stripPTags = (html) => {
-    return html.replace(/<p[^>]*>|<\/p>/g, '');
-};
+    if (typeof html === 'string') {
+      return html.replace(/<p[^>]*>|<\/p>/g, '');
+    } else {
+      return html; // atau return '';
+  }
+  };
 
 const [recipeList, setRecipeList] = useState([]);
 
@@ -236,6 +217,8 @@ const [recipeList, setRecipeList] = useState([]);
       }
   };
 
+  const chunkedRecipes = chunkArray(recipes, 2);
+
   return (
     <>
       <Head>
@@ -255,43 +238,84 @@ const [recipeList, setRecipeList] = useState([]);
             {categories.map(category => (
               <button
                 key={category.id}
-                onClick={() => handleSetActiveTab(category.id)}
-                className={`${styles.tabHeader} ${activeTab === category.id ? styles.active : ''}`}
+                onClick={() => {
+                  setSelectedCategory(category.id);
+                  setActiveTab(0); // Reset tab aktif ke tab pertama saat kategori dipilih
+                }}
+                className={`${styles.tabHeader} ${selectedCategory === category.id ? styles.active : ''}`}
               >
                 {getCategoryName(category)}
               </button>
             ))}
           </div>
           <div className={styles.tabContent}>
-          <h1 className='headingRecipeSlide'>{t('featuredRecipe')}</h1>
-            <Swiper 
-              slidesPerView={3}
-              spaceBetween={0}
-              loop={true}
-              centeredSlides={true}
-              pagination={{
-              clickable:true
-              }}
-              modules={[Pagination]}
-              className="mySwiperRecipe"
-            >
-              {products
-            .filter(product => product.category_id === activeTab)
-            .map(product => (
-                <SwiperSlide key={product.id}>
-                    <div className='slideItemRecipe'>
+            <h1 className='headingRecipeSlide'>{t('featuredRecipe')}</h1>
+            {recipes.length > 0 && (
+              <Swiper
+                  slidesPerView={3}
+                  spaceBetween={0}
+                  centeredSlides={true}
+                  loop={true}
+                  autoplay={{
+                    delay: 2500,
+                    disableOnInteraction: false,
+                  }}
+                  pagination={{
+                    clickable: true,
+                  }}
+                  modules={[Pagination]}
+                  className="mySwiperRecipe"
+                >
+                  {recipes.map(recipe => (
+                    <SwiperSlide key={recipe.id}>
+                      <div className='slideItemRecipe'>
                         <div className='imageRecipe'>
-                            <img src={`https://prahwa.net/storage/${product.image}`} alt={product.name} />
+                          <img src={`https://prahwa.net/storage/${recipe.image}`} alt={recipe.title} />
                         </div>
                         <div className='contentRecipe'>
-                            <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getProductName(product)) }}></h1>
-                            <p dangerouslySetInnerHTML={{ __html: getDescriptionName(product) }}></p>
-                            <Link href={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+                          <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getProductName(recipe)) }}></h1>
+                          <p dangerouslySetInnerHTML={{ __html: getDescriptionName(recipe) }}></p>
+                          <Link href={`#`}><button>{t('section1Home.learnMore')}</button></Link>
+                        </div>
+                      </div>
+                    </SwiperSlide>
+                  ))}
+              </Swiper>        
+            )}
+            {recipes.length > 0 && (
+            <Swiper 
+                autoHeight={true}
+                slidesPerView={1}
+                spaceBetween={30}
+                loop={true}
+                centeredSlides={true}
+                pagination={{
+                  clickable:true
+                }}
+                modules={[Pagination]}
+                className="mySwiperRecipeMobile"
+                initialSlide={0}
+              >
+                {chunkedRecipes.map((chunk, index) => (
+                  <SwiperSlide key={index}>
+                    {chunk.map(recipe => (
+                    <div className="slideItemRecipe" key={index}>
+                        <div className="recipeItem">
+                          <div className="imageRecipe">
+                            <img src={`https://prahwa.net/storage/${recipe.image}`} alt={recipe.name} />
+                          </div>
+                          <div className="contentRecipe">
+                            <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getProductName(recipe)) }}></h1>
+                            <p dangerouslySetInnerHTML={{ __html: getDescriptionName(recipe) }}></p>
+                            <Link href={`/product/${recipe.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+                          </div>
                         </div>
                     </div>
-                </SwiperSlide>
-            ))}
-            </Swiper>
+                    ))}
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            )}
           </div>
         </div>
       </div>
@@ -304,7 +328,10 @@ const [recipeList, setRecipeList] = useState([]);
             ...recipe,
             title: stripPTags(getRecipeTitle(recipe)),
         }))} />
-        <SlideArticlesMobile items={recipeList}/>
+         <SlideArticlesMobile items={recipeList.map(recipe => ({
+            ...recipe,
+            title: stripPTags(getRecipeTitle(recipe)),
+        }))} />
         <div className={styles.divider}></div>
       </div>
       <div className={styles.section3}>

@@ -458,16 +458,17 @@
 
     .space_between_heading{
         margin-bottom: 3vw;
-        padding: 0 6vw;
+        padding: 0 18vw;
         justify-content: center;
+        text-align: center;
       }
       .heading_main_white{
         font-size: 4.1vw;
-        margin-bottom: 3.5vw;
+        margin-bottom: 4.5vw;
       }
       .heading_main_red{
         font-size: 4.1vw;
-        margin-bottom: 3.5vw;
+        margin-bottom: 4.5vw;
       }
       .section_2_recipe_icon{
         right: 0;

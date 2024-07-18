@@ -70,6 +70,7 @@ export default function SlideArticles({ items = [], classNames, paginationClass 
 
   return (
     <>
+    {items.length > 0 && (
       <Swiper
         slidesPerView={'auto'}
         spaceBetween={23}
@@ -86,11 +87,11 @@ export default function SlideArticles({ items = [], classNames, paginationClass 
           <SwiperSlide key={index}>
             <div className='box_articles_slide'>
               <div className='box_articles_images'>
-                <img src={`https://prahwa.net/storage/${blog.image}`} alt={blog.name} />
+                <img src={`https://prahwa.net/storage/${blog.image}`} alt={blog.title} />
               </div>
               <div className='box_articles_content'>
                 {blog.date && <span>{blog.date}</span>}
-                <h1 dangerouslySetInnerHTML={{ __html: getRecipeTitle(blog) }}></h1>
+                <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getRecipeTitle(blog))  }}></h1>
                 <p dangerouslySetInnerHTML={{ __html: stripPTags(getDescriptionName(blog)) }}></p>
                 <Link href=''><button>{t('section1Home.learnMore')}</button></Link>
               </div>
@@ -100,6 +101,7 @@ export default function SlideArticles({ items = [], classNames, paginationClass 
         <div className={`bg-red-overlay ${classNames}`}></div>
         <div className={`bg-red-overlay bg-red-overlay-left ${classNames}`}></div>
       </Swiper>
+    )}
     </>
   );
 }

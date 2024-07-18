@@ -34,6 +34,7 @@ export default function SlideRecipe({ items = [] }) {
   };
 
   const pairedItems = chunkArray(items, 2); 
+  
   return (
     <>
     <h1 className='headingRecipeSlide'>{t('featuredRecipe')}</h1>

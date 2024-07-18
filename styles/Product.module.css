@@ -364,7 +364,8 @@
   }
   .space_between_heading{
     margin-bottom: 6vw;
-    padding: 0 8vw;
+    padding: 0 20vw;
+    text-align: center;
   }
   .heading_main_white{
     font-size: 4.1vw;

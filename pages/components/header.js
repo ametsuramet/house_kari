@@ -292,9 +292,6 @@ const Header = () => {
                 <button onClick={() => handleLanguageChange('English')}>English</button>
               </li>
               <li>
-                <button onClick={() => handleLanguageChange('Chinese')}>Chinese</button>
-              </li>
-              <li>
                 <button onClick={() => handleLanguageChange('Indonesian')}>Indonesian</button>
               </li>
             </ul>
@@ -397,9 +394,6 @@ const Header = () => {
                 <ul className={openDropdown === 'language' ? styles.show : ''}>
                   <li>
                     <button onClick={() => handleLanguageChange('English')}>English</button>
-                  </li>
-                  <li>
-                    <button onClick={() => handleLanguageChange('Chinese')}>Chinese</button>
                   </li>
                   <li>
                     <button onClick={() => handleLanguageChange('Indonesian')}>Indonesian</button>
