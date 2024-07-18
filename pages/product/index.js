@@ -180,7 +180,7 @@ const [recipeList, setRecipeList] = useState([]);
                   <div className={styles.contentProduct}>
                       <h1>{getProductName(product)}</h1>
                       <span>{product.weight}g</span>
-                      <Link href={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+                      <Link href={`/product/[id]`} as={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
                   </div> 
                 </div>
               ))}
