@@ -1,156 +1,259 @@
-import Head from "next/head"
-import banner from '@/styles/Banner.module.css'
-import styles from '@/styles/Article.module.css'
-import SlideArticles from "../components/slide_articles"
-import SlideArticlesMobile from "../components/slide_articles_mobile";
+import Head from "next/head";
+import styles from '@/styles/Article.module.css';
+import banner from '@/styles/Banner.module.css';
+import Link from "next/link";
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import SlideArticles from "../components/slide_articles";
+import SlideArticlesMobile from "../components/slide_articles_mobile";
+import axios from 'axios';
+import SlideArticlesSecond from "../components/slide_articles_second";
+import SlideArticlesSecondMobile from "../components/slide_articles_second_mobile";
 
-const products = [
-    { id: '1', name: 'Product 1' },
-    { id: '2', name: 'Product 2' },
-    // Tambahkan produk lainnya
-  ];
+const API_PRODUCT_DETAIL_URL = process.env.NEXT_PUBLIC_API_ARTICLE_DETAIL_URL || 'http://localhost:3000/api/list-article-category';
 
-export async function getStaticPaths() {
-    // Buat jalur berdasarkan produk yang tersedia
-    const paths = products.map((product) => ({
-      params: { id: product.id },
-      locale: 'id', // Mengatur default bahasa ke Indonesia
-    }));
+export async function getServerSideProps(context) {
+    const { id } = context.params;
   
-    // Jika menggunakan beberapa bahasa, tambahkan jalur untuk setiap bahasa
-    const locales = ['id', 'en', 'zh'];
-    const allPaths = paths.flatMap((path) =>
-      locales.map((locale) => ({ ...path, locale }))
-    );
+    try {
+      const response = await fetch(`${API_PRODUCT_DETAIL_URL}/${id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch product detail');
+      }
+      const product = await response.json();
   
-    return { paths: allPaths, fallback: false };
-  }
+      console.log('Product Detail API Response:', product); // Log the API response
   
-  export async function getStaticProps({ params, locale }) {
-    // Ambil data produk berdasarkan ID
-    const product = products.find((p) => p.id === params.id);
-  
-    return {
-      props: {
-        product,
-        ...(await serverSideTranslations(locale, ['common'])),
-      },
-    };
-  }
-export default function ArticleDetail() {
-    const { t } = useTranslation('common');
-
-    const slideBlog = [
-        {
-          id: 1,
-          images: '/images/blog_recent_1.png',
-          date: `${t('posted')} 10/10/2024`,
-          headingBlog:  t('headline'),
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+      return {
+        props: {
+          ...(await serverSideTranslations(context.locale, ['common'])),
+          product,
         },
-        {
-          id: 2,
-          images: '/images/blog_recent_2.png',
-          date: `${t('posted')} 10/10/2024`,
-          headingBlog:  t('headline'),
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
+      };
+    } catch (error) {
+      console.error('Fetch product error:', error);
+      return {
+        props: {
+          ...(await serverSideTranslations(context.locale, ['common'])),
+          product: null,
         },
-        {
-          id: 3,
-          images: '/images/blog_recent_1.png',
-          date: `${t('posted')} 10/10/2024`,
-          headingBlog:  t('headline'),
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-        {
-          id: 4,
-          images: '/images/blog_recent_2.png',
-          date: `${t('posted')} 10/10/2024`,
-          headingBlog:  t('headline'),
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-        {
-          id: 5,
-          images: '/images/blog_recent_1.png',
-          date: `${t('posted')} 10/10/2024`,
-          headingBlog:  t('headline'),
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-        {
-          id: 6,
-          images: '/images/blog_recent_2.png',
-          date: `${t('posted')} 10/10/2024`,
-          headingBlog:  t('headline'),
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-        {
-            id: 7,
-            images: '/images/blog_recent_1.png',
-            date: `${t('posted')} 10/10/2024`,
-            headingBlog:  t('headline'),
-            descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-          },
-      ];
-
-      const pageTitle = `House Kari | ${t('blogTitle')}`;
-
-    return(
-        <>
-            <Head>
-                <title>{pageTitle}</title>
-                <meta name="description" content="Learn more about us" />
-            </Head>
-            <div className={banner.bannerStyle}>
-                <img src="/images/event_banner.png" alt="House Kari Website"/>
-            </div>
-            <div className={banner.breadcrumbs}>
-                <p>{t('menu.home')} / {t('menu.article')} / <span>{t('blogTitle')}</span></p>
-            </div>
-            <div className={styles.sectionDetail}>
-                <img src="/images/article_detail_icon_2.png" alt="House Kari" className={styles.article_detail_icon_2}/>
-                <div className={styles.sectionDetail_image}>
-                    <img src="/images/article_detail.png" alt="House Kari"/>
-                </div>
-                <h1>{t('blogTitle')}</h1>
-                <h5 className={styles.articleDate}>{t('meta')}</h5>
-                <div className={styles.sectionDetail_content}>
-                    <h3>{t('sebagian')}</h3>
-                    <p>Musim semi segera tiba! <br/><br/>
-                     Bulan Februari menandakan akhir musim dingin di Jepang. Negeri Sakura bersiap menyambut mekarnya bunga dan tumbuhnya berbagai buah-buahan seiring hangatnya udara belahan bumi bagian utara.<br/><br/>
-                     Kamu mungkin sudah tidak asing dengan berbagai festival yang hanya ada di musim-musim tertentu di Jepang. Hal yang sama juga terjadi dengan berbagai sajian yang hadir di sana. Dengan berbagai bahan makanan yang hanya muncul pada musim semi,  Beberapa makanan khas musim semi di antaranya adalah sebagai berikut.
-                    </p>
-                </div>
-                <div className={`${styles.sectionDetail_content} ${styles.sectionDetail_content_layout}`}>
-                    <img src="/images/sakura_image.png" alt="House Kari"/>
-                    <div className={styles.sectionDetail_double}>
-                        <h3>Sakura Mochi</h3>
-                        <p>Mekarnya bunga sakura pada musim semi membuat Jepang dibanjiri kuliner dan berbagai hal bertemakan bunga tersebut.
-                            <br/><br/>Salah satu jajanan khas musim semi di Jepang adalah Sakura Mochi. Camilan kenyal berwarna pink dari bunga sakura, berisi pasta kacang merah (anko), dan disajikan secara spesial dibalut dengan daun bunga sakura. 
-                            <br/><br/>Uniknya, Sakura Mochi adalah hidangan spesial untuk hari para perempuan (hinamatsuri). Namun, pada perkembangannya Sakura Mochi juga jadi camilan yang populer sepanjang musim semi.
-                        </p>
-                    </div>
-                </div>
-                <div className={`${styles.sectionDetail_content} ${styles.sectionDetail_content_layout}`}>
-                    <img src="/images/gohan_image.png" alt="House Kari"/>
-                    <div className={styles.sectionDetail_double}>
-                        <h3>Takenoko gohan</h3>
-                        <p>Di Indonesia kita memiliki tumis atau sayur rebung, sementara di Jepang juga memiliki kuliner berbahan dasar tunas bambu, yaitu Takenoko gohan atau nasi bambu.
-                            <br/><br/>Mirip dengan proses memasak bambu di sini, tunas bambu yang mulai banyak bermunculan sekitar bulan Maret hingga Mei ini direbus terlebih dahulu untuk menghilangkan racun yang terkandung di dalamnya. Orang Jepang biasa menyajikannya langsung di atas nasi, ditambah sup miso, atau dijadikan tempura.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div className={styles.section6}>
-                <img src="/images/article_detail_icon.png" alt="House Kari" className={styles.article_detail_icon}/>
-                <div className={styles.space_between_heading}>
-                    <h1 className={styles.heading_main_white}>{t('otherRecipeList')}</h1>
-                </div>
-                <SlideArticlesMobile items={slideBlog}/>
-                <SlideArticles items={slideBlog} />
-                <div className={styles.divider}></div>
-            </div>
-        </>
-    )
+      };
+    }
 }
+
+const formatDate = (dateString) => {
+  const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+  return new Intl.DateTimeFormat('en-GB', options).format(new Date(dateString));
+};
+
+const ArticlePage = () => { 
+  const { t, i18n } = useTranslation('common');
+  const router = useRouter();
+  const { id } = router.query;
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [detail, setDetail] = useState([]);
+  const [error, setError] = useState(null);
+  const [recipeList, setRecipeList] = useState([]);
+  const [articlesSlide, setArticlesSlide] = useState([]);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+        try {
+            const response = await axios.get('/api/all-recipes');
+            setRecipeList(response.data.data);
+        } catch (error) {
+            console.error('Error fetching recipes:', error);
+        }
+    };
+
+    fetchRecipes();
+}, []);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get('/api/article-categories/');
+        setDetail(response.data.data);
+        console.log('Fetched categories:', response.data.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setError(error.message);
+      }
+    };
+
+    fetchProduct();
+  }, []);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      if (id) {
+        try {
+          const response = await axios.get(`${API_PRODUCT_DETAIL_URL}/${id}`);
+          const articles = response.data.data;
+  
+          // Assuming the date field is in 'YYYY-MM-DD' format; adjust if necessary
+          const sortedArticles = articles
+            .sort((a, b) => new Date(b.date) - new Date(a.date)) // Sort by date descending
+            .slice(0, 2); // Select the top 2 most recent articles
+  
+          setArticles(sortedArticles);
+          setLoading(false);
+          console.log('Fetched and filtered articles:', sortedArticles);
+        } catch (error) {
+          console.error('Error fetching articles:', error);
+          setLoading(false);
+        }
+      }
+    };
+  
+    fetchArticles();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchArticlesSlide = async () => {
+      if (id) {
+        try {
+          const response = await axios.get(`${API_PRODUCT_DETAIL_URL}/${id}`);
+          setArticlesSlide(response.data.data); // Perhatikan pengaturan data detail di sini
+          setLoading(false);
+          console.log('Fetched product:', response.data.data);
+        } catch (error) {
+          console.error('Error fetching product:', error);
+          setLoading(false);
+        }
+      }
+    };
+  
+    fetchArticlesSlide();
+  }, [id]);
+
+  const getRecipeTitle = (recipe) => {
+    switch (i18n.language) {
+        case 'en':
+            return recipe.title_en || recipe.title;
+        case 'zh':
+            return recipe.title_chi || recipe.title;
+        default:
+            return recipe.title;
+    }
+  };
+
+  const getProductName = (article) => {
+    switch (i18n.language) {
+      case 'en':
+        return article.title_en || article.title;
+      case 'zh':
+        return article.title_chi || article.title;
+      default:
+        return article.title;
+    }
+  };
+
+  const stripPTags = (html) => {
+    if (typeof html === 'string') {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = html;
+      return tempDiv.textContent || tempDiv.innerText || '';
+    } else {
+      return '';
+    }
+  };
+
+  if (router.isFallback || loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+  if (articles.length === 0) return <p>No articles found.</p>;
+
+  const activeMenu = detail.find(menu => parseInt(id) === menu.id);
+
+  const pageTitle = `House Kari | ${activeMenu ? activeMenu.name : ''}`;
+
+  const secondColor = 'creamColor'
+  const paginationStyle = 'old_red_color'
+
+  
+
+  return (
+    <>
+      <Head>
+        <title>{pageTitle}</title>
+        <meta name="description" content="Learn more about us" />
+      </Head>
+      <div className={banner.bannerStyle}>
+        <img src="/images/product_page_banner.png" alt="House Kari Website" />
+      </div>
+      <div className={banner.breadcrumbs}>
+        <p>{t('menu.home')} / {t('menu.article')} / <span>{activeMenu ? activeMenu.name : ''}</span></p>
+      </div>
+      <div className={styles.section1}>
+        <img src="/images/black_pepper_icon.png" alt="House Kari" className={styles.black_pepper_icon}/>
+        <div className={styles.section1_layout}>
+          <div className={styles.section1_tab}>
+            {detail.map((menu) => (
+              <Link key={menu.id} href={`/article/${menu.id}`} passHref>
+                <button 
+                  className={parseInt(id) === menu.id ? styles.activeTab : ''}
+                >
+                  {menu.name}
+                </button>
+              </Link>
+            ))}
+          </div>
+          <div className={styles.section1_box}>
+            <div className={styles.space_between_heading}>
+              <h1 className={styles.heading_main}>{t('newestArticle')}</h1>
+            </div>
+            <div className={styles.blog_recent_layout}>
+              {articles.map((article) => (
+                <div key={article.id} className={styles.blog_recent_box}>
+                  <div className={styles.blog_recent_image}>
+                    <img src={`https://prahwa.net/storage/${article.image}`} alt={article.title} />
+                  </div>
+                  <div className={styles.blog_recent_content}>
+                    <span>{t('posted')} {formatDate(article.date)}</span>
+                    <h1>{stripPTags(getProductName(article))}</h1>
+                    <p>{stripPTags(article.text)}</p>
+                    <Link href={`/article-detail/${article.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className={styles.section2}>
+        <div className={styles.space_between_heading}>
+          <h1 className={styles.heading_main_white}>{t('otherArticle')}</h1>
+        </div>
+        <SlideArticlesSecond items={articlesSlide.map(article => ({
+          ...article,
+              title: stripPTags(getProductName(article)),
+        }))} />
+        <SlideArticlesSecondMobile items={articlesSlide.map(article => ({
+            ...article,
+            title: stripPTags(getProductName(article)),
+        }))} /> 
+        <div className={styles.divider}></div>
+      </div>
+      <div className={styles.section3}>
+          <img src="/images/cinamon_icon.png" alt="House Kari" className={styles.cinamon_icon}/>
+          <img src="/images/product_detail_icon_2.png" alt="House Kari" className={styles.product_detail_icon_2}/>
+          <div className={styles.space_between_heading}>
+              <h1 className={styles.heading_main_red}>{t('headingRecipe')}</h1>
+          </div>
+          <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={recipeList.map(recipe => ({
+          ...recipe,
+              title: stripPTags(getRecipeTitle(recipe)),
+          }))} />
+          <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={recipeList.map(recipe => ({
+              ...recipe,
+              title: stripPTags(getRecipeTitle(recipe)),
+          }))} />
+      </div>
+    </>
+  );
+};
+
+export default ArticlePage;

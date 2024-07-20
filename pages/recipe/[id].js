@@ -9,6 +9,8 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import SlideArticlesSecond from '../components/slide_articles_second';
+import SlideArticlesSecondMobile from '../components/slide_articles_second_mobile';
 
 const API_RECIPE_DETAIL_URL = process.env.NEXT_PUBLIC_API_RECIPE_DETAIL_URL || 'http://localhost:3000/api/recipe-detail';
 
@@ -16,7 +18,7 @@ export async function getServerSideProps(context) {
   const { id } = context.params;
 
   try {
-    const response = await fetch(`${API_RECIPE_DETAIL_URL}/${id}`);
+    const response = await fetch(`${API_RECIPE_DETAIL_URL}/${id}`); 
     if (!response.ok) {
       throw new Error('Failed to fetch product detail');
     }
@@ -41,40 +43,6 @@ export async function getServerSideProps(context) {
   }
 }
 
-// const recipes = [
-//     { id: '1', name: 'Product 1' },
-//     { id: '2', name: 'Product 2' },
-//     // Tambahkan produk lainnya
-//   ];
-
-// export async function getStaticPaths() {
-//     // Buat jalur berdasarkan produk yang tersedia
-//     const paths = recipes.map((recipe) => ({
-//       params: { id: recipe.id },
-//       locale: 'id', // Mengatur default bahasa ke Indonesia
-//     }));
-  
-//     // Jika menggunakan beberapa bahasa, tambahkan jalur untuk setiap bahasa
-//     const locales = ['id', 'en', 'zh'];
-//     const allPaths = paths.flatMap((path) =>
-//       locales.map((locale) => ({ ...path, locale }))
-//     );
-  
-//     return { paths: allPaths, fallback: false };
-//   }
-  
-//   export async function getStaticProps({ params, locale }) {
-//     // Ambil data produk berdasarkan ID
-//     const recipe = recipes.find((p) => p.id === params.id);
-  
-//     return {
-//       props: {
-//         recipe,
-//         ...(await serverSideTranslations(locale, ['common'])),
-//       }, 
-//     };
-//   }
-
 const RecipeDetail = () => {
     const { t, i18n } = useTranslation('common');
     const router = useRouter();
@@ -84,6 +52,23 @@ const RecipeDetail = () => {
     const [detail, setDetail] = useState(null);
 
     const [recipeList, setRecipeList] = useState([]);
+    const [articlesSlide, setArticlesSlide] = useState([]);
+
+    useEffect(() => {
+        const fetchArticlesSlide = async () => {
+            try {
+              const response = await axios.get(`/api/list-article/`);
+              setArticlesSlide(response.data.data); // Perhatikan pengaturan data detail di sini
+              setLoading(false);
+              console.log('Fetched product:', response.data.data);
+            } catch (error) {
+              console.error('Error fetching product:', error);
+              setLoading(false);
+            }
+        };
+      
+        fetchArticlesSlide();
+      }, [id]);
 
     useEffect(() => {
       const fetchRecipes = async () => {
@@ -322,8 +307,16 @@ const RecipeDetail = () => {
           <div className={styles.space_between_heading}>
               <h1 className={styles.heading_main_red}>{t('otherRecipeList')}</h1>
           </div>
-          <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={slideBlog} />
-          <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={slideBlog} />
+          {/* <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={slideBlog} />
+          <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={slideBlog} /> */}
+          <SlideArticlesSecond classNames={secondColor} paginationClass={paginationStyle} items={articlesSlide.map(detail => ({
+          ...detail,
+              title: stripPTags(getProductName(detail)),
+          }))} />
+          <SlideArticlesSecondMobile classNames={secondColor} paginationClass={paginationStyle} items={articlesSlide.map(detail => ({
+              ...detail,
+              title: stripPTags(getProductName(detail)),
+          }))} /> 
         </div>
         <div className={`${styles.popup} ${isActive ? styles.active : ''}`}>
             <div className={styles.popupContent}>

@@ -265,6 +265,12 @@
   font-size: 1.5vw;
   font-weight: 600;
   margin-bottom: .6vw;
+  text-transform: capitalize;
+  display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
 }
 .box_articles_content p{
   font-size: .97vw;
@@ -275,6 +281,10 @@
       -webkit-line-clamp: 3;
       overflow: hidden;
       text-overflow: ellipsis;
+  font-weight: 400 !important;
+}
+.box_articles_content p h4{
+  font-weight: 400 !important;
 }
 .box_articles_content button{
   background-color: var(--old_red);

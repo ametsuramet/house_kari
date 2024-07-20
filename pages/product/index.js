@@ -165,9 +165,12 @@ const [recipeList, setRecipeList] = useState([]);
         </div>
         <SlideArticles items={recipeList.map(recipe => ({
             ...recipe,
-            title: stripPTags(getRecipeTitle(recipe)),
+            title: stripPTags(getRecipeTitle(recipe)), 
         }))} />
-        <SlideArticlesMobile items={recipeList} />
+        <SlideArticlesMobile items={recipeList.map(recipe => ({
+            ...recipe,
+            title: stripPTags(getRecipeTitle(recipe)), 
+        }))} />
         <div className={styles.divider}></div>
       </div> 
     </>

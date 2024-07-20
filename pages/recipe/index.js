@@ -13,6 +13,8 @@ import Link from "next/link";
 import React from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
+import SlideArticlesSecond from "../components/slide_articles_second";
+import SlideArticlesSecondMobile from "../components/slide_articles_second_mobile";
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -111,6 +113,27 @@ export default function Recipe() {
   const [recipes, setRecipes] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [activeTab, setActiveTab] = useState(0); // State untuk menyimpan indeks tab aktif
+
+  const [articlesSlide, setArticlesSlide] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+      const fetchArticlesSlide = async () => {
+          try {
+            const response = await axios.get(`/api/list-article/`);
+            setArticlesSlide(response.data.data); // Perhatikan pengaturan data detail di sini
+            setLoading(false);
+            console.log('Fetched product:', response.data.data);
+          } catch (error) {
+            console.error('Error fetching product:', error);
+            setLoading(false);
+          }
+      };
+    
+      fetchArticlesSlide();
+    }, );
+
+  
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -216,6 +239,10 @@ const [recipeList, setRecipeList] = useState([]);
               return recipe.title;
       }
   };
+
+  if (loading) {
+    return <p>Loading...</p>;
+}
 
   const chunkedRecipes = chunkArray(recipes, 2);
 
@@ -339,8 +366,14 @@ const [recipeList, setRecipeList] = useState([]);
           <div className={styles.space_between_heading}>
               <h1 className={styles.heading_main_red}>{t('otherRecipeList')}</h1>
           </div>
-          <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={slideBlog}/>
-          <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={slideBlog} />
+          <SlideArticlesSecond classNames={secondColor} paginationClass={paginationStyle} items={articlesSlide.map(detail => ({
+          ...detail,
+              title: stripPTags(getProductName(detail)),
+          }))} />
+          <SlideArticlesSecondMobile classNames={secondColor} paginationClass={paginationStyle} items={articlesSlide.map(detail => ({
+              ...detail,
+              title: stripPTags(getProductName(detail)),
+          }))} /> 
       </div>
     </>
   );

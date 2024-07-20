@@ -16,6 +16,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { MdSearch } from "react-icons/md";
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import axios from 'axios';
 
 export async function getStaticProps({ locale }) {
   return {
@@ -26,12 +27,26 @@ export async function getStaticProps({ locale }) {
 }
 
 const Header = () => {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
   const router = useRouter();
   const { pathname, asPath, query } = router;
   const [openDropdown, setOpenDropdown] = useState(null);
   const searchMobileRef = useRef(null);
   const [language, setLanguage] = useState(`${t('selectLanguage')}`);
+  const [articleCategories, setArticleCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchArticleCategories = async () => {
+      try {
+        const response = await axios.get('/api/article-categories');
+        setArticleCategories(response.data.data);
+      } catch (error) {
+        console.error('Error fetching article categories:', error);
+      }
+    };
+
+    fetchArticleCategories();
+  }, []);
 
   const toggleDropdown = (menu) => {
     setOpenDropdown(openDropdown === menu ? null : menu);
@@ -85,9 +100,11 @@ const Header = () => {
   const getLinkClass = (href) => {
     return router.pathname === href ? `${styles.link} ${styles.active}` : styles.link;
   };
-
-  const isActiveMenu = (subMenuLinks) => {
-    return subMenuLinks.some(link => router.pathname.startsWith(link));
+  
+  const isActiveMenu = () => {
+    return articleCategories.some((category) =>
+      router.pathname.includes(`/article/${category.id}`)
+    );
   };
 
   const handleLanguageChange = (lang) => {
@@ -351,32 +368,23 @@ const Header = () => {
                 </li>
                 <li>
                   <span
-                    className={`${openDropdown === 'article' || isActiveMenu(['/article', '/article/event', '/article/tips-trick', '/article/media-release']) ? styles.activeSpan : ''}`}
+                    className={`${openDropdown === 'article' || isActiveMenu() ? styles.activeSpan : ''}`}
                     onClick={() => toggleDropdown('article')}
                   >
                     {t('menu.article')} <IoChevronDown />
                   </span>
                   <ul className={openDropdown === 'article' ? styles.show : ''}>
-                    <li>
-                      <Link href="/article" className={getLinkClass('/article')} onClick={clickMenu}>
-                        {t('menu.article')}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/article/event" className={getLinkClass('/article/event')} onClick={clickMenu}>
-                        {t('menu.event')}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/article/tips-trick" className={getLinkClass('/article/tips-trick')} onClick={clickMenu}>
-                        {t('menu.tipsTricks')}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/article/media-release" className={getLinkClass('/article/media-release')} onClick={clickMenu}>
-                        {t('menu.mediaRelease')}
-                      </Link>
-                    </li>
+                    {articleCategories.map((category) => (
+                      <li key={category.id}>
+                        <Link
+                          href={`/article/${category.id}`}
+                          className={getLinkClass(`/article/${category.id}`)}
+                          onClick={clickMenu}
+                        >
+                          {i18n.language === 'en' ? category.name_en : i18n.language === 'zh' ? category.name_chi : category.name}
+                        </Link>
+                      </li>
+                    ))}
                   </ul>
                 </li>
                 <li>

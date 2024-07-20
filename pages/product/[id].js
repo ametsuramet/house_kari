@@ -168,7 +168,7 @@ const ProductDetails = () => {
   return (
     <>
       <Head>
-        <title>{pageTitle}</title>
+        <title>{pageTitle}</title> 
         <meta name="description" content="Learn more about us" />
       </Head>
       <div className={banner.bannerStyle}>
