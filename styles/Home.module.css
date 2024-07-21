@@ -175,6 +175,9 @@
   align-items: center;
   margin-bottom: 1.85vw;
 }
+.space_between_heading a{
+  text-decoration: none;
+}
 .desc_main_margin{
   font-size: 1.05vw;
   color: black;
@@ -224,10 +227,20 @@
   font-size: 1.55vw;
   font-weight: 600;
   margin-bottom: .8vw;
+  display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
 }
 .blog_recent_content p{
   font-size: .97vw;
   color: black;
+  display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      text-overflow: ellipsis;
   margin-bottom: 1.8vw;
 }
 .blog_recent_content button{

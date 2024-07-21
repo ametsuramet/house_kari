@@ -169,13 +169,13 @@
     width: max-content;
     font-size: 1.1vw;
     margin: .7vw 0;
-    white-space: nowrap;
 }
 
 .nav ul li ul li a {
     color: var(--black);
-    text-decoration: none;
+    text-decoration: none; 
     display: block;
+    
 }
 
 .nav ul li ul li a:hover {
@@ -184,6 +184,18 @@
   
 .show {
     display: block !important;
+}
+.show2{
+    width: 13vw !important;
+    display: block !important;
+}
+.show2 li {
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 1 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    width: 100% !important;
 }
   
 .link {
@@ -602,14 +614,26 @@
         width: 100%;
         font-size: 1.1vw;
         margin: 0 0;
-        padding: 0 3vw;
-        white-space: nowrap;
+        padding: 4.6vw 3vw;
+        display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      
     }
     .nav ul li ul li a {
         color: white;
+        padding: 0 0;
+        overflow: hidden;
     }
     .nav ul li ul li:last-child{
         border: none;
+    }
+    .show2{
+        width: 100% !important;
+        display: block !important;
     }
     .nav ul li a:hover,
     .nav ul li span:hover {

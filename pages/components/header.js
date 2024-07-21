@@ -373,7 +373,7 @@ const Header = () => {
                   >
                     {t('menu.article')} <IoChevronDown />
                   </span>
-                  <ul className={openDropdown === 'article' ? styles.show : ''}>
+                  <ul className={`${openDropdown === 'article' ? styles.show2 : ''}`}>
                     {articleCategories.map((category) => (
                       <li key={category.id}>
                         <Link

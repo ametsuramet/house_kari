@@ -12,6 +12,9 @@ import SlideArticlesMobile from './components/slide_articles_mobile';
 import SlideTestimonialsMobile from './components/slide_testimonials_mobile';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import axios from 'axios';
+import SlideArticlesSecond from './components/slide_articles_second';
+import SlideArticlesSecondMobile from './components/slide_articles_second_mobile';
 
 const items = [
   <img key={1} src='/images/banner-1.png' alt='banner'/>,
@@ -28,9 +31,72 @@ export async function getStaticProps({ locale }) {
 }
 
 export default function Home() {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState(t('section2Menu.makanSiang'));
+  const [articles, setArticles] = useState([]);
+  const [articlesSlide, setArticlesSlide] = useState([]);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await axios.get(`/api/list-article`);
+        const articles = response.data.data;
+
+        // Assuming the date field is in 'YYYY-MM-DD' format; adjust if necessary
+        const sortedArticles = articles
+          .sort((a, b) => new Date(b.date) - new Date(a.date)) // Sort by date descending
+          .slice(0, 2); // Select the top 2 most recent articles
+
+        setArticles(sortedArticles);
+        console.log('Fetched and filtered articles:', sortedArticles);
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+      }
+    };
+  
+    fetchArticles();
+  });
+
+  useEffect(() => {
+    const fetchArticlesSlide = async () => {
+        try {
+          const response = await axios.get(`/api/list-article/`);
+          setArticlesSlide(response.data.data); 
+          console.log('Fetched product:', response.data.data);
+        } catch (error) {
+          console.error('Error fetching product:', error);
+        }
+    };
+  
+    fetchArticlesSlide();
+  });
+
+  const formatDate = (dateString) => {
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Intl.DateTimeFormat('en-GB', options).format(new Date(dateString));
+  };
+
+  const stripPTags = (html) => {
+    if (typeof html === 'string') {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = html;
+      return tempDiv.textContent || tempDiv.innerText || '';
+    } else {
+      return '';
+    }
+  };
+
+  const getProductName = (article) => {
+    switch (i18n.language) {
+      case 'en':
+        return article.title_en || article.title;
+      case 'zh':
+        return article.title_chi || article.title;
+      default:
+        return article.title;
+    }
+  };
 
   const menuItems = [
     { label: t('section2Menu.makanSiang') },
@@ -241,6 +307,8 @@ const handleMouseUp = () => {
   document.removeEventListener('mouseup', handleMouseUp);
 };
 
+if (articles.length === 0) return <p>No articles found.</p>;
+
   return (
     <>
       <Slide items={items} showNavigation={false} showPagination={true} />
@@ -292,33 +360,39 @@ const handleMouseUp = () => {
         <img src='/images/section_4_icon_2.png' alt='House Kari' className={styles.section_4_icon_2} />
         <div className={styles.space_between_heading}>
           <h1 className={styles.heading_main}>{t('newestArticle')}</h1>
-          <p className={styles.desc_main_margin}>{t('readMoreArticle')}...</p>
+          <Link href='/article/9'><p className={styles.desc_main_margin}>{t('readMoreArticle')}...</p></Link>
         </div>
         <div className={styles.blog_recent_layout}>
-          {recentBlog.map((blog, index) => (
-            <div key={index} className={styles.blog_recent_box}>
-              <div className={styles.blog_recent_image}>
-                <img src={blog.images} alt={blog.headingBlog}/>
-              </div>
-              <div className={styles.blog_recent_content}>
-                <span>{t('posted')} {blog.date}</span>
-                <h1>{blog.headingBlog}</h1>
-                <p>{blog.descBlog}</p>
-                <Link href='/article/1'><button>{t('section1Home.learnMore')}</button></Link>
-              </div>
-            </div>
-          ))}
+            {articles.map((article) => (
+                <div key={article.id} className={styles.blog_recent_box}>
+                  <div className={styles.blog_recent_image}>
+                    <img src={`https://prahwa.net/storage/${article.image}`} alt={article.title} />
+                  </div>
+                  <div className={styles.blog_recent_content}>
+                    <span>{t('posted')} {formatDate(article.date)}</span>
+                    <h1>{stripPTags(getProductName(article))}</h1>
+                    <p>{stripPTags(article.text)}</p>
+                    <Link href={`/article-detail/${article.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+                  </div>
+                </div>
+            ))}
         </div>
         <div className={styles.heading_mobile_desc}>
-          <Link href='#'>{t('readMoreArticle')}...</Link>
+          <Link href='/article/9'>{t('readMoreArticle')}...</Link>
         </div>
       </div>
       <div className={styles.section_5}>
         <div className={styles.space_between_heading}>
           <h1 className={styles.heading_main_white}>{t('otherArticle')}</h1>
         </div>
-        <SlideArticlesMobile items={slideBlog} />
-        <SlideArticles items={slideBlog}/>
+        <SlideArticlesSecond items={articlesSlide.map(article => ({
+          ...article,
+              title: stripPTags(getProductName(article)),
+        }))} />
+        <SlideArticlesSecondMobile items={articlesSlide.map(article => ({
+            ...article,
+            title: stripPTags(getProductName(article)),
+        }))} /> 
         <div className={styles.divider}></div>
       </div>
       <div className={styles.section_6}>
