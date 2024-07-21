@@ -307,7 +307,7 @@ const handleMouseUp = () => {
   document.removeEventListener('mouseup', handleMouseUp);
 };
 
-if (articles.length === 0) return <p>No articles found.</p>;
+if (articles.length === 0) return <p style={{textAlign: "center"}}>Loading...</p>;
 
   return (
     <>
