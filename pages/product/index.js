@@ -10,7 +10,8 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export async function getStaticProps({ locale }) {
   return {
@@ -26,6 +27,10 @@ export default function Product() {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [activeTab, setActiveTab] = useState(null);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+  const [loadingRecipes, setLoadingRecipes] = useState(true);
+  const [recipeList, setRecipeList] = useState([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -35,6 +40,8 @@ export default function Product() {
         setActiveTab(response.data.data[0]?.id); // Set the first tab as active by default
       } catch (error) {
         console.error('Error fetching categories:', error);
+      } finally {
+        setLoadingCategories(false);
       }
     };
 
@@ -48,10 +55,27 @@ export default function Product() {
         setProducts(response.data.data);
       } catch (error) {
         console.error('Error fetching products:', error);
+      } finally {
+        setLoadingProducts(false);
       }
     };
 
     fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await axios.get('/api/all-recipes');
+        setRecipeList(response.data.data);
+      } catch (error) {
+        console.error('Error fetching recipes:', error);
+      } finally {
+        setLoadingRecipes(false);
+      }
+    };
+
+    fetchRecipes();
   }, []);
 
   const pageTitle = `House Kari | ${t('menu.product')}`;
@@ -80,32 +104,17 @@ export default function Product() {
 
   const stripPTags = (html) => {
     return html.replace(/<p[^>]*>|<\/p>/g, '');
-};
+  };
 
-const [recipeList, setRecipeList] = useState([]);
-
-    useEffect(() => {
-        const fetchRecipes = async () => {
-            try {
-                const response = await axios.get('/api/all-recipes');
-                setRecipeList(response.data.data);
-            } catch (error) {
-                console.error('Error fetching recipes:', error);
-            }
-        };
-
-        fetchRecipes();
-    }, []);
-
-    const getRecipeTitle = (recipe) => {
-      switch (i18n.language) {
-          case 'en':
-              return recipe.title_en || recipe.title;
-          case 'zh':
-              return recipe.title_chi || recipe.title;
-          default:
-              return recipe.title;
-      }
+  const getRecipeTitle = (recipe) => {
+    switch (i18n.language) {
+      case 'en':
+        return recipe.title_en || recipe.title;
+      case 'zh':
+        return recipe.title_chi || recipe.title;
+      default:
+        return recipe.title;
+    }
   };
 
   return (
@@ -126,34 +135,53 @@ const [recipeList, setRecipeList] = useState([]);
         <div className={styles.tabs}>
           <div className={styles.tabHeadersLayout}>
             <div className={styles.tabHeaders}>
-              {categories.map(category => (
-                <button
-                  key={category.id}
-                  onClick={() => setActiveTab(category.id)}
-                  className={`${styles.tabHeader} ${activeTab === category.id ? styles.active : ''}`}
-                >
-                  {getCategoryName(category)}
-                </button>
-              ))}
+              {loadingCategories ? (
+                Array.from({ length: 3 }).map((_, index) => (
+                  <Skeleton key={index} height={40} width={100} style={{ margin: '0 10px' }} />
+                ))
+              ) : (
+                categories.map(category => (
+                  <button
+                    key={category.id}
+                    onClick={() => setActiveTab(category.id)}
+                    className={`${styles.tabHeader} ${activeTab === category.id ? styles.active : ''}`}
+                  >
+                    {getCategoryName(category)}
+                  </button>
+                ))
+              )}
             </div>
           </div>
           <div className={styles.tabContent}>
             <div className={styles.productLayoutBox}>
               <div className={styles.productLayout}>
-                {products
-                .filter(product => product.category_id === activeTab)
-                .map(product => (
-                  <div key={product.id} className={styles.boxProduct}>
-                    <div className={styles.imageProduct}>
-                        <img src={`https://prahwa.net/storage/${product.image}`} alt={product.name} />
+                {loadingProducts ? (
+                  Array.from({ length: 6 }).map((_, index) => (
+                    <div key={index} className={styles.boxProduct}>
+                      <Skeleton height={150} />
+                      <div className={styles.contentProduct}>
+                        <Skeleton height={20} width="80%" />
+                        <Skeleton height={20} width="60%" />
+                        <Skeleton height={30} width="100px" />
+                      </div>
                     </div>
-                    <div className={styles.contentProduct}>
-                        <h1>{getProductName(product)}</h1>
-                        <span>{product.weight}g</span>
-                        <Link href={`/product/[id]`} as={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
-                    </div> 
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  products
+                    .filter(product => product.category_id === activeTab)
+                    .map(product => (
+                      <div key={product.id} className={styles.boxProduct}>
+                        <div className={styles.imageProduct}>
+                          <img src={`https://prahwa.net/storage/${product.image}`} alt={product.name} />
+                        </div>
+                        <div className={styles.contentProduct}>
+                          <h1>{getProductName(product)}</h1>
+                          <span>{product.weight}g</span>
+                          <Link href={`/product/[id]`} as={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+                        </div>
+                      </div>
+                    ))
+                )}
               </div>
             </div>
           </div>
@@ -163,16 +191,26 @@ const [recipeList, setRecipeList] = useState([]);
         <div className={styles.space_between_heading}>
           <h1 className={styles.heading_main_white}>{t('headingRecipe')}</h1>
         </div>
-        <SlideArticles items={recipeList.map(recipe => ({
-            ...recipe,
-            title: stripPTags(getRecipeTitle(recipe)), 
-        }))} />
-        <SlideArticlesMobile items={recipeList.map(recipe => ({
-            ...recipe,
-            title: stripPTags(getRecipeTitle(recipe)), 
-        }))} />
+        {loadingRecipes ? (
+          <div className={styles.recipesSkeleton}>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <Skeleton key={index} height={200} width={300} style={{ margin: '0 10px' }} />
+            ))}
+          </div>
+        ) : (
+          <>
+            <SlideArticles items={recipeList.map(recipe => ({
+              ...recipe,
+              title: stripPTags(getRecipeTitle(recipe)), 
+            }))} />
+            <SlideArticlesMobile items={recipeList.map(recipe => ({
+              ...recipe,
+              title: stripPTags(getRecipeTitle(recipe)), 
+            }))} />
+          </>
+        )}
         <div className={styles.divider}></div>
-      </div> 
+      </div>
     </>
   ); 
 }

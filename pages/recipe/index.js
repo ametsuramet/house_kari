@@ -15,6 +15,8 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SlideArticlesSecond from "../components/slide_articles_second";
 import SlideArticlesSecondMobile from "../components/slide_articles_second_mobile";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -54,58 +56,6 @@ export default function Recipe() {
     setIsOpen(!isOpen);
   };
 
-  const slideBlog = [
-    {
-      id: 1,
-      images: '/images/blog_recent_1.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 2,
-      images: '/images/blog_recent_2.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 3,
-      images: '/images/blog_recent_1.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 4,
-      images: '/images/blog_recent_2.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 5,
-      images: '/images/blog_recent_1.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 6,
-      images: '/images/blog_recent_2.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-        id: 7,
-        images: '/images/blog_recent_1.png',
-        date: `${t('posted')} 10/10/2024`,
-        headingBlog:  t('headline'),
-        descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-      },
-  ];
-
   const secondColor = 'creamColor'
   const paginationStyle = 'old_red_color'
   const pageTitle = `House Kari | ${t('menu.recipe')}`;
@@ -116,6 +66,8 @@ export default function Recipe() {
 
   const [articlesSlide, setArticlesSlide] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loadingRecipes, setLoadingRecipes] = useState(true);
 
   useEffect(() => {
       const fetchArticlesSlide = async () => {
@@ -146,6 +98,8 @@ export default function Recipe() {
         }
       } catch (error) {
         console.error('Error fetching categories:', error);
+      } finally {
+        setLoadingCategories(false);
       }
     };
 
@@ -160,6 +114,8 @@ export default function Recipe() {
         setRecipes(response.data.data);
       } catch (error) {
         console.error('Error fetching recipes:', error);
+      } finally {
+        setLoadingRecipes(false);
       }
     };
 
@@ -240,9 +196,13 @@ const [recipeList, setRecipeList] = useState([]);
       }
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-}
+  // if (loadingCategories) {
+  //   return (
+  //     <div>
+  //       <Skeleton height={70} count={5} />
+  //     </div>
+  //   );
+  // }
 
   const chunkedRecipes = chunkArray(recipes, 2);
 
@@ -261,7 +221,7 @@ const [recipeList, setRecipeList] = useState([]);
       <div className={styles.section1}>
         <img src="/images/sendok_recipe_slide.png" alt="House Kari" className={styles.sendok_recipe_slide}/>
         <div className={styles.tabContainer}>
-          <div className={styles.tabHeaders}>
+          {/* <div className={styles.tabHeaders}>
             {categories.map(category => (
               <button
                 key={category.id}
@@ -274,40 +234,91 @@ const [recipeList, setRecipeList] = useState([]);
                 {getCategoryName(category)}
               </button>
             ))}
-          </div>
+          </div> */}
+          <div className={styles.tabHeaders}>
+              {loadingCategories ? (
+                Array.from({ length: 3 }).map((_, index) => (
+                  <Skeleton key={index} height={40} width={100} style={{ margin: '0 10px' }} />
+                ))
+              ) : (
+                categories.map(category => (
+                  <button
+                    key={category.id}
+                    onClick={() => {
+                      setSelectedCategory(category.id);
+                      setActiveTab(0); // Reset tab aktif ke tab pertama saat kategori dipilih
+                    }}
+                    className={`${styles.tabHeader} ${selectedCategory === category.id ? styles.active : ''}`}
+                  >
+                    {getCategoryName(category)}
+                  </button>
+                ))
+              )}
+            </div>
           <div className={styles.tabContent}>
             <h1 className='headingRecipeSlide'>{t('featuredRecipe')}</h1>
-            {recipes.length > 0 && (
+            {loadingRecipes ? (
               <Swiper
-                  slidesPerView={3}
-                  spaceBetween={0}
-                  centeredSlides={true}
-                  loop={true}
-                  autoplay={{
-                    delay: 2500,
-                    disableOnInteraction: false,
-                  }}
-                  pagination={{
-                    clickable: true,
-                  }}
-                  modules={[Pagination]}
-                  className="mySwiperRecipe"
-                >
-                  {recipes.map(recipe => (
-                    <SwiperSlide key={recipe.id}>
-                      <div className='slideItemRecipe'>
-                        <div className='imageRecipe'>
-                          <img src={`https://prahwa.net/storage/${recipe.image}`} alt={recipe.title} />
-                        </div>
-                        <div className='contentRecipe'>
-                          <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getProductName(recipe)) }}></h1>
-                          <p dangerouslySetInnerHTML={{ __html: getDescriptionName(recipe) }}></p>
-                          <Link href={`/recipe/[id]`} as={`/recipe/${recipe.id}`}><button>{t('section1Home.learnMore')}</button></Link>
-                        </div>
+                slidesPerView={3}
+                spaceBetween={0}
+                centeredSlides={true}
+                loop={true}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+                pagination={{
+                  clickable: true,
+                }}
+                modules={[Pagination]}
+                className="mySwiperRecipe"
+              >
+                {[1, 2, 3].map((_, index) => (
+                  <SwiperSlide key={index}>
+                    <div className='slideItemRecipe'>
+                      <div className='imageRecipe'>
+                        <Skeleton style={{width: "100%", height: "100%", position: "absolute"}} />
                       </div>
-                    </SwiperSlide>
-                  ))}
-              </Swiper>        
+                      <div className='contentRecipe'>
+                        <Skeleton height={30} width={150} />
+                        <Skeleton height={20} width={200} />
+                        <Skeleton height={30} width={100} />
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            ) : (
+              <Swiper
+                slidesPerView={3}
+                spaceBetween={0}
+                centeredSlides={true}
+                loop={true}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+                pagination={{
+                  clickable: true,
+                }}
+                modules={[Pagination]}
+                className="mySwiperRecipe"
+              >
+                {recipes.map(recipe => (
+                  <SwiperSlide key={recipe.id}>
+                    <div className='slideItemRecipe'>
+                      <div className='imageRecipe'>
+                        <img src={`https://prahwa.net/storage/${recipe.image}`} alt={recipe.title} />
+                      </div>
+                      <div className='contentRecipe'>
+                        <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getProductName(recipe)) }}></h1>
+                        <p dangerouslySetInnerHTML={{ __html: getDescriptionName(recipe) }}></p>
+                        <Link href={`/recipe/[id]`} as={`/recipe/${recipe.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             )}
             {recipes.length > 0 && (
             <Swiper 
