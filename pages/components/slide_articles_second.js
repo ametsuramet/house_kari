@@ -92,7 +92,7 @@ export default function SlideArticlesSecond({ items = [], classNames, pagination
           <SwiperSlide key={index}>
             <div className='box_articles_slide'>
               <div className='box_articles_images'>
-                <Link href={`/recipe/[id]`} as={`/recipe/${blog.id}`}>
+                <Link href={`/article-detail/[id]`} as={`/article-detail/${blog.id}`}>
                 <img src={`https://prahwa.net/storage/${blog.image}`} alt={blog.title} />
                 </Link>
               </div>
@@ -100,7 +100,7 @@ export default function SlideArticlesSecond({ items = [], classNames, pagination
                 {blog.date && <span>{t('posted')} {formatDate(blog.date)}</span>}
                 <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getRecipeTitle(blog))  }}></h1>
                 <p dangerouslySetInnerHTML={{ __html: stripPTags(getDescriptionName(blog)) }}></p>
-                <Link href={`/recipe/[id]`} as={`/recipe/${blog.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+                <Link href={`/article-detail/[id]`} as={`/article-detail/${blog.id}`}><button>{t('section1Home.learnMore')}</button></Link>
               </div>
             </div>
           </SwiperSlide>

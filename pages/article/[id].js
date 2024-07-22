@@ -12,7 +12,7 @@ import axios from 'axios';
 import SlideArticlesSecond from "../components/slide_articles_second";
 import SlideArticlesSecondMobile from "../components/slide_articles_second_mobile";
 
-const API_PRODUCT_DETAIL_URL = process.env.NEXT_PUBLIC_API_ARTICLE_DETAIL_URL || 'http://localhost:3000/api/list-article-category';
+const API_PRODUCT_DETAIL_URL = process.env.NEXT_PUBLIC_API_ARTICLE_DETAIL_URL || '/api/list-article-category';
 
 export async function getServerSideProps(context) {
     const { id } = context.params;

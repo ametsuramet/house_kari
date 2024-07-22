@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_PRODUCT_DETAIL_URL = process.env.NEXT_PUBLIC_API_PRODUCT_DETAIL_URL || 'http://localhost:3000/api/product-detail';
+const API_PRODUCT_DETAIL_URL = process.env.NEXT_PUBLIC_API_PRODUCT_DETAIL_URL || '/api/product-detail';
 
 export async function getServerSideProps(context) {
     const { id } = context.params;

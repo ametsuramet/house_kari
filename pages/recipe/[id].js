@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import SlideArticlesSecond from '../components/slide_articles_second';
 import SlideArticlesSecondMobile from '../components/slide_articles_second_mobile';
 
-const API_RECIPE_DETAIL_URL = process.env.NEXT_PUBLIC_API_RECIPE_DETAIL_URL || 'http://localhost:3000/api/recipe-detail';
+const API_RECIPE_DETAIL_URL = process.env.NEXT_PUBLIC_API_RECIPE_DETAIL_URL || '/api/recipe-detail';
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
