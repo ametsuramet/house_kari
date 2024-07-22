@@ -104,6 +104,10 @@
     width: 100%;
 }
 
+.whatsappBtn{
+  background-color: #25d366;
+}
+
 .tab_icon_image{
     position: absolute;
     left: 0; 

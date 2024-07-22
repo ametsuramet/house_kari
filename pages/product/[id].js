@@ -197,6 +197,9 @@ const ProductDetails = () => {
                             <button>{ecommerce}</button>
                         </Link>
                     ))}
+                    <Link href="/" target="blank_">
+                        <button className={styles.whatsappBtn}>Whatsapp</button>
+                    </Link>
                 </div>
               </div>
             </div>
