@@ -444,7 +444,48 @@
     .searchMobile{
         display: none;
     }
+
+    .popup{
+        position: fixed;
+        right: 2.3vw;
+        bottom: 8vw;
+        width: max-content;
+        transform: translateX(200%);
+        transition: .3s all;
+        z-index: 100;
+        background-color: #800009;
+        padding: .75vw 1.3vw;
+        border-radius: 2vw;
+        border: .12vw solid #CB811A;
+    }
+    .popup.active{
+        transform: translateX(0);
+    }
+    .popup p{
+        color: white;
+        font-size: .9vw;
+    }
   @media (max-width:768px) {
+    .popup{
+        position: fixed;
+        right: 38vw;
+        bottom: 4vw;
+        width: max-content;
+        transform: translateX(-300%);
+        transition: .3s all;
+        z-index: 100;
+        background-color: #800009;
+        padding: 1.3vw 3.3vw;
+        border-radius: 12vw;
+        border: .12vw solid #CB811A;
+    }
+    .popup.active{
+        transform: translateX(0);
+    }
+    .popup p{
+        color: white;
+        font-size: 3.2vw;
+    }
     .nav .language{
         display: block;
         margin-top: 8vw;

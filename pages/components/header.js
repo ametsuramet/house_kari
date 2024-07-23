@@ -34,6 +34,16 @@ const Header = () => {
   const searchMobileRef = useRef(null);
   const [language, setLanguage] = useState(`${t('selectLanguage')}`);
   const [articleCategories, setArticleCategories] = useState([]);
+  const [shareLinks, setShareLinks] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+    setTimeout(() => {
+      setIsPopupOpen(false);
+    }, 2000); 
+  }
+  const handleClosePopup = () => setIsPopupOpen(false);
 
   useEffect(() => {
     const fetchArticleCategories = async () => {
@@ -249,28 +259,59 @@ const Header = () => {
     },
   ]
 
-  const share = [
-    {
-      id: 1,
-      nameMedia: 'whatsapp',
-      imageMedia: <FaWhatsapp/>,
-    },
-    {
-      id: 2,
-      nameMedia: 'facebook',
-      imageMedia: <FaFacebookF/>,
-    },
-    {
-      id: 3,
-      nameMedia: 'telegram',
-      imageMedia: <FaTelegramPlane/>,
-    },
-    {
-      id: 4,
-      nameMedia: 'copy',
-      imageMedia: <FaLink/>,
-    },
-  ]
+  const updateShareLinks = (url) => {
+    const currentUrl = window.location.href;
+    const share = [
+      {
+        id: 1,
+        nameMedia: 'whatsapp',
+        imageMedia: <FaWhatsapp />,
+        link: `https://api.whatsapp.com/send?text=${encodeURIComponent(currentUrl)}`
+      },
+      {
+        id: 2,
+        nameMedia: 'facebook',
+        imageMedia: <FaFacebookF />,
+        link: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`
+      },
+      {
+        id: 3,
+        nameMedia: 'telegram',
+        imageMedia: <FaTelegramPlane />,
+        link: `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}`
+      },
+      {
+        id: 4,
+        nameMedia: 'copy',
+        imageMedia: <FaLink />,
+        action: () => {
+          navigator.clipboard.writeText(currentUrl);
+          handleOpenPopup();
+        }
+      },
+    ];
+
+    setShareLinks(share);
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      updateShareLinks(window.location.href);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      updateShareLinks(url);
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
+
 
   const [menuActive, setMenuActive] = useState(false);
 
@@ -436,8 +477,12 @@ const Header = () => {
           <div className={styles.ecommerceDropdown}>
             <button onClick={toggleDropdownShare} className={`${styles.bg_transparent} ${isDropdownOpenShare ? styles.active : ''}`}><PiShareNetwork /></button>
             <div className={`${styles.dropdown} ${isDropdownOpenShare ? styles.active : ''}`}>
-              {share.map((share) => (
-                  <Link href="#" key={share.id}><div className={`${styles.share_box} ${styles[share.nameMedia]}`}>{share.imageMedia}</div></Link>
+              {shareLinks.map((share) => (
+                <Link href={share.link || '#'} key={share.id} legacyBehavior>
+                  <a onClick={share.action ? (e) => { e.preventDefault(); share.action(); } : null} className={`${styles.share_box} ${styles[share.nameMedia]}`}>
+                    {share.imageMedia}
+                  </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -454,6 +499,9 @@ const Header = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className={`${styles.popup} ${isPopupOpen ? styles.active : ''}`}>
+          <p>Berhasil di Copy</p>
       </div>
     </>
   );
