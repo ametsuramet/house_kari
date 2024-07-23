@@ -46,7 +46,7 @@ export default function Contact() {
         <meta name="description" content="Learn more about us" /> 
       </Head>
       <div className={banner.bannerStyle}>
-          <img src="/images/company_history_banner.png" alt="House Kari Website"/>
+          <img src="/images/banner_contact.png" alt="House Kari Website"/>
       </div>
       <div className={banner.breadcrumbs}>
           <p>{t('menu.home')} / <span>{t('menu.contact')}</span></p>
