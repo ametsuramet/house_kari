@@ -65,27 +65,27 @@ export default function Product() {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-        try {
-            const response = await axios.get('/api/all-recipes');
-            const recipes = response.data.data;
+      try {
+        const response = await axios.get('/api/all-recipes');
+        const recipes = response.data.data;
   
-            // Shuffle the recipes array
-            for (let i = recipes.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [recipes[i], recipes[j]] = [recipes[j], recipes[i]];
-            }
+        // Shuffle the recipes array
+        const shuffledRecipes = recipes.sort(() => 0.5 - Math.random());
   
-            // Limit to 7 recipes
-            const limitedRecipes = recipes.slice(0, 7);
+        // Limit to 7 recipes
+        const limitedRecipes = shuffledRecipes.slice(0, 7);
   
-            setRecipeList(limitedRecipes);
-        } catch (error) {
-            console.error('Error fetching recipes:', error);
-        }
+        setRecipeList(limitedRecipes);
+      } catch (error) {
+        console.error('Error fetching recipes:', error);
+      } finally {
+        setLoadingRecipes(false);
+      }
     };
   
     fetchRecipes();
   }, []);
+  
 
   const pageTitle = `House Kari | ${t('menu.product')}`;
 
