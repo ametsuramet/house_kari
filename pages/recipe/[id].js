@@ -55,40 +55,55 @@ const RecipeDetail = () => {
     const [articlesSlide, setArticlesSlide] = useState([]);
 
     useEffect(() => {
-        const fetchArticlesSlide = async () => {
-            try {
-              const response = await axios.get(`/api/list-article/`);
-              setArticlesSlide(response.data.data); // Perhatikan pengaturan data detail di sini
-              setLoading(false);
-              console.log('Fetched product:', response.data.data);
-            } catch (error) {
-              console.error('Error fetching product:', error);
-              setLoading(false);
+      const fetchArticlesSlide = async () => {
+        try {
+          const response = await axios.get(`/api/list-article/`);
+          const articles = response.data.data;
+          
+          // Fungsi untuk mengacak urutan array
+          const shuffleArray = (array) => {
+            for (let i = array.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [array[i], array[j]] = [array[j], array[i]];
             }
-        };
-      
-        fetchArticlesSlide();
-      }, [id]);
+            return array;
+          };
+    
+          const shuffledArticles = shuffleArray(articles);
+          const limitedArticles = shuffledArticles.slice(0, 7); // Membatasi hingga 7 artikel
+          setArticlesSlide(limitedArticles);
+          console.log('Fetched and shuffled product:', limitedArticles);
+        } catch (error) {
+          console.error('Error fetching product:', error);
+        }
+      };
+    
+      fetchArticlesSlide();
+    }, []);
 
     useEffect(() => {
       const fetchRecipes = async () => {
-        try {
-          const response = await axios.get('/api/all-recipes');
-          const recipes = response.data.data;
-  
-          // Filter out recipes with the same ID as router.query.id
-          const filteredRecipes = recipes.filter(recipe => recipe.id !== Number(id));
-          
-          setRecipeList(filteredRecipes);
-        } catch (error) {
-          console.error('Error fetching recipes:', error);
-        }
+          try {
+              const response = await axios.get('/api/all-recipes');
+              const recipes = response.data.data;
+    
+              // Shuffle the recipes array
+              for (let i = recipes.length - 1; i > 0; i--) {
+                  const j = Math.floor(Math.random() * (i + 1));
+                  [recipes[i], recipes[j]] = [recipes[j], recipes[i]];
+              }
+    
+              // Limit to 7 recipes
+              const limitedRecipes = recipes.slice(0, 7);
+    
+              setRecipeList(limitedRecipes);
+          } catch (error) {
+              console.error('Error fetching recipes:', error);
+          }
       };
-  
-      if (id) {
-        fetchRecipes();
-      }
-    }, [id]);
+    
+      fetchRecipes();
+    }, []);
 
     useEffect(() => {
       const fetchProduct = async () => {
@@ -111,58 +126,6 @@ const RecipeDetail = () => {
     const togglePopup = () => {
         setIsActive(!isActive); 
     };
-
-      const slideBlog = [
-        {
-          id: 1,
-          images: '/images/blog_recent_1.png',
-          date: `${t('posted')} 10/10/2024`,
-          headingBlog:  t('headline'),
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-        {
-          id: 2,
-          images: '/images/blog_recent_2.png',
-          date: `${t('posted')} 10/10/2024`,
-          headingBlog:  t('headline'),
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-        {
-          id: 3,
-          images: '/images/blog_recent_1.png',
-          date: `${t('posted')} 10/10/2024`,
-          headingBlog:  t('headline'),
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-        {
-          id: 4,
-          images: '/images/blog_recent_2.png',
-          date: `${t('posted')} 10/10/2024`,
-          headingBlog:  t('headline'),
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-        {
-          id: 5,
-          images: '/images/blog_recent_1.png',
-          date: `${t('posted')} 10/10/2024`,
-          headingBlog:  t('headline'),
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-        {
-          id: 6,
-          images: '/images/blog_recent_2.png',
-          date: `${t('posted')} 10/10/2024`,
-          headingBlog:  t('headline'),
-          descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-        },
-        {
-            id: 7,
-            images: '/images/blog_recent_1.png',
-            date: `${t('posted')} 10/10/2024`,
-            headingBlog:  t('headline'),
-            descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-          },
-      ];
 
       if (router.isFallback || loading) {
         return <p>Loading...</p>;
@@ -240,14 +203,23 @@ const RecipeDetail = () => {
 
       const stripPTags = (html) => {
         if (typeof html === 'string') {
-          return html.replace(/<p[^>]*>|<\/p>/g, '');
+          return html.replace(/<p[^>]*>|<\/p>/g, ''); 
         } else {
           return html;
         }
       };
 
+      function stripH1Tags(str) {
+        return str.replace(/<\/?h1>/gi, '');
+      }
+
+      function stripTags(str) {
+        return str.replace(/<\/?[^>]+(>|$)/g, '');
+      }
+      
+
       // const pageTitle = `House Kari | ${t('menu.recipe')} A`;
-      const pageTitle = detail ? `House Kari | ${stripPTags(getProductName(detail))}` : 'House Kari';
+      const pageTitle = detail ? `House Kari | ${stripH1Tags(getProductName(detail))}` : 'House Kari';
 
     return(
         <>
@@ -259,7 +231,7 @@ const RecipeDetail = () => {
             <img src="/images/recipe_banner.png" alt="House Kari Website"/>
         </div>
         <div className={banner.breadcrumbs}>
-            <p>{t('menu.home')} / {t('menu.recipe')} / <span>{stripPTags(getProductName(detail))}</span></p>
+            <p>{t('menu.home')} / {t('menu.recipe')} / <span>{stripH1Tags(getProductName(detail))}</span></p>
         </div>
         <div className={styles.section4}>
             <div className={styles.section4_layout}>
@@ -272,8 +244,8 @@ const RecipeDetail = () => {
                   <div className={styles.section4_content_layout}>
                     <div className={styles.section4_content}>
                         <div className={styles.recipeDetail}>
-                            <h1>{stripPTags(getProductName(detail))}</h1>
-                            <p>{stripPTags(getDescName(detail))}</p>
+                            <h1>{stripH1Tags(getProductName(detail))}</h1>
+                            <p>{stripTags(getDescName(detail))}</p>
                         </div>
                         <div className={styles.recipeBahan}>
                             <h3 className={styles.headingRecipeDetail}>{t('bahan')}</h3>

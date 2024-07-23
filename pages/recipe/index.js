@@ -70,20 +70,32 @@ export default function Recipe() {
   const [loadingRecipes, setLoadingRecipes] = useState(true);
 
   useEffect(() => {
-      const fetchArticlesSlide = async () => {
-          try {
-            const response = await axios.get(`/api/list-article/`);
-            setArticlesSlide(response.data.data); // Perhatikan pengaturan data detail di sini
-            setLoading(false);
-            console.log('Fetched product:', response.data.data);
-          } catch (error) {
-            console.error('Error fetching product:', error);
-            setLoading(false);
+    const fetchArticlesSlide = async () => {
+      try {
+        const response = await axios.get(`/api/list-article/`);
+        const articles = response.data.data;
+        
+        // Fungsi untuk mengacak urutan array
+        const shuffleArray = (array) => {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
           }
-      };
-    
-      fetchArticlesSlide();
-    }, );
+          return array;
+        };
+  
+        const shuffledArticles = shuffleArray(articles);
+        const limitedArticles = shuffledArticles.slice(0, 7); // Membatasi hingga 7 artikel
+        setArticlesSlide(limitedArticles);
+        console.log('Fetched and shuffled product:', limitedArticles);
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      }
+    };
+  
+    fetchArticlesSlide();
+  }, []);
+  
 
   
 
@@ -172,18 +184,29 @@ export default function Recipe() {
 
 const [recipeList, setRecipeList] = useState([]);
 
-    useEffect(() => {
-        const fetchRecipes = async () => {
-            try {
-                const response = await axios.get('/api/all-recipes');
-                setRecipeList(response.data.data);
-            } catch (error) {
-                console.error('Error fetching recipes:', error);
-            }
-        };
+useEffect(() => {
+  const fetchRecipes = async () => {
+      try {
+          const response = await axios.get('/api/all-recipes');
+          const recipes = response.data.data;
 
-        fetchRecipes();
-    }, []);
+          // Shuffle the recipes array
+          for (let i = recipes.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [recipes[i], recipes[j]] = [recipes[j], recipes[i]];
+          }
+
+          // Limit to 7 recipes
+          const limitedRecipes = recipes.slice(0, 7);
+
+          setRecipeList(limitedRecipes);
+      } catch (error) {
+          console.error('Error fetching recipes:', error);
+      }
+  };
+
+  fetchRecipes();
+}, []);
 
     const getRecipeTitle = (recipe) => {
       switch (i18n.language) {
@@ -195,14 +218,6 @@ const [recipeList, setRecipeList] = useState([]);
               return recipe.title;
       }
   };
-
-  // if (loadingCategories) {
-  //   return (
-  //     <div>
-  //       <Skeleton height={70} count={5} />
-  //     </div>
-  //   );
-  // }
 
   const chunkedRecipes = chunkArray(recipes, 2);
 
@@ -221,21 +236,8 @@ const [recipeList, setRecipeList] = useState([]);
       <div className={styles.section1}>
         <img src="/images/sendok_recipe_slide.png" alt="House Kari" className={styles.sendok_recipe_slide}/>
         <div className={styles.tabContainer}>
-          {/* <div className={styles.tabHeaders}>
-            {categories.map(category => (
-              <button
-                key={category.id}
-                onClick={() => {
-                  setSelectedCategory(category.id);
-                  setActiveTab(0); // Reset tab aktif ke tab pertama saat kategori dipilih
-                }}
-                className={`${styles.tabHeader} ${selectedCategory === category.id ? styles.active : ''}`}
-              >
-                {getCategoryName(category)}
-              </button>
-            ))}
-          </div> */}
-          <div className={styles.tabHeaders}>
+          <div className={styles.tabHeadersLayout}>
+            <div className={styles.tabHeaders}>
               {loadingCategories ? (
                 Array.from({ length: 3 }).map((_, index) => (
                   <Skeleton key={index} height={40} width={100} style={{ margin: '0 10px' }} />
@@ -255,6 +257,7 @@ const [recipeList, setRecipeList] = useState([]);
                 ))
               )}
             </div>
+          </div>
           <div className={styles.tabContent}>
             <h1 className='headingRecipeSlide'>{t('featuredRecipe')}</h1>
             {loadingRecipes ? (

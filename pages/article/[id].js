@@ -152,6 +152,17 @@ const ArticlePage = () => {
     }
   };
 
+  const getProductText = (article) => {
+    switch (i18n.language) {
+      case 'en':
+        return article.text_en || article.text;
+      case 'zh':
+        return article.text_chi || article.text;
+      default:
+        return article.text;
+    }
+  };
+
   const stripPTags = (html) => {
     if (typeof html === 'string') {
       const tempDiv = document.createElement('div');
@@ -214,7 +225,7 @@ const ArticlePage = () => {
                   <div className={styles.blog_recent_content}>
                     <span>{t('posted')} {formatDate(article.date)}</span>
                     <h1>{stripPTags(getProductName(article))}</h1>
-                    <p>{stripPTags(article.text)}</p>
+                    <p>{stripPTags(getProductText(article))}</p>
                     <Link href={`/article-detail/${article.id}`}><button>{t('section1Home.learnMore')}</button></Link>
                   </div>
                 </div>

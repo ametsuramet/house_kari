@@ -323,7 +323,7 @@ const Header = () => {
             <Link href='/'>
               <img src='/images/logo.png' alt="House Kari Logo" />
             </Link>
-          </div>
+          </div> 
           <div className={styles.btnMobile}>
             <button className={styles.searchBtn} onClick={handleSearch}><MdSearch/></button>
             <button className={styles.hamburger} onClick={handleHamburger}><RxHamburgerMenu/></button>
@@ -383,7 +383,7 @@ const Header = () => {
                         >
                           {i18n.language === 'en' ? category.name_en : i18n.language === 'zh' ? category.name_chi : category.name}
                         </Link>
-                      </li>
+                      </li> 
                     ))}
                   </ul>
                 </li>

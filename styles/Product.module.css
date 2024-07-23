@@ -2,10 +2,20 @@
   width: 100%;
   z-index: 3;
 }
+.tabHeadersLayout{
+  width: 84%;
+  margin: auto;
+  overflow-x: scroll;
+}
+.tabHeadersLayout::-webkit-scrollbar{
+  display: none;
+}
 .tabHeaders {
   display: flex;
   justify-content: center;
   gap: 1.4vw;
+  width: max-content;
+  margin: auto;
   margin-bottom: 2.5vw;
 }
 .tabHeader {
@@ -111,7 +121,7 @@
 .tab_icon_image{
     position: absolute;
     left: 0; 
-    top: 17vw;
+    top: 17vw; 
     display: block;
     width: 12.4vw;
 }

@@ -1,11 +1,23 @@
 .tabs {
     width: 100%;
   }
+  .tabHeadersLayout{
+    width: 60%;
+    overflow-x: scroll;
+    z-index: 5;
+    margin: auto;
+    margin-bottom: 0vw;
+  }
+  .tabHeadersLayout::-webkit-scrollbar{
+    display: none;
+  }
   .tabHeaders {
     display: flex;
     justify-content: center;
     gap: 1.4vw;
+    margin: auto;
     margin-bottom: 4.5vw;
+    width: max-content;
   }
   
   .tabHeader {
@@ -373,13 +385,31 @@
       .sendok_recipe_slide{
         left: 0;
         top: 2vw;
+        z-index: -1;
         width: 19.3vw;
       }
     .tabs {
         text-align: center;
       }
-      .tabHeaders{
+      .tabHeadersLayout{
+        width: 100%;
+        overflow-x: scroll;
+        z-index: 5;
+        margin-bottom: 1.5vw;
+      }
+      .tabHeadersLayout::-webkit-scrollbar{
         display: none;
+      }
+      .tabHeaders{
+        display: flex;
+        width: max-content;
+        padding: 0 5vw;
+        gap: 3vw;
+      }
+      .tabHeader {
+        padding: 1.7vw 4vw;
+        border: .13vw solid var(--old_red);
+        font-size: 3.5vw;
       }
       .select_menu_product{
         display: inline-block;

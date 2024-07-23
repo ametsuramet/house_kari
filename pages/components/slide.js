@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from '@/styles/Slide.module.css';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { AiOutlineSearch } from "react-icons/ai";
+import Link from 'next/link';
 
 const Slide = ({ items = [], showNavigation = true, showPagination = true }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -46,6 +47,7 @@ const Slide = ({ items = [], showNavigation = true, showPagination = true }) => 
           ))}
         </div>
       )}
+      <Link href="/product">
       <div className={styles.product_banner}>
         <div className={styles.product_banner_image}>
             <img src='/images/product_banner.png' alt='House Kari Product'/>
@@ -53,8 +55,9 @@ const Slide = ({ items = [], showNavigation = true, showPagination = true }) => 
         </div>
         <div className={styles.product_banner_overlay}>
             <AiOutlineSearch />
-        </div>
+        </div> 
       </div>
+      </Link>
       <div className={styles.divider}></div>
     </div>
   );

@@ -187,7 +187,12 @@
 }
 .show2{
     width: 13vw !important;
+    overflow-y: scroll !important;
+    height: 14.5vw !important;
     display: block !important;
+}
+.show2::-webkit-scrollbar{
+    display: none;
 }
 .show2 li {
     display: -webkit-box !important;
@@ -633,6 +638,8 @@
     }
     .show2{
         width: 100% !important;
+        height: 53vw !important;
+        overflow-y: scroll;
         display: block !important;
     }
     .nav ul li a:hover,

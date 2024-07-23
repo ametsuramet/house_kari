@@ -60,17 +60,31 @@ export default function Home() {
 
   useEffect(() => {
     const fetchArticlesSlide = async () => {
-        try {
-          const response = await axios.get(`/api/list-article/`);
-          setArticlesSlide(response.data.data); 
-          console.log('Fetched product:', response.data.data);
-        } catch (error) {
-          console.error('Error fetching product:', error);
-        }
+      try {
+        const response = await axios.get(`/api/list-article/`);
+        const articles = response.data.data;
+        
+        // Fungsi untuk mengacak urutan array
+        const shuffleArray = (array) => {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+          return array;
+        };
+  
+        const shuffledArticles = shuffleArray(articles);
+        const limitedArticles = shuffledArticles.slice(0, 7); // Membatasi hingga 7 artikel
+        setArticlesSlide(limitedArticles);
+        console.log('Fetched and shuffled product:', limitedArticles);
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      }
     };
   
     fetchArticlesSlide();
-  });
+  }, []);
+  
 
   const formatDate = (dateString) => {
     const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
@@ -95,6 +109,17 @@ export default function Home() {
         return article.title_chi || article.title;
       default:
         return article.title;
+    }
+  };
+
+  const getProductText = (article) => {
+    switch (i18n.language) {
+      case 'en':
+        return article.text_en || article.text;
+      case 'zh':
+        return article.text_chi || article.text;
+      default:
+        return article.text;
     }
   };
 
@@ -238,7 +263,7 @@ const handleMouseUp = () => {
   document.removeEventListener('mouseup', handleMouseUp);
 };
 
-if (articles.length === 0) return <p style={{textAlign: "center"}}>Loading...</p>;
+// if (articles.length === 0) return <p style={{textAlign: "center"}}>Loading...</p>;
 
   return (
     <>
@@ -302,7 +327,7 @@ if (articles.length === 0) return <p style={{textAlign: "center"}}>Loading...</p
                   <div className={styles.blog_recent_content}>
                     <span>{t('posted')} {formatDate(article.date)}</span>
                     <h1>{stripPTags(getProductName(article))}</h1>
-                    <p>{stripPTags(article.text)}</p>
+                    <p>{stripPTags(getProductText(article))}</p>
                     <Link href={`/article-detail/${article.id}`}><button>{t('section1Home.learnMore')}</button></Link>
                   </div>
                 </div>

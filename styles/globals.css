@@ -54,9 +54,10 @@
   display: none !important;
 }
 .imageContainer img{
-  width: 75%;
+  width: 100%;
   display: block;
   margin: auto;
+  padding: 0 2vw;
   margin-bottom: 2.2vw;
 }
 .mySwiperProduct{
@@ -95,10 +96,10 @@
 .mySwiperProduct .swiper-slide-active .imageContainer img{
   width: 100% !important;
   transition: 1s all;
-  transform: scale(1);
   display: block !important;
   margin: auto !important;
   margin-bottom: 1.8vw !important;
+  padding: 0 0;
   filter: drop-shadow(0 1.3vw 1vw #7011115E);
 }
 .mySwiperProduct .swiper-slide-active .imageBoxContainer img{
@@ -283,8 +284,12 @@
       text-overflow: ellipsis;
   font-weight: 400 !important;
 }
-.box_articles_content p h4{
+.box_articles_content p strong{
   font-weight: 400 !important;
+}
+.box_articles_content p h4, .box_articles_content p h5, .box_articles_content p h3, .box_articles_content p h2, .box_articles_content p h1{
+  font-weight: 400 !important;
+  font-size: .97vw;
 }
 .box_articles_content button{
   background-color: var(--old_red);
@@ -848,6 +853,13 @@
   .box_articles_content p{
     font-size: 2.7vw;
     margin-bottom: 5vw;
+  }
+  .box_articles_content p strong{
+    font-weight: 400 !important;
+  }
+  .box_articles_content p h4, .box_articles_content p h5, .box_articles_content p h3, .box_articles_content p h2, .box_articles_content p h1{
+    font-weight: 400 !important;
+    font-size: 2.7vw;
   }
   .box_articles_content button{
     font-size: 2.7vw;
