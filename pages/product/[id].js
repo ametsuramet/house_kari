@@ -52,14 +52,25 @@ const ProductDetails = () => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      try {
-        const response = await axios.get('/api/all-recipes');
-        setRecipeList(response.data.data);
-      } catch (error) {
-        console.error('Error fetching recipes:', error);
-      }
+        try {
+            const response = await axios.get('/api/all-recipes');
+            const recipes = response.data.data;
+  
+            // Shuffle the recipes array
+            for (let i = recipes.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [recipes[i], recipes[j]] = [recipes[j], recipes[i]];
+            }
+  
+            // Limit to 7 recipes
+            const limitedRecipes = recipes.slice(0, 7);
+  
+            setRecipeList(limitedRecipes);
+        } catch (error) {
+            console.error('Error fetching recipes:', error);
+        }
     };
-
+  
     fetchRecipes();
   }, []);
 
