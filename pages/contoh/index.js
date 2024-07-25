@@ -1,28 +1,22 @@
-import Head from "next/head";
-import styles from '@/styles/Recipe.module.css'
-import banner from '@/styles/Banner.module.css'
-import { useState, useEffect, useRef } from "react";
-import SlideRecipe from "../components/slide_recipe";
-import SlideArticles from "../components/slide_articles";
-import SlideArticlesMobile from "../components/slide_articles_mobile";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import styles from '@/styles/Header.module.css';
+import Head from 'next/head';
+import { AiOutlineSearch } from "react-icons/ai";
 import { IoChevronDown } from "react-icons/io5";
+import { SlVolume2, SlVolumeOff } from "react-icons/sl";
+import { PiShareNetwork } from "react-icons/pi";
+import { BsCart2 } from "react-icons/bs";
+import { useRef } from 'react';
+import { IoCloseOutline, IoSearchOutline } from "react-icons/io5";
+import { FaFacebookF, FaWhatsapp, FaTelegramPlane } from "react-icons/fa";
+import { FaLink } from "react-icons/fa6";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { MdSearch } from "react-icons/md";
 import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
-import axios from "axios";
-import Link from "next/link";
-import React from 'react';
-// Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
-import SlideArticlesSecond from "../components/slide_articles_second";
-import SlideArticlesSecondMobile from "../components/slide_articles_second_mobile";
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-
-import { Pagination, Navigation } from 'swiper/modules';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import axios from 'axios';
 
 export async function getStaticProps({ locale }) {
   return {
@@ -32,366 +26,492 @@ export async function getStaticProps({ locale }) {
   };
 }
 
-const chunkArray = (arr, chunkSize) => {
-  const result = [];
-  for (let i = 0; i < arr.length; i += chunkSize) {
-    result.push(arr.slice(i, i + chunkSize));
-  }
-  return result;
-};
-
-export default function Contoh() {
+const Header = () => {
   const { t, i18n } = useTranslation('common');
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedMenu, setSelectedMenu] = useState('Bread & Pastry');
+  const router = useRouter();
+  const { pathname, asPath, query } = router;
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const searchMobileRef = useRef(null);
+  const [language, setLanguage] = useState(`${t('selectLanguage')}`);
+  const [articleCategories, setArticleCategories] = useState([]);
+  const [shareLinks, setShareLinks] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const menuItems = [
-    'Bread & Pastry',
-    'Vegetables',
-    'Meat',
-    'Seafood',
-    'Snacks'
-  ];
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const secondColor = 'creamColor'
-  const paginationStyle = 'old_red_color'
-  const pageTitle = `House Kari | ${t('menu.recipe')}`;
-
-  const [recipes, setRecipes] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [activeTab, setActiveTab] = useState(0); // State untuk menyimpan indeks tab aktif
-
-  const [articlesSlide, setArticlesSlide] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingCategories, setLoadingCategories] = useState(true);
-  const [loadingRecipes, setLoadingRecipes] = useState(true);
-
-  useEffect(() => {
-    const fetchArticlesSlide = async () => {
-      try {
-        const response = await axios.get(`/api/list-article/`);
-        const articles = response.data.data;
-        
-        // Fungsi untuk mengacak urutan array
-        const shuffleArray = (array) => {
-          for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-          }
-          return array;
-        };
-  
-        const shuffledArticles = shuffleArray(articles);
-        const limitedArticles = shuffledArticles.slice(0, 7); // Membatasi hingga 7 artikel
-        setArticlesSlide(limitedArticles);
-        console.log('Fetched and shuffled product:', limitedArticles);
-      } catch (error) {
-        console.error('Error fetching product:', error);
-      }
-    };
-  
-    fetchArticlesSlide();
-  }, []);
-  
-
-  
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get('/api/recipe-categories');
-        const categoriesData = response.data.data;
-        setCategories(categoriesData);
-        if (categoriesData.length > 0) {
-          setSelectedCategory(categoriesData[0].id);
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      } finally {
-        setLoadingCategories(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      if (!selectedCategory) return;
-      try {
-        const response = await axios.get(`/api/recipeByCategories/${selectedCategory}`);
-        setRecipes(response.data.data);
-      } catch (error) {
-        console.error('Error fetching recipes:', error);
-      } finally {
-        setLoadingRecipes(false);
-      }
-    };
-
-    fetchRecipes();
-  }, [selectedCategory]);
-
-  const getCategoryName = (category) => {
-    switch (i18n.language) {
-      case 'en':
-        return category.name_en || category.name;
-      case 'zh':
-        return category.name_chi || category.name;
-      default:
-        return category.name;
-    }
-  };
-
-  const getProductName = (recipe) => {
-    switch (i18n.language) {
-      case 'en':
-        return recipe.title_en || recipe.title;
-      case 'zh':
-        return recipe.title_chi || recipe.title;
-      default:
-        return recipe.title;
-    }
-  };
-
-  const getDescriptionName = (recipe) => {
-    switch (i18n.language) {
-      case 'en':
-        return recipe.description_en || recipe.description;
-      case 'zh':
-        return recipe.description_chi || recipe.description;
-      default:
-        return recipe.description;
-    }
-  };
-
-  const handleSetActiveTab = (id) => {
-    setActiveTab(id);
-  };
-
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-
-  const stripPTags = (html) => {
-    if (typeof html === 'string') {
-      return html.replace(/<p[^>]*>|<\/p>/g, '');
-    } else {
-      return html; // atau return '';
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+    setTimeout(() => {
+      setIsPopupOpen(false);
+    }, 2000); 
   }
-  };
+  const handleClosePopup = () => setIsPopupOpen(false);
 
-const [recipeList, setRecipeList] = useState([]);
-
-useEffect(() => {
-  const fetchRecipes = async () => {
+  useEffect(() => {
+    const fetchArticleCategories = async () => {
       try {
-          const response = await axios.get('/api/all-recipes');
-          const recipes = response.data.data;
-
-          // Shuffle the recipes array
-          for (let i = recipes.length - 1; i > 0; i--) {
-              const j = Math.floor(Math.random() * (i + 1));
-              [recipes[i], recipes[j]] = [recipes[j], recipes[i]];
-          }
-
-          // Limit to 7 recipes
-          const limitedRecipes = recipes.slice(0, 7);
-
-          setRecipeList(limitedRecipes);
+        const response = await axios.get('/api/article-categories');
+        setArticleCategories(response.data.data);
       } catch (error) {
-          console.error('Error fetching recipes:', error);
+        console.error('Error fetching article categories:', error);
       }
+    };
+
+    fetchArticleCategories();
+  }, []);
+
+  const toggleDropdown = (menu) => {
+    setOpenDropdown(openDropdown === menu ? null : menu);
   };
 
-  fetchRecipes();
-}, []);
-
-    const getRecipeTitle = (recipe) => {
-      switch (i18n.language) {
-          case 'en':
-              return recipe.title_en || recipe.title;
-          case 'zh':
-              return recipe.title_chi || recipe.title;
-          default:
-              return recipe.title;
-      }
+  const closeDropdown = () => {
+    setOpenDropdown(null);
   };
 
-  const chunkedRecipes = chunkArray(recipes, 2);
+  const createAlternateLinks = () => {
+    const locales = ['en', 'id', 'zh'];
+    return locales.map((locale) => (
+      <link
+        key={locale}
+        rel="alternate"
+        hrefLang={locale}
+        href={`/${locale}${pathname}`}
+      />
+    ));
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(`.${styles.nav}`) && !event.target.closest(`.${styles.language}`)) {
+        closeDropdown();
+      }
+      if (searchMobileRef.current && !searchMobileRef.current.contains(event.target)) {
+        setSearchActive(false);
+      }
+    };
+
+    const handleScroll = () => {
+      closeDropdown();
+      setSearchActive(false);
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const clickMenu = () => {
+    closeDropdown();
+    handleHamburger();
+  };
+
+  const getLinkClass = (href) => {
+    return router.pathname === href ? `${styles.link} ${styles.active}` : styles.link;
+  };
+  
+  const isActiveMenu = (subMenuLinks) => {
+    return subMenuLinks.some(link => router.pathname.startsWith(link));
+  };
+
+  const handleLanguageChange = (lang) => {
+    let locale = '';
+    switch (lang) {
+      case 'English':
+        locale = 'en';
+        break;
+      case 'Chinese':
+        locale = 'zh';
+        break;
+      case 'Indonesian':
+        locale = 'id';
+        break;
+      default:
+        locale = 'id';
+    }
+    setLanguage(lang);
+    closeDropdown();
+    // Menavigasi ke URL yang sesuai dengan bahasa yang dipilih sambil mempertahankan pathname
+    router.push({ pathname, query }, asPath, { locale: locale });
+  };
+
+  const audioRef = useRef(typeof Audio !== 'undefined' ? new Audio('/media/soundtrack.wav') : undefined);
+
+  const playAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.play().catch(error => {
+        console.error('Error playing audio:', error);
+      });
+    }
+  };
+
+  const pauseAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+  };
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.loop = true; // Set the audio to loop
+    }
+
+    const handleUserInteraction = () => {
+      playAudio();
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('keypress', handleUserInteraction);
+    };
+
+    document.addEventListener('click', handleUserInteraction);
+    document.addEventListener('keypress', handleUserInteraction);
+
+    return () => {
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('keypress', handleUserInteraction);
+    };
+  }, []);
+
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handleClickPlay = () => {
+    setIsPlaying(true);
+    playAudio();
+  };
+
+  const handleClickPause = () => {
+    setIsPlaying(false);
+    pauseAudio();
+  };
+
+  useEffect(() => {
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
+    if (audioRef.current) {
+      audioRef.current.addEventListener('play', handlePlay);
+      audioRef.current.addEventListener('pause', handlePause);
+    }
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.removeEventListener('play', handlePlay);
+        audioRef.current.removeEventListener('pause', handlePause);
+      }
+    };
+  }, []);
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdownEcommerce = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const closeDropdownEcommerce = () => {
+    setIsDropdownOpen(false);
+  };
+
+  const [isDropdownOpenShare, setIsDropdownOpenShare] = useState(false);
+
+  const toggleDropdownShare = () => {
+    setIsDropdownOpenShare(!isDropdownOpenShare);
+  };
+
+  const closeDropdownShare= () => {
+    setIsDropdownOpenShare(false);
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      closeDropdownEcommerce();
+      closeDropdownShare();
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const ecommerces = [
+    {
+      id: 1,
+      nameEcommerce: 'shopee',
+      imageEcommerce: '/images/shopee_logo.png',
+    },
+    {
+        id: 2,
+        nameEcommerce: 'tokopedia',
+        imageEcommerce: '/images/tokopedia_logo.png',
+    },
+    {
+        id: 3,
+        nameEcommerce: 'blibli',
+        imageEcommerce: '/images/blibli_logo.png',
+    },
+    {
+        id: 4,
+        nameEcommerce: 'sayurbox',
+        imageEcommerce: '/images/sayurbox_logo.png',
+    },
+  ]
+
+  const updateShareLinks = (url) => {
+    const currentUrl = window.location.href;
+    const share = [
+      {
+        id: 1,
+        nameMedia: 'whatsapp',
+        imageMedia: <FaWhatsapp />,
+        link: `https://api.whatsapp.com/send?text=${encodeURIComponent(currentUrl)}`
+      },
+      {
+        id: 2,
+        nameMedia: 'facebook',
+        imageMedia: <FaFacebookF />,
+        link: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`
+      },
+      {
+        id: 3,
+        nameMedia: 'telegram',
+        imageMedia: <FaTelegramPlane />,
+        link: `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}`
+      },
+      {
+        id: 4,
+        nameMedia: 'copy',
+        imageMedia: <FaLink />,
+        action: () => {
+          navigator.clipboard.writeText(currentUrl);
+          handleOpenPopup();
+        }
+      },
+    ];
+
+    setShareLinks(share);
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      updateShareLinks(window.location.href);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      updateShareLinks(url);
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
+
+
+  const [menuActive, setMenuActive] = useState(false);
+
+  const handleHamburger = () => {
+    setMenuActive(!menuActive);
+  }
+
+  const [searchActive, setSearchActive] = useState(false);
+
+  const handleSearch = () => {
+    setSearchActive(!searchActive);
+  }
+
+  const handleClose = () => {
+    setSearchActive(false);
+  };
 
   return (
     <>
       <Head>
-        <title>{pageTitle}</title>
-        <meta name="description" content="Learn more about us" />
+        <title>House Kari</title>
+        <meta name="description" content="Generated by create next app" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+        {createAlternateLinks()}
+        <link rel="alternate" hrefLang="x-default" href={asPath} />
       </Head>
-      <div className={banner.bannerStyle}>
-        <img src="/images/recipe_banner.png" alt="House Kari Website"/>
-      </div>
-      <div className={banner.breadcrumbs}>
-        <p>{t('menu.home')} / <span>{t('menu.recipe')}</span></p>
-      </div>
-      <div className={styles.section1}>
-        <img src="/images/sendok_recipe_slide.png" alt="House Kari" className={styles.sendok_recipe_slide}/>
-        <div className={styles.tabContainer}>
-          <div className={styles.tabHeadersLayout}>
-            <div className={styles.tabHeaders}>
-              {loadingCategories ? (
-                Array.from({ length: 3 }).map((_, index) => (
-                  <Skeleton key={index} height={40} width={100} style={{ margin: '0 10px' }} />
-                ))
-              ) : (
-                categories.map(category => (
-                  <button
-                    key={category.id}
-                    onClick={() => {
-                      setSelectedCategory(category.id);
-                      setActiveTab(0); // Reset tab aktif ke tab pertama saat kategori dipilih
-                    }}
-                    className={`${styles.tabHeader} ${selectedCategory === category.id ? styles.active : ''}`}
+      <div className={styles.heading_layout}>
+        <div className={styles.top_menu}>
+          <div className={styles.language}>
+            <button onClick={() => toggleDropdown('language')}>
+              {language} <IoChevronDown />
+            </button>
+            <ul className={openDropdown === 'language' ? styles.show : ''}>
+              <li>
+                <button onClick={() => handleLanguageChange('English')}>English</button>
+              </li>
+              <li>
+                <button onClick={() => handleLanguageChange('Indonesian')}>Indonesian</button>
+              </li>
+            </ul>
+          </div>
+          <div className={styles.search_box}>
+            <input type='text' placeholder={t('searchText')} />
+            <AiOutlineSearch />
+          </div>
+        </div>
+        <header className={styles.header}>
+          <div className={styles.logo}>
+            <Link href='/'>
+              <img src='/images/logo.png' alt="House Kari Logo" />
+            </Link>
+          </div> 
+          <div className={styles.btnMobile}>
+            <button className={styles.searchBtn} onClick={handleSearch}><MdSearch/></button>
+            <button className={styles.hamburger} onClick={handleHamburger}><RxHamburgerMenu/></button>
+          </div>
+          <div className={`${styles.nav_wrapper} ${menuActive ? styles.active : ''}`}>
+            <nav className={styles.nav}>
+              <ul>
+                <li className={styles.heading}>
+                  <Link href="/" className={getLinkClass('/')} onClick={clickMenu}>
+                    {t('menu.home')}
+                  </Link>
+                </li>
+                <li>
+                  <span
+                    className={`${openDropdown === 'ourStory' || isActiveMenu(['/company-profile', '/company-history']) ? styles.activeSpan : ''}`}
+                    onClick={() => toggleDropdown('ourStory')}
                   >
-                    {getCategoryName(category)}
-                  </button>
-                ))
-              )}
+                    {t('menu.ourStory')} <IoChevronDown />
+                  </span>
+                  <ul className={openDropdown === 'ourStory' ? styles.show : ''}>
+                    <li>
+                      <Link href="/company-profile" className={getLinkClass('/company-profile')} onClick={clickMenu}>
+                        {t('menu.companyProfile')}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/company-history" className={getLinkClass('/company-history')} onClick={clickMenu}>
+                        {t('menu.companyHistory')}
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <Link href="/product" className={getLinkClass('/product')} onClick={clickMenu}>
+                    {t('menu.product')}
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/recipe" className={getLinkClass('/recipe')} onClick={clickMenu}>
+                    {t('menu.recipe')}
+                  </Link>
+                </li>
+                <li>
+                  <span
+                    className={`${openDropdown === 'article' || isActiveMenu() ? styles.activeSpan : ''}`}
+                    onClick={() => toggleDropdown('article')}
+                  >
+                    {t('menu.article')} <IoChevronDown />
+                  </span>
+                  <ul className={openDropdown === 'article' ? styles.show : ''}>
+                    <li>
+                      <Link href="/article" className={getLinkClass('/article')} onClick={clickMenu}>
+                        {t('menu.article')}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/article/event" className={getLinkClass('/article/event')} onClick={clickMenu}>
+                        {t('menu.event')}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/article/tips-trick" className={getLinkClass('/article/tips-trick')} onClick={clickMenu}>
+                        {t('menu.tipsTricks')}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/article/media-release" className={getLinkClass('/article/media-release')} onClick={clickMenu}>
+                        {t('menu.mediaRelease')}
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <Link href="/contact" className={getLinkClass('/contact')} onClick={clickMenu}>
+                    {t('menu.contact')}
+                  </Link>
+                </li>
+              </ul>
+              <button className={styles.closeMenu} onClick={handleHamburger}><IoCloseOutline/></button>
+              <div className={styles.divider_right}></div>
+              <div className={styles.language}>
+                <button onClick={() => toggleDropdown('language')}>
+                  {language} <IoChevronDown />
+                </button>
+                <ul className={openDropdown === 'language' ? styles.show : ''}>
+                  <li>
+                    <button onClick={() => handleLanguageChange('English')}>English</button>
+                  </li>
+                  <li>
+                    <button onClick={() => handleLanguageChange('Indonesian')}>Indonesian</button>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </header>
+        <div ref={searchMobileRef} className={`${styles.searchMobile} ${searchActive ? styles.active : ''}`}>
+          <input type='text' placeholder='Search'/>
+        </div>
+      </div>
+      <div className={styles.fixed_menu}>
+        <div className={styles.fixed_menu_box}>
+            <button
+            className={`${styles.bg_transparent} ${styles.bg_transparent_margin} ${isPlaying ? styles.nonActive : styles.active}`}
+            onClick={handleClickPlay}
+            style={{ display: isPlaying ? 'none' : 'block' }}
+          >
+            <SlVolumeOff />
+          </button>
+          <button
+            className={`${styles.bg_transparent} ${styles.bg_transparent_margin} ${isPlaying ? styles.active : styles.nonActive}`}
+            onClick={handleClickPause}
+            style={{ display: isPlaying ? 'block' : 'none' }}
+          >
+            <SlVolume2 />
+          </button>
+        </div>
+        <div className={styles.fixed_menu_box}>
+          <div className={styles.ecommerceDropdown}>
+            <button onClick={toggleDropdownShare} className={`${styles.bg_transparent} ${isDropdownOpenShare ? styles.active : ''}`}><PiShareNetwork /></button>
+            <div className={`${styles.dropdown} ${isDropdownOpenShare ? styles.active : ''}`}>
+              {shareLinks.map((share) => (
+                <Link href={share.link || '#'} key={share.id} legacyBehavior>
+                  <a onClick={share.action ? (e) => { e.preventDefault(); share.action(); } : null} className={`${styles.share_box} ${styles[share.nameMedia]}`}>
+                    {share.imageMedia}
+                  </a>
+                </Link>
+              ))}
             </div>
           </div>
-          <div className={styles.tabContent}>
-            <h1 className='headingRecipeSlide'>{t('featuredRecipe')}</h1>
-            {loadingRecipes ? (
-              <Swiper
-                slidesPerView={3}
-                spaceBetween={0}
-                centeredSlides={true}
-                loop={true}
-                autoplay={{
-                  delay: 2500,
-                  disableOnInteraction: false,
-                }}
-                navigation={true}
-                pagination={{
-                  clickable: true,
-                }}
-                modules={[Pagination, Navigation]}
-                className="mySwiperRecipe"
-              >
-                {[1, 2, 3].map((_, index) => (
-                  <SwiperSlide key={index}>
-                    <div className='slideItemRecipe'>
-                      <div className='imageRecipe'>
-                        <Skeleton style={{width: "100%", height: "100%", position: "absolute"}} />
-                      </div>
-                      <div className='contentRecipe'>
-                        <Skeleton height={30} width={150} />
-                        <Skeleton height={20} width={200} />
-                        <Skeleton height={30} width={100} />
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            ) : (
-              <Swiper
-                slidesPerView={3}
-                spaceBetween={0}
-                centeredSlides={true}
-                loop={true}
-                autoplay={{
-                  delay: 2500,
-                  disableOnInteraction: false,
-                }}
-                navigation={true}
-                pagination={{
-                  clickable: true,
-                }}
-                modules={[Pagination, Navigation]}
-                className="mySwiperRecipe"
-              >
-                {recipes.map(recipe => (
-                  <SwiperSlide key={recipe.id}>
-                    <div className='slideItemRecipe'>
-                      <div className='imageRecipe'>
-                        <img src={`https://prahwa.net/storage/${recipe.image}`} alt={recipe.title} />
-                      </div>
-                      <div className='contentRecipe'>
-                        <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getProductName(recipe)) }}></h1>
-                        <p dangerouslySetInnerHTML={{ __html: getDescriptionName(recipe) }}></p>
-                        <Link href={`/recipe/[id]`} as={`/recipe/${recipe.id}`}><button>{t('section1Home.learnMore')}</button></Link>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            )}
-            {recipes.length > 0 && (
-            <Swiper 
-                autoHeight={true}
-                slidesPerView={1}
-                spaceBetween={30}
-                loop={true}
-                centeredSlides={true}
-                pagination={{
-                  clickable:true
-                }}
-                modules={[Pagination]}
-                className="mySwiperRecipeMobile"
-                initialSlide={0}
-              >
-                {chunkedRecipes.map((chunk, index) => (
-                  <SwiperSlide key={index}>
-                    {chunk.map(recipe => (
-                    <div className="slideItemRecipe" key={index}>
-                        <div className="recipeItem">
-                          <div className="imageRecipe">
-                            <img src={`https://prahwa.net/storage/${recipe.image}`} alt={recipe.name} />
-                          </div>
-                          <div className="contentRecipe">
-                            <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getProductName(recipe)) }}></h1>
-                            <p dangerouslySetInnerHTML={{ __html: getDescriptionName(recipe) }}></p>
-                            <Link href={`/recipe/[id]`} as={`/recipe/${recipe.id}`}><button>{t('section1Home.learnMore')}</button></Link>
-                          </div>
-                        </div>
-                    </div>
-                    ))}
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            )}
+          <button className={styles.bg_whatsapp}><FaWhatsapp /></button>
+          <div className={styles.ecommerceDropdown}>
+            <button onClick={toggleDropdownEcommerce} className={`${styles.bg_ecommerce} ${isDropdownOpen ? styles.active : ''}`}>
+              <BsCart2 /> <span>{t('ecommerceText')}</span>
+              {isDropdownOpen && <div className={styles.closeEcommerce} onClick={closeDropdownEcommerce}><IoCloseOutline/></div>}
+            </button>
+            <div className={`${styles.dropdown} ${isDropdownOpen ? styles.active : ''}`}>
+              {ecommerces.map((ecommerce) => (
+                  <Link href="#" key={ecommerce.id}><button className={styles[ecommerce.nameEcommerce]}><img src={ecommerce.imageEcommerce} alt="House Kari" /></button></Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-      <div className={styles.section2}>
-        <img src="/images/section_2_recipe_icon.png" alt="House Kari" className={styles.section_2_recipe_icon}/>
-        <div className={styles.space_between_heading}>
-          <h1 className={styles.heading_main_white}>{t('otherRecipe')}</h1>
-        </div>
-        <SlideArticles items={recipeList.map(recipe => ({
-            ...recipe,
-            title: stripPTags(getRecipeTitle(recipe)),
-        }))} />
-         <SlideArticlesMobile items={recipeList.map(recipe => ({
-            ...recipe,
-            title: stripPTags(getRecipeTitle(recipe)),
-        }))} />
-        <div className={styles.divider}></div>
-      </div>
-      <div className={styles.section3}>
-          <img src="/images/recipe_icon_section3.png" className={styles.recipe_icon_section3} alt="House Kari"/>
-          <div className={styles.space_between_heading}>
-              <h1 className={styles.heading_main_red}>{t('otherRecipeList')}</h1>
-          </div>
-          <SlideArticlesSecond classNames={secondColor} paginationClass={paginationStyle} items={articlesSlide.map(detail => ({
-          ...detail,
-              title: stripPTags(getProductName(detail)),
-          }))} />
-          <SlideArticlesSecondMobile classNames={secondColor} paginationClass={paginationStyle} items={articlesSlide.map(detail => ({
-              ...detail,
-              title: stripPTags(getProductName(detail)),
-          }))} /> 
+      <div className={`${styles.popup} ${isPopupOpen ? styles.active : ''}`}>
+          <p>Berhasil di Copy</p>
       </div>
     </>
   );
-}
+};
+
+export default Header;

@@ -9,6 +9,8 @@ import SlideArticlesMobile from "../components/slide_articles_mobile";
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
 import axios from "axios";
+import SlideArticlesSecond from "../components/slide_articles_second";
+import SlideArticlesSecondMobile from "../components/slide_articles_second_mobile";
 
 export async function getStaticProps({ locale }) {
   return {
@@ -22,19 +24,72 @@ export default function Event() {
   const { t, i18n } = useTranslation('common');
 
   const [recipeList, setRecipeList] = useState([]);
+  const [articlesSlide, setArticlesSlide] = useState([]);
+  const [recentArticles, setRecentArticles] = useState([]);
+
+  const articleId = 9;
+
+  useEffect(() => {
+    const fetchArticlesSlide = async () => {
+      try {
+        const response = await axios.get(`/api/list-article-category/${articleId}`);
+        const articles = response.data.data;
+
+        // Mengurutkan artikel berdasarkan tanggal terbaru
+        const sortedArticles = articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        // Mengambil 2 artikel terbaru
+        const recent = sortedArticles.slice(0, 2);
+
+        // Menghapus artikel terbaru dari daftar artikel yang akan diacak
+        const remainingArticles = sortedArticles.slice(2);
+
+        // Fungsi untuk mengacak urutan array
+        const shuffleArray = (array) => {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+          return array;
+        };
+
+        const shuffledArticles = shuffleArray(remainingArticles);
+        const limitedArticles = shuffledArticles.slice(0, 10); // Membatasi hingga 10 artikel
+
+        setArticlesSlide(limitedArticles);
+        setRecentArticles(recent);
+        console.log('Fetched articles:', response.data.data);
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+      }
+    };
+
+    fetchArticlesSlide();
+  }, [articleId]);
 
   useEffect(() => {
     const fetchRecipes = async () => {
         try {
             const response = await axios.get('/api/all-recipes');
-            setRecipeList(response.data.data);
+            const recipes = response.data.data;
+  
+            // Shuffle the recipes array
+            for (let i = recipes.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [recipes[i], recipes[j]] = [recipes[j], recipes[i]];
+            }
+  
+            // Limit to 7 recipes
+            const limitedRecipes = recipes.slice(0, 7);
+  
+            setRecipeList(limitedRecipes);
         } catch (error) {
             console.error('Error fetching recipes:', error);
         }
     };
-
+  
     fetchRecipes();
-}, []);
+  }, []);
 
 
 const getRecipeTitle = (recipe) => {
@@ -285,6 +340,44 @@ if (typeof html === 'string') {
     document.removeEventListener('mouseup', handleMouseUp);
   };
 
+  const getProductName = (article) => {
+    switch (i18n.language) {
+      case 'en':
+        return article.title_en || article.title;
+      case 'zh':
+        return article.title_chi || article.title;
+      default:
+        return article.title;
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Intl.DateTimeFormat('en-GB', options).format(new Date(dateString));
+  };
+
+  const getRecipeTitleHeading = (blog) => {
+    switch (i18n.language) {
+        case 'en':
+            return blog.title_en || blog.title;
+        case 'zh':
+            return blog.title_chi || blog.title;
+        default:
+            return blog.title;
+    }
+  };
+  
+  const getDescriptionName = (blog) => {
+    switch (i18n.language) {
+      case 'en':
+        return blog.text_en || blog.text;
+      case 'zh':
+        return blog.text_chi || blog.text;
+      default:
+        return blog.text;
+    }
+  };
+
   const pageTitle = `House Kari | ${t('menu.event')}`;
 
   return (
@@ -327,16 +420,18 @@ if (typeof html === 'string') {
               <h1 className={styles.heading_main}>{t('newestArticle')}</h1>
             </div>
             <div className={styles.blog_recent_layout}>
-              {recentBlog.map((blog, index) => (
+              {recentArticles.map((blog, index) => (
                 <div key={index} className={styles.blog_recent_box}>
                   <div className={styles.blog_recent_image}>
-                    <img src={blog.images} alt={blog.headingBlog}/>
+                    <Link href={`/article-detail/[id]`} as={`/article-detail/${blog.id}`}>
+                      <img src={`https://prahwa.net/storage/${blog.image}`} alt={blog.title} />
+                    </Link>
                   </div>
                   <div className={styles.blog_recent_content}>
-                    <span>{t('posted')} {blog.date}</span>
-                    <h1>{blog.headingBlog}</h1>
-                    <p>{blog.descBlog}</p>
-                    <Link href='#'><button>{t('section1Home.learnMore')}</button></Link>
+                    {blog.date && <span>{t('posted')} {formatDate(blog.date)}</span>}
+                    <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getRecipeTitleHeading(blog))  }}></h1>
+                    <p dangerouslySetInnerHTML={{ __html: stripPTags(getDescriptionName(blog)) }}></p>
+                    <Link href={`/article-detail/${blog.id}`}><button>{t('section1Home.learnMore')}</button></Link>
                   </div>
                 </div>
               ))}
@@ -356,8 +451,14 @@ if (typeof html === 'string') {
             {selectedMenu} <IoChevronDown />
           </button>
         </div>
-        <SlideArticlesMobile items={slideBlog} />
-        <SlideArticles items={slideBlog} />
+        <SlideArticlesSecond items={articlesSlide.map(article => ({
+          ...article,
+              title: stripPTags(getProductName(article)),
+        }))} />
+        <SlideArticlesSecondMobile items={articlesSlide.map(article => ({
+            ...article,
+            title: stripPTags(getProductName(article)),
+        }))} /> 
         <div className={styles.divider}></div>
       </div>
       <div className={styles.section3}>

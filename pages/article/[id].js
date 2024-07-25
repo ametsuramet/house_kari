@@ -15,7 +15,7 @@ import SlideArticlesSecondMobile from "../components/slide_articles_second_mobil
 const API_PRODUCT_DETAIL_URL = process.env.NEXT_PUBLIC_API_ARTICLE_DETAIL_URL || '/api/list-article-category';
 
 export async function getServerSideProps(context) {
-    const { id } = context.params;
+    const { id } = context.params; 
   
     try {
       const response = await fetch(`${API_PRODUCT_DETAIL_URL}/${id}`);
@@ -58,20 +58,6 @@ const ArticlePage = () => {
   const [error, setError] = useState(null);
   const [recipeList, setRecipeList] = useState([]);
   const [articlesSlide, setArticlesSlide] = useState([]);
-
-//   useEffect(() => {
-//     const fetchRecipes = async () => {
-//         try {
-//             const response = await axios.get('/api/all-recipes');
-//             setRecipeList(response.data.data);
-            
-//         } catch (error) {
-//             console.error('Error fetching recipes:', error);
-//         }
-//     };
-
-//     fetchRecipes();
-// }, []);
 
 useEffect(() => {
   const fetchRecipes = async () => {
