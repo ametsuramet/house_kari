@@ -115,6 +115,30 @@ export default function Product() {
     return html.replace(/<p[^>]*>|<\/p>/g, '');
   };
 
+  const formatWeight = (weight) => {
+    const weightStr = weight.toString();
+  
+    // Replace '99' with a comma
+    let formattedWeight = weightStr.replace(/99/g, ',');
+  
+    // Add thousands separator
+    // formattedWeight = formattedWeight.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  
+    // Handle the case for '265'
+    if (formattedWeight.includes('265')) {
+      // Remove '265' and add 'kg' at the end
+      formattedWeight = formattedWeight.replace('265', '') + 'kg';
+    }
+  
+    // Handle the case for '275'
+    if (formattedWeight.includes('275')) {
+      // Remove '275' and add 'g' at the end
+      formattedWeight = formattedWeight.replace('275', '') + 'g';
+    }
+  
+    return formattedWeight;
+  };
+
   const getRecipeTitle = (recipe) => {
     switch (i18n.language) {
       case 'en':
@@ -125,6 +149,8 @@ export default function Product() {
         return recipe.title;
     }
   };
+
+ 
  
   return (
     <>
@@ -185,7 +211,7 @@ export default function Product() {
                         </div>
                         <div className={styles.contentProduct}>
                           <h1>{getProductName(product)}</h1>
-                          <span>{product.weight}g</span>
+                          <span>{formatWeight(product.weight)}</span>
                           <Link href={`/product/[id]`} as={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
                         </div>
                       </div>
