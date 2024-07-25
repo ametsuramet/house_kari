@@ -37,31 +37,32 @@ export default function Home() {
   const [articles, setArticles] = useState([]);
   const [articlesSlide, setArticlesSlide] = useState([]);
 
-  useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const response = await axios.get(`/api/list-article`);
-        const articles = response.data.data;
+  const fetchArticles = async () => {
+    try {
+      const response = await axios.get(`/api/article-new/`);
+      const articles = response.data.data;
 
-        // Assuming the date field is in 'YYYY-MM-DD' format; adjust if necessary
-        const sortedArticles = articles
-          .sort((a, b) => new Date(b.date) - new Date(a.date)) // Sort by date descending
-          .slice(0, 2); // Select the top 2 most recent articles
+      // Assuming the date field is in 'YYYY-MM-DD' format; adjust if necessary
+      const sortedArticles = articles
+        .sort((a, b) => new Date(b.date) - new Date(a.date)) // Sort by date descending
+        .slice(0, 2); // Select the top 2 most recent articles
 
-        setArticles(sortedArticles);
-        console.log('Fetched and filtered articles:', sortedArticles);
-      } catch (error) {
-        console.error('Error fetching articles:', error);
-      }
-    };
-  
+      setArticles(sortedArticles);
+      console.log('Fetched and filtered articles:', sortedArticles);
+    } catch (error) {
+      console.error('Error fetching articles:', error);
+    }
+  };
+
+  // Call fetchArticles during initial render
+  useState(() => {
     fetchArticles();
-  });
+  }, []);
 
   useEffect(() => {
     const fetchArticlesSlide = async () => {
       try {
-        const response = await axios.get(`/api/list-article/`);
+        const response = await axios.get(`/api/list-article-new/`);
         const articles = response.data.data;
         
         // Fungsi untuk mengacak urutan array
@@ -74,9 +75,8 @@ export default function Home() {
         };
   
         const shuffledArticles = shuffleArray(articles);
-        const limitedArticles = shuffledArticles.slice(0, 7); // Membatasi hingga 7 artikel
-        setArticlesSlide(limitedArticles);
-        console.log('Fetched and shuffled product:', limitedArticles);
+        setArticlesSlide(shuffledArticles);
+        console.log(shuffledArticles)
       } catch (error) {
         console.error('Error fetching product:', error);
       }
