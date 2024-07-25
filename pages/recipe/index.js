@@ -73,7 +73,7 @@ export default function Recipe() {
   useEffect(() => {
     const fetchArticlesSlide = async () => {
       try {
-        const response = await axios.get(`/api/list-article/`);
+        const response = await axios.get(`/api/list-article-new/`);
         const articles = response.data.data;
         
         // Fungsi untuk mengacak urutan array
@@ -86,9 +86,8 @@ export default function Recipe() {
         };
   
         const shuffledArticles = shuffleArray(articles);
-        const limitedArticles = shuffledArticles.slice(0, 7); // Membatasi hingga 7 artikel
-        setArticlesSlide(limitedArticles);
-        console.log('Fetched and shuffled product:', limitedArticles);
+        setArticlesSlide(shuffledArticles);
+        console.log('Fetched and shuffled product:', shuffledArticles);
       } catch (error) {
         console.error('Error fetching product:', error);
       }

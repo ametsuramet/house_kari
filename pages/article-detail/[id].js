@@ -51,7 +51,7 @@ export default function ArticleDetail({ recipe }) {
     useEffect(() => {
         const fetchArticlesSlide = async () => {
           try {
-            const response = await axios.get(`/api/list-article/`);
+            const response = await axios.get(`/api/list-article-new/`);
             const articles = response.data.data;
             
             // Fungsi untuk mengacak urutan array

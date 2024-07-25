@@ -59,17 +59,45 @@ const ArticlePage = () => {
   const [recipeList, setRecipeList] = useState([]);
   const [articlesSlide, setArticlesSlide] = useState([]);
 
-  useEffect(() => {
-    const fetchRecipes = async () => {
-        try {
-            const response = await axios.get('/api/all-recipes');
-            setRecipeList(response.data.data);
-        } catch (error) {
-            console.error('Error fetching recipes:', error);
-        }
-    };
+//   useEffect(() => {
+//     const fetchRecipes = async () => {
+//         try {
+//             const response = await axios.get('/api/all-recipes');
+//             setRecipeList(response.data.data);
+            
+//         } catch (error) {
+//             console.error('Error fetching recipes:', error);
+//         }
+//     };
 
-    fetchRecipes();
+//     fetchRecipes();
+// }, []);
+
+useEffect(() => {
+  const fetchRecipes = async () => {
+    try {
+      const response = await axios.get(`/api/all-recipes/`);
+      const articles = response.data.data;
+      
+      // Fungsi untuk mengacak urutan array
+      const shuffleArray = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      };
+
+      const shuffledArticles = shuffleArray(articles);
+      const limitedArticles = shuffledArticles.slice(0, 7); // Membatasi hingga 7 artikel
+      setRecipeList(limitedArticles);
+      console.log('Fetched and shuffled product:', limitedArticles);
+    } catch (error) {
+      console.error('Error fetching product:', error);
+    }
+  };
+
+  fetchRecipes();
 }, []);
 
   useEffect(() => {
