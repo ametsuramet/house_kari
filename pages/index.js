@@ -270,7 +270,7 @@ const handleMouseUp = () => {
       <Slide items={items} showNavigation={false} showPagination={true} />
       <div className={styles.section_2}>
         <div className={styles.section_2_box}>
-          <img src='/images/section_2_image.png' alt='House Kari Story' />
+          <img src='/images/img_home_1.png' alt='House Kari Story' />
         </div>
         <div className={styles.section_2_content}>
           <h1 className={styles.heading_main}>{t('section1Home.profilPerusahaan')}</h1>
