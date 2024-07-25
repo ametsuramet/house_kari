@@ -20,8 +20,9 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
-import { Pagination } from 'swiper/modules';
+import { Pagination, Navigation } from 'swiper/modules';
 
 export async function getStaticProps({ locale }) {
   return {
@@ -270,10 +271,11 @@ useEffect(() => {
                   delay: 2500,
                   disableOnInteraction: false,
                 }}
+                navigation={true}
                 pagination={{
                   clickable: true,
                 }}
-                modules={[Pagination]}
+                modules={[Pagination, Navigation]}
                 className="mySwiperRecipe"
               >
                 {[1, 2, 3].map((_, index) => (
@@ -301,10 +303,11 @@ useEffect(() => {
                   delay: 2500,
                   disableOnInteraction: false,
                 }}
+                navigation={true}
                 pagination={{
                   clickable: true,
                 }}
-                modules={[Pagination]}
+                modules={[Pagination, Navigation]}
                 className="mySwiperRecipe"
               >
                 {recipes.map(recipe => (

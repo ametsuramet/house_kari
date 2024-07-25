@@ -259,7 +259,7 @@ const ProductDetails = () => {
                   </div>
                   <div className={styles.contentProduct}>
                     <h1>{getProductRecommend(product)}</h1>
-                    <span>{product.weight}</span>
+                    <span>{product.weight}g</span>
                     <Link href={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
                   </div>
                 </div>

@@ -313,7 +313,7 @@
   border-radius: 100vw !important;
   margin-top: calc(0px -(var(--swiper-navigation-size) / 2));
   background: #FFFFFF33;
-  z-index: 10;
+  z-index: 10; 
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -362,6 +362,67 @@
   line-height: 1;
   width: 8vw !important;
 }
+
+
+.mySwiperRecipe .swiper-button-prev, .mySwiperRecipe .swiper-button-next{
+  position: absolute;
+  top: inherit !important;
+  bottom: 16.1vw !important;
+  width: 3vw !important;
+  height: 3vw !important;
+  border-radius: 100vw !important;
+  margin-top: calc(0px -(var(--swiper-navigation-size) / 2));
+  background: #FFFFFF33;
+  z-index: 10; 
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--swiper-navigation-color, var(--swiper-theme-color));
+}
+.mySwiperRecipe .swiper-button-next, .mySwiperRecipe .swiper-rtl .swiper-button-prev{
+  right: 11vw !important;
+  background: #FFFFFF33;
+  border: .12vw solid white;
+  box-shadow: 0px 4px 6.2px 0px #00000040;
+  content: '' !important;
+  width: 3.7vw !important;
+  height: 3.7vw !important;
+  
+}
+.mySwiperRecipe .swiper-button-prev, .mySwiperRecipe .swiper-rtl .swiper-button-next{
+  left: 11vw !important;
+  background: #FFFFFF33;
+  border: .12vw solid white;
+  box-shadow: 0px 4px 6.2px 0px #00000040;
+  content: '' !important;
+  width: 3.7vw !important;
+  height: 3.7vw !important;
+}
+.mySwiperRecipe .swiper-button-next:after, .mySwiperRecipe .swiper-rtl .swiper-button-next:after{
+  content: '\2192' !important;
+  color: white;
+  font-size: 2vw !important;
+  text-align: center;
+  margin-top: -.2vw;
+}
+.mySwiperRecipe .swiper-button-prev:after, .mySwiperRecipe .swiper-rtl .swiper-button-next:after{
+  content: '\2190' !important;
+  color: white;
+  font-size: 2vw !important;
+  text-align: center;
+  margin-top: -.2vw;
+}
+.mySwiperRecipe .swiper-button-next:after, .mySwiperRecipe .swiper-button-next:after{
+  font-family: inherit !important;
+  font-size: 1vw;
+  text-transform: none !important;
+  letter-spacing: 0;
+  font-variant: initial;
+  line-height: 1;
+  width: 8vw !important;
+}
+
 
 .bg-red-overlay{
   position: absolute;
@@ -1065,12 +1126,24 @@
   .contentRecipe h1{
     font-size: 3.2vw;
     margin-bottom: 2.7vw;
+    display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
   }
   .contentRecipe p{
     font-size: 2.7vw;
     display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }
+  .contentRecipe p p{
+    display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
       overflow: hidden;
       text-overflow: ellipsis;
   }
