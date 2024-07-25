@@ -252,18 +252,18 @@ const ProductDetails = () => {
         </div>
         <div className={styles.productLayoutBox}>
             <div className={styles.productLayout}>
-                {recommend.filter(product => product.id !== Number(id)).map((product, index) => (
-                    <div className={`${styles.boxProduct} ${styles.boxProductWhite}`} key={index}>
-                        <div className={styles.imageProduct}>
-                            <img src={`https://prahwa.net/storage/${product.image}`} alt={product.name} />
-                        </div>
-                        <div className={styles.contentProduct}>
-                            <h1>{getProductRecommend(product)}</h1>
-                            <span>{product.weight}</span>
-                            <Link href={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
-                        </div>
-                    </div>
-                ))}
+              {recommend && recommend.length > 0 && recommend.filter(product => product.id !== Number(id)).map((product, index) => (
+                <div className={`${styles.boxProduct} ${styles.boxProductWhite}`} key={index}>
+                  <div className={styles.imageProduct}>
+                    <img src={`https://prahwa.net/storage/${product.image}`} alt={product.name} />
+                  </div>
+                  <div className={styles.contentProduct}>
+                    <h1>{getProductRecommend(product)}</h1>
+                    <span>{product.weight}</span>
+                    <Link href={`/product/${product.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+                  </div>
+                </div>
+              ))}
             </div>
         </div>
         <div className={styles.divider}></div>
