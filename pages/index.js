@@ -15,6 +15,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import axios from 'axios';
 import SlideArticlesSecond from './components/slide_articles_second';
 import SlideArticlesSecondMobile from './components/slide_articles_second_mobile';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const items = [
   <img key={1} src='/images/banner-1.png' alt='banner'/>,
@@ -36,6 +38,7 @@ export default function Home() {
   const [selectedMenu, setSelectedMenu] = useState(t('section2Menu.makanSiang'));
   const [articles, setArticles] = useState([]);
   const [articlesSlide, setArticlesSlide] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchArticles = async () => {
     try {
@@ -54,9 +57,12 @@ export default function Home() {
     }
   };
 
-  // Call fetchArticles during initial render
-  useState(() => {
-    fetchArticles();
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchArticles();
+      setIsLoading(false);
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -319,20 +325,36 @@ const handleMouseUp = () => {
           <Link href='/article/9'><p className={styles.desc_main_margin}>{t('readMoreArticle')}...</p></Link>
         </div>
         <div className={styles.blog_recent_layout}>
-            {articles.map((article) => (
-                <div key={article.id} className={styles.blog_recent_box}>
-                  <div className={styles.blog_recent_image}>
-                    <img src={`https://prahwa.net/storage/${article.image}`} alt={article.title} />
-                  </div>
-                  <div className={styles.blog_recent_content}>
-                    <span>{t('posted')} {formatDate(article.date)}</span>
-                    <h1>{stripPTags(getProductName(article))}</h1>
-                    <p>{stripPTags(getProductText(article))}</p>
-                    <Link href={`/article-detail/${article.id}`}><button>{t('section1Home.learnMore')}</button></Link>
-                  </div>
-                </div>
-            ))}
-        </div>
+        {isLoading ? (
+          [1, 2].map((_, index) => (
+            <div key={index} className={styles.blog_recent_box}>
+              <div className={styles.blog_recent_image}>
+                <Skeleton height={200} />
+              </div>
+              <div className={styles.blog_recent_content}>
+                <Skeleton width={100} />
+                <h1><Skeleton width={`100%`} /></h1>
+                <p><Skeleton count={2} /></p>
+                <Skeleton width={`100%`} height={40} />
+              </div>
+            </div>
+          ))
+        ) : (
+          articles.map((article) => (
+            <div key={article.id} className={styles.blog_recent_box}>
+              <div className={styles.blog_recent_image}>
+                <img src={`https://prahwa.net/storage/${article.image}`} alt={article.title} />
+              </div>
+              <div className={styles.blog_recent_content}>
+                <span>{t('posted')} {formatDate(article.date)}</span>
+                <h1>{stripPTags(getProductName(article))}</h1>
+                <p>{stripPTags(getProductText(article))}</p>
+                <Link href={`/article-detail/${article.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
         <div className={styles.heading_mobile_desc}>
           <Link href='/article/9'>{t('readMoreArticle')}...</Link>
         </div>

@@ -78,7 +78,7 @@ export default function SlideArticles({ items = [], classNames, paginationClass 
           modules={[Navigation, Pagination]}
           className={`swiperArticles ${paginationClass}`}
         >
-          {[...Array(3)].map((_, index) => (
+          {[...Array(5)].map((_, index) => (
             <SwiperSlide key={index}>
               <div className='box_articles_slide'>
                 <div className='box_articles_images'>

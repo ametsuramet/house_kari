@@ -373,7 +373,7 @@ useEffect(() => {
         }))} />
          <SlideArticlesMobile items={recipeList.map(recipe => ({
             ...recipe,
-            title: stripPTags(getRecipeTitle(recipe)),
+            title: stripPTags(getRecipeTitle(recipe)), 
         }))} />
         <div className={styles.divider}></div>
       </div>
