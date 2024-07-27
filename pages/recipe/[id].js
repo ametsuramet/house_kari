@@ -128,7 +128,9 @@ const RecipeDetail = () => {
     };
 
       if (router.isFallback || loading) {
-        return <p>Loading...</p>;
+        return <div className="loading_interface">
+        <img src="/images/loading_image.png"/>
+      </div>;
       }
       
       if (!detail) {

@@ -127,7 +127,7 @@ export default function Product() {
     // Handle the case for '265'
     if (formattedWeight.includes('265')) {
       // Remove '265' and add 'kg' at the end
-      formattedWeight = formattedWeight.replace('265', '') + 'kg';
+      formattedWeight = formattedWeight.replace('265', '') + 'kg'; 
     }
   
     // Handle the case for '275'

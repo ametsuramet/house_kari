@@ -96,7 +96,9 @@ export default function ArticleDetail({ recipe }) {
     }, [id, recipe]);
 
     if (router.isFallback || loading) {
-        return <p>Loading...</p>;
+        return <div className="loading_interface">
+        <img src="/images/loading_image.png"/>
+      </div>;
     }
 
     if (!detail) {
@@ -180,9 +182,9 @@ export default function ArticleDetail({ recipe }) {
             </Head>
             <div className={banner.bannerStyle}>
                 <img src="/images/recipe_banner.png" alt="House Kari Website" />
-            </div>
+            </div> 
             <div className={banner.breadcrumbs}>
-                <p>{t('menu.home')} / {t('menu.recipe')} / <span>{stripTags(getProductName(detail), 'h1')}</span></p>
+                <p>{t('menu.home')} / {t('menu.article')} / <span>{stripTags(getProductName(detail), 'h1')}</span></p>
             </div>
             <div className={styles.sectionDetail}>
                 <img src="/images/article_detail_icon_2.png" alt="House Kari" className={styles.article_detail_icon_2} />

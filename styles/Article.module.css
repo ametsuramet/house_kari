@@ -512,6 +512,14 @@
       text-overflow: ellipsis;
     margin-bottom: 5vw;
   }
+  .blog_recent_content p h1, .blog_recent_content p h2, .blog_recent_content p h3, .blog_recent_content p h4, .blog_recent_content p h5{
+    font-size: 2.7vw;
+    font-weight: 400;
+  }
+  .blog_recent_content p h1 strong, .blog_recent_content p h2 strong, .blog_recent_content p h3 strong, .blog_recent_content p h4 strong, .blog_recent_content p h5 strong{
+    font-size: 2.7vw;
+    font-weight: 400;
+  }
   .blog_recent_content button{
     font-size: 2.7vw;
     padding: 1.4vw 5vw;

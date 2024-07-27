@@ -743,7 +743,39 @@
   display: none !important;
 }
 
+.loading_interface{
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fffffffd;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+.loading_interface img{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16vw;
+  animation: 1s gerak linear infinite alternate;
+}
+
+@keyframes gerak {
+  0%{
+    transform: translate(-50%, -50%) scale(1);
+    opacity: .7;
+  }
+  100%{
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
+  }
+}
+
 @media (max-width:768px) {
+  .loading_interface img{
+    width: 36vw;
+  }
   .mySwiperProduct{
     display: none !important;
   }
