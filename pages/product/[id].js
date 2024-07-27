@@ -222,7 +222,7 @@ const ProductDetails = () => {
               <img src={`https://prahwa.net/storage/${detail.image}`} alt={detail.name} />
             </div>
             <div className={styles.section3_content}>
-              <h1>{getProductName(detail)} {detail.weight}g</h1>
+              <h1>{getProductName(detail)} {formatWeight(detail.weight)}</h1>
               <div className={styles.section3_content_desc}>
                 <p dangerouslySetInnerHTML={{ __html: getProductDesc(detail) }}></p>
               </div>
@@ -253,7 +253,7 @@ const ProductDetails = () => {
             </div>
             <div className={styles.section3_box_mobile_content}>
                 <div className={styles.section3_content}>
-                <h1>{getProductName(detail)} {detail.weight}g</h1>
+                <h1>{getProductName(detail)} {formatWeight(detail.weight)}</h1>
                 <div className={styles.section3_content_desc}>
                     <p dangerouslySetInnerHTML={{ __html: getProductDesc(detail) }}></p>
                 </div>
