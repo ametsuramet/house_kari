@@ -69,14 +69,15 @@
     position: relative;
 }
 .imageProduct img{
-    width: 70%;
+    width: 77%;
     position: absolute;
-    height: 70%;
+    height: 77%;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     object-fit: contain;
     object-position: center;
+    border-radius: 1.1vw;
 }
 .contentProduct{
     padding: 1.2vw;
@@ -377,11 +378,11 @@
     display: none;
   }
   .productLayout{
-    display: flex;
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 3.4vw;
     padding: 0 6vw;
-    width: max-content;
+    width: 100%;
   }
   .boxProduct{
     border-radius: 4vw;
@@ -389,8 +390,12 @@
   }
   .imageProduct{
     width: 100%;
-    height: 33vw;
+    height: 27.8vw;
     padding: 3vw 3vw;
+  }
+  .imageProduct img{
+    border-radius: 2.7vw;
+    object-fit: contain;
   }
   .contentProduct{
     padding: 4vw 3vw;
