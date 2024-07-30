@@ -408,11 +408,13 @@ const formatDate = (dateString) => {
       <div className={styles.section1}>
         <img src="/images/black_pepper_icon.png" alt="House Kari" className={styles.black_pepper_icon}/>
         <div className={styles.section1_layout}>
-          <div className={styles.section1_tab}>
-            <Link href='/article'><button className={styles.activeTab}>{t('menu.article')}</button></Link>
-            <Link href='/article/tips-trick'><button>{t('menu.tipsTricks')}</button></Link>
-            <Link href='/article/event'><button>{t('menu.event')}</button></Link>
-            <Link href='/article/media-release'><button>{t('menu.mediaRelease')}</button></Link>
+          <div className={styles.section1_tab_layout}>
+            <div className={styles.section1_tab}>
+              <Link href='/article'><button className={styles.activeTab}>{t('menu.article')}</button></Link>
+              <Link href='/article/tips-trick'><button>{t('menu.tipsTricks')}</button></Link>
+              <Link href='/article/event'><button>{t('menu.event')}</button></Link>
+              <Link href='/article/media-release'><button>{t('menu.mediaRelease')}</button></Link>
+            </div>
           </div>
           <div className={styles.section1_box}>
             <div className={styles.space_between_heading}>
@@ -442,14 +444,14 @@ const formatDate = (dateString) => {
         <div className={styles.space_between_heading}>
           <h1 className={styles.heading_main_white}>{t('otherArticle')}</h1>
         </div>
-        <div className={styles.select_menu_product}>
+        {/* <div className={styles.select_menu_product}>
           <button 
             className={`${styles.dropdownButton} ${isOpen ? styles.activeButton : ''}`}  
             onClick={toggleDropdown}
           >
             {selectedMenu} <IoChevronDown />
           </button>
-        </div>
+        </div> */}
         <SlideArticlesSecond items={articlesSlide.map(article => ({
           ...article,
               title: stripPTags(getProductName(article)),
