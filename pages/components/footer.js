@@ -27,11 +27,11 @@ const Footer = () => {
         </div>
       </div>
       <div className={styles.social_footer}>
-        <Link href='#'><FaFacebookF/></Link>
-        <Link href='#'><FaInstagram/></Link>
-        <Link href='#'><FaTiktok/></Link>
-        <Link href='#'><FaLinkedin/></Link>
-        <Link href='#'><FaYoutube/></Link>
+        <Link href='https://www.facebook.com/housekarialajepang' target='blank_'><FaFacebookF/></Link>
+        <Link href='https://www.instagram.com/dapurkarialajepang/' target='blank_'><FaInstagram/></Link>
+        <Link href='https://www.tiktok.com/@masakkariyuk?lang=id-ID' target='blank_'><FaTiktok/></Link>
+        <Link href='https://www.linkedin.com/company/house-and-vox-indonesia/' target='blank_'><FaLinkedin/></Link>
+        <Link href='https://www.youtube.com/@housekarialajepang5318' target='blank_'><FaYoutube/></Link>
       </div>
       <div className={styles.img_footer}>
         <img src='/images/footer_img_product.png' className='img_footer' alt='House Kari' />
