@@ -1,8 +1,10 @@
 .top_menu{
-    background: linear-gradient(270deg, #E60011 0%, #800009 100%);
+    background-image: url(../public/images/nav_bg.png);
+    background-position: top center;
+    background-size: cover;
     display: flex;
     justify-content: flex-end;
-    padding: .5vw 2.6vw;
+    padding: .78vw 2.6vw;
     width: 100%;
     gap: 1.5vw;
     align-items: center;
@@ -29,7 +31,7 @@
     display: flex;
     align-items: center;
     gap: .2vw;
-    font-size: .8vw;
+    font-size: .76vw;
     color: white;
 }
   
@@ -80,9 +82,9 @@
     background-color: transparent;
     outline: none;
     border: none;
-    padding: .3vw 0;
+    padding: .2vw 0;
     color: white;
-    font-size: .76vw;
+    font-size: .73vw;
     font-weight: 300;
 }
 .search_box input::placeholder{
@@ -466,6 +468,9 @@
         font-size: .9vw;
     }
   @media (max-width:768px) {
+    .search_box{
+        display: none;
+    }
     .popup{
         position: fixed;
         right: 38vw;
@@ -541,6 +546,9 @@
         color: white;
         border-radius: 2vw;
     }
+    .top_menu .language{
+        display: none;
+    }
     .closeMenu{
         display: block !important;
         position: absolute;
@@ -598,7 +606,10 @@
         display: block;
     }
     .top_menu{
-        display: none;
+        display: flex;
+        padding: 3vw 0;
+        background-position: left center;
+        margin-bottom: -.4vw;
     }
     .nav{
         position: fixed;

@@ -171,8 +171,8 @@ export default function Product() {
           <div className={styles.tabHeadersLayout}>
             <div className={styles.tabHeaders}>
               {loadingCategories ? (
-                Array.from({ length: 3 }).map((_, index) => (
-                  <Skeleton key={index} height={40} width={100} style={{ margin: '0 10px' }} />
+                Array.from({ length: 4 }).map((_, index) => (
+                  <Skeleton key={index} height={40} width={200} style={{ margin: '0 10px' }} />
                 ))
               ) : (
                 categories.map(category => (

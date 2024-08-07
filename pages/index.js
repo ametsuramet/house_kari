@@ -273,7 +273,7 @@ const handleMouseUp = () => {
 
   return (
     <>
-      <Slide items={items} showNavigation={false} showPagination={true} />
+      <Slide showNavigation={false} showPagination={true} />
       <div className={styles.section_2}>
         <div className={styles.section_2_box}>
           <img src='/images/img_home_1.png' alt='House Kari Story' />
@@ -325,36 +325,36 @@ const handleMouseUp = () => {
           <Link href='/article/9'><p className={styles.desc_main_margin}>{t('readMoreArticle')}...</p></Link>
         </div>
         <div className={styles.blog_recent_layout}>
-        {isLoading ? (
-          [1, 2].map((_, index) => (
-            <div key={index} className={styles.blog_recent_box}>
-              <div className={styles.blog_recent_image}>
-                <Skeleton height={200} />
+          {isLoading ? (
+            [1, 2].map((_, index) => (
+              <div key={index} className={styles.blog_recent_box}>
+                <div className={styles.blog_recent_image}>
+                  <Skeleton height={200} />
+                </div>
+                <div className={styles.blog_recent_content}>
+                  <Skeleton width={100} />
+                  <h1><Skeleton width={`100%`} /></h1>
+                  <p><Skeleton count={2} /></p>
+                  <Skeleton width={`100%`} height={40} />
+                </div>
               </div>
-              <div className={styles.blog_recent_content}>
-                <Skeleton width={100} />
-                <h1><Skeleton width={`100%`} /></h1>
-                <p><Skeleton count={2} /></p>
-                <Skeleton width={`100%`} height={40} />
+            ))
+          ) : (
+            articles.map((article) => (
+              <div key={article.id} className={styles.blog_recent_box}>
+                <div className={styles.blog_recent_image}>
+                  <img src={`https://prahwa.net/storage/${article.image}`} alt={article.title} />
+                </div>
+                <div className={styles.blog_recent_content}>
+                  <span>{t('posted')} {formatDate(article.date)}</span>
+                  <h1>{stripPTags(getProductName(article))}</h1>
+                  <p>{stripPTags(getProductText(article))}</p>
+                  <Link href={`/article-detail/${article.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+                </div>
               </div>
-            </div>
-          ))
-        ) : (
-          articles.map((article) => (
-            <div key={article.id} className={styles.blog_recent_box}>
-              <div className={styles.blog_recent_image}>
-                <img src={`https://prahwa.net/storage/${article.image}`} alt={article.title} />
-              </div>
-              <div className={styles.blog_recent_content}>
-                <span>{t('posted')} {formatDate(article.date)}</span>
-                <h1>{stripPTags(getProductName(article))}</h1>
-                <p>{stripPTags(getProductText(article))}</p>
-                <Link href={`/article-detail/${article.id}`}><button>{t('section1Home.learnMore')}</button></Link>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
+            ))
+          )}
+        </div>
         <div className={styles.heading_mobile_desc}>
           <Link href='/article/9'>{t('readMoreArticle')}...</Link>
         </div>

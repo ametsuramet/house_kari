@@ -29,37 +29,42 @@ export default function SlideTestimonials() {
     {
       id: 1,
       images: '/images/images_testimonials.png',
-      descTestimonials: t('menuHome3.menuDesc'),
-      dateTestimonials: '10/10/2024',
-      userTestimonials: 'John Doe'
+      descTestimonials: 'I`ve tried cooking it, the taste really suits the Indonesian tongue.',
+      dateTestimonials: '10/06/2024',
+      userTestimonials: 'nazila_',
+      variation: 'Spicy'
     },
     {
         id: 2,
         images: '/images/images_testimonials.png',
-        descTestimonials: t('menuHome3.menuDesc'),
-        dateTestimonials: '10/10/2024',
-        userTestimonials: 'John Doe'
+        descTestimonials: 'My cooking looks luxurious and it`s ready to cook straight away!',
+        dateTestimonials: '10/06/2024',
+        userTestimonials: 'Elvaaa',
+        variation: 'Original'
     },
     {
         id: 3,
         images: '/images/images_testimonials.png',
-        descTestimonials: t('menuHome3.menuDesc'),
-        dateTestimonials: '10/10/2024',
-        userTestimonials: 'John Doe'
+        descTestimonials: 'This is the first time making katsu curry using this seasoning, it tastes delicious, it has a spicy taste.',
+        dateTestimonials: '20/07/2024',
+        userTestimonials: 'Putrisalwa',
+        variation: 'Spicy'
     },
     {
       id: 4,
       images: '/images/images_testimonials.png',
-      descTestimonials: t('menuHome3.menuDesc'),
-      dateTestimonials: '10/10/2024',
-      userTestimonials: 'John Doe'
+      descTestimonials: 'It tastes delicious, tried the original several times because the kids can eat it now, tried the spicy one, it also suits my taste buds.',
+      dateTestimonials: '10/06/2024',
+      userTestimonials: 'Diana_13',
+      variation: 'Spicy'
     },
     {
       id: 5,
       images: '/images/images_testimonials.png',
-      descTestimonials: t('menuHome3.menuDesc'),
-      dateTestimonials: '10/10/2024',
-      userTestimonials: 'John Doe'
+      descTestimonials: 'I`ve tried it before so I`m sure it tastes good. The price is very good, especially when compared to the prices of other packages. Suitable for me who doesn`t like complicated cooking.',
+      dateTestimonials: '10/06/2024',
+      userTestimonials: 'Risma Nainggolan',
+      variation: 'Original'
     },
   ];
 
@@ -79,9 +84,9 @@ export default function SlideTestimonials() {
         {items.map((item) => (
           <SwiperSlide key={item.id}>
             <div className='slideItemTestimonials'>
-              <div className='imageTestimonials'>
+              {/* <div className='imageTestimonials'>
                 <img src={item.images} alt='House Kari Testimonials' />
-              </div>
+              </div> */}
               <div className='contentTestimonials'>
                 <div className='divider'></div>
                 <div className='ratingTestimonials'>
@@ -93,6 +98,7 @@ export default function SlideTestimonials() {
                 </div>
                 <p>{item.descTestimonials}</p>
                 <div className='dateTestimonials'>
+                    <h5>Variation: {item.variation}</h5>
                     <span>{item.dateTestimonials} - {t('by')} {item.userTestimonials}</span>
                 </div>
               </div>

@@ -4,7 +4,7 @@
     width: 100%;
     padding: 3vw 10.5vw;
     padding-right: 4vw;
-    padding-bottom: 2vw;
+    padding-bottom: 0;
     background-image: url(../public/images/footer_bg.png);
     background-size: cover;
     background-position: center;
@@ -54,7 +54,7 @@
 }
 .img_footer img{
     width: 100%;
-    margin-bottom: -1vw;
+    margin-bottom: 0;
 }
 
 .copyright{
@@ -118,8 +118,8 @@
         width: 47vw;
         margin-bottom: 0;
         position: absolute;
-        right: 0;
-        bottom: 1vw;
+        right: 2vw;
+        bottom: 0;
     }
     .copyright{
         padding: 2.4vw;

@@ -20,6 +20,40 @@ export default function Contact() {
   const { t } = useTranslation('common');
 
   const [isChecked, setIsChecked] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    number: '',
+    email: '',
+    inquiries: '',
+  });
+  const [message, setMessage] = useState('');
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (isChecked) {
+      try {
+        const response = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+        if (response.ok) {
+          setMessage('Your message has been sent successfully!');
+        } else {
+          setMessage('Failed to send message. Please try again later.');
+        }
+      } catch (error) {
+        setMessage('Failed to send message. Please try again later.');
+      }
+    } else {
+      setMessage('Please agree to the terms and conditions.');
+    }
+  };
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -60,24 +94,24 @@ export default function Contact() {
           <img src="/images/contact_icon.png" alt="House Kari" className={styles.contact_icon}/>
           <div className={styles.section1_form}>
             <h1>{t('contactUs')}</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className={styles.form_field_double}>
                 <div className={styles.form_field}>
                   <label>{t('nameForm')}</label>
-                  <input type="text" placeholder={t('nameForm')}/>
+                  <input type="text" name="name" placeholder={t('nameForm')} onChange={handleInputChange} required />
                 </div>
                 <div className={styles.form_field}>
                   <label>{t('numberForm')}</label>
-                  <input type="number" placeholder={t('numberForm')}/>
+                  <input type="number" name="number" placeholder={t('numberForm')} onChange={handleInputChange} required />
                 </div>
               </div>
               <div className={styles.form_field}>
                 <label>{t('emailForm')}</label>
-                <input type="email" placeholder={t('emailForm')}/>
+                <input type="email" name="email" placeholder={t('emailForm')} onChange={handleInputChange} required />
               </div>
               <div className={styles.form_field}>
                 <label>{t('inquiriesForm')}</label>
-                <textarea placeholder={t('inquiriesForm')}></textarea>
+                <textarea name="inquiries" placeholder={t('inquiriesForm')} onChange={handleInputChange} required></textarea>
               </div>
               <label className={styles.customCheckbox}>
                 <input
@@ -89,7 +123,8 @@ export default function Contact() {
                 <span className={styles.customCheckmark}></span>
                 {t('haveAgree')}
               </label>
-              <button>{t('submitBtn')}</button>
+              <button type="submit">{t('submitBtn')}</button>
+              {message && <p>{message}</p>}
             </form>
           </div>
           <div className={styles.addressDetail}>

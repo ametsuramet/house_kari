@@ -1,11 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '@/styles/Slide.module.css';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { AiOutlineSearch } from "react-icons/ai";
 import Link from 'next/link';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'; // Import style jika diperlukan
 
-const Slide = ({ items = [], showNavigation = true, showPagination = true }) => {
+
+const Slide = ({ showNavigation = true, showPagination = true }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [banners, setBanners] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/banner`);
+        const data = await response.json();
+        if (data && data.data) {
+          setBanners(data.data);
+        } else {
+          console.error('Invalid response data format:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching banners:', error);
+      } finally {
+        setLoading(false); // Set loading to false once data is fetched
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
 
   const goToSlide = (index) => {
     setActiveIndex(index);
@@ -22,11 +49,18 @@ const Slide = ({ items = [], showNavigation = true, showPagination = true }) => 
   return (
     <div className={styles.slide}>
       <div className={styles.slideWrapper} style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
-        {items.map((item, index) => (
-          <div key={index} className={`${styles.slideItem}`}>
-            {item}
+        {loading ? (
+          // Menampilkan skeleton loader jika data sedang dimuat
+          <div className={styles.slideItem}>
+            <Skeleton height={500} /> {/* Adjust height as needed */}
           </div>
-        ))}
+        ) : (
+          banners.map((banner, index) => (
+            <div key={index} className={styles.slideItem}>
+              <img src={`https://prahwa.net/storage/${banner.image}`} alt={banner.type}/>
+            </div>
+          ))
+        )}
       </div>
       {showNavigation && (
         <div className={styles.navigation}>
@@ -40,7 +74,7 @@ const Slide = ({ items = [], showNavigation = true, showPagination = true }) => 
       )}
       {showPagination && (
         <div className={styles.pagination}>
-          {items.map((_, index) => (
+          {banners.map((_, index) => (
             <button key={index} onClick={() => goToSlide(index)} className={`${styles.paginationButton} ${index === activeIndex ? styles.active : ''}`}>
               
             </button>

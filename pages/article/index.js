@@ -11,6 +11,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import axios from "axios";
 import SlideArticlesSecond from "../components/slide_articles_second";
 import SlideArticlesSecondMobile from "../components/slide_articles_second_mobile";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'; // Import style jika diperlukan
 
 export async function getStaticProps({ locale }) {
   return {
@@ -29,6 +31,7 @@ export default function Article() {
   const [recipeList, setRecipeList] = useState([]);
   const [articlesSlide, setArticlesSlide] = useState([]);
   const [recentArticles, setRecentArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const articleId = 13;
 
@@ -37,16 +40,16 @@ export default function Article() {
       try {
         const response = await axios.get(`/api/list-article-category/${articleId}`);
         const articles = response.data.data;
-
+  
         // Mengurutkan artikel berdasarkan tanggal terbaru
         const sortedArticles = articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-
+  
         // Mengambil 2 artikel terbaru
         const recent = sortedArticles.slice(0, 2);
-
+  
         // Menghapus artikel terbaru dari daftar artikel yang akan diacak
         const remainingArticles = sortedArticles.slice(2);
-
+  
         // Fungsi untuk mengacak urutan array
         const shuffleArray = (array) => {
           for (let i = array.length - 1; i > 0; i--) {
@@ -55,20 +58,22 @@ export default function Article() {
           }
           return array;
         };
-
+  
         const shuffledArticles = shuffleArray(remainingArticles);
         const limitedArticles = shuffledArticles.slice(0, 10); // Membatasi hingga 10 artikel
-
+  
         setArticlesSlide(limitedArticles);
         setRecentArticles(recent);
-        console.log('Fetched articles:', response.data.data);
       } catch (error) {
         console.error('Error fetching articles:', error);
+      } finally {
+        setLoading(false); // Set loading to false once data is fetched
       }
     };
-
+  
     fetchArticlesSlide();
   }, [articleId]);
+  
 
 useEffect(() => {
   const fetchRecipes = async () => {
@@ -104,75 +109,6 @@ const getProductName = (article) => {
       return article.title;
   }
 };
-
-  const recentBlog = [
-    {
-      id: 1,
-      images: '/images/blog_recent_1.png',
-      date: '10/10/2024',
-      headingBlog: t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 2,
-      images: '/images/blog_recent_2.png',
-      date: '10/10/2024',
-      headingBlog: t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    }
-  ]
-
-  const slideBlog = [
-    {
-      id: 1,
-      images: '/images/blog_recent_1.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 2,
-      images: '/images/blog_recent_2.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 3,
-      images: '/images/blog_recent_1.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 4,
-      images: '/images/blog_recent_2.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 5,
-      images: '/images/blog_recent_1.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 6,
-      images: '/images/blog_recent_2.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-        id: 7,
-        images: '/images/blog_recent_1.png',
-        date: `${t('posted')} 10/10/2024`,
-        headingBlog:  t('headline'),
-        descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-      },
-  ];
 
   const secondColor = 'creamColor'
   const paginationStyle = 'old_red_color'
@@ -391,7 +327,7 @@ const formatDate = (dateString) => {
       <div className={banner.breadcrumbs}> 
         <p>{t('menu.home')} / <span>{t('menu.article')}</span></p>
       </div>
-      <div onTouchStart={handleTouchStart} 
+      <div onTouchStart={handleTouchStart}  
         onTouchMove={handleTouchMove}
         onMouseDown={handleMouseDown} className={`${styles.dropdownMenu} ${isOpen ? styles.active : ''}`} style={{ height: isMobile ? `${height}px` : 'auto' }}>
           <div className={styles.circle_menu}><div className={styles.circle_menu_box}></div></div>
@@ -421,21 +357,39 @@ const formatDate = (dateString) => {
               <h1 className={styles.heading_main}>{t('newestArticle')}</h1>
             </div>
             <div className={styles.blog_recent_layout}>
-              {recentArticles.map((blog, index) => (
-                <div key={index} className={styles.blog_recent_box}>
-                  <div className={styles.blog_recent_image}>
-                    <Link href={`/article-detail/[id]`} as={`/article-detail/${blog.id}`}>
-                      <img src={`https://prahwa.net/storage/${blog.image}`} alt={blog.title} />
-                    </Link>
+              {loading ? (
+                <>
+                  {Array.from({ length: 2 }).map((_, index) => (
+                    <div key={index} className={styles.blog_recent_box}>
+                      <div className={styles.blog_recent_image}>
+                        <Skeleton height={300} />
+                      </div>
+                      <div className={styles.blog_recent_content}>
+                        <Skeleton width={100} />
+                        <h1><Skeleton width={`100%`} /></h1>
+                        <p><Skeleton count={2} /></p>
+                        <Skeleton width={`100%`} height={40} />
+                      </div>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                recentArticles.map((blog, index) => (
+                  <div key={index} className={styles.blog_recent_box}>
+                    <div className={styles.blog_recent_image}>
+                      <Link href={`/article-detail/[id]`} as={`/article-detail/${blog.id}`}>
+                        <img src={`https://prahwa.net/storage/${blog.image}`} alt={blog.title} />
+                      </Link>
+                    </div>
+                    <div className={styles.blog_recent_content}>
+                      {blog.date && <span>{t('posted')} {formatDate(blog.date)}</span>}
+                      <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getRecipeTitleHeading(blog)) }}></h1>
+                      <p dangerouslySetInnerHTML={{ __html: stripPTags(getDescriptionName(blog)) }}></p>
+                      <Link href={`/article-detail/${blog.id}`}><button>{t('section1Home.learnMore')}</button></Link>
+                    </div>
                   </div>
-                  <div className={styles.blog_recent_content}>
-                    {blog.date && <span>{t('posted')} {formatDate(blog.date)}</span>}
-                    <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getRecipeTitleHeading(blog))  }}></h1>
-                    <p dangerouslySetInnerHTML={{ __html: stripPTags(getDescriptionName(blog)) }}></p>
-                    <Link href={`/article-detail/${blog.id}`}><button>{t('section1Home.learnMore')}</button></Link>
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -444,14 +398,6 @@ const formatDate = (dateString) => {
         <div className={styles.space_between_heading}>
           <h1 className={styles.heading_main_white}>{t('otherArticle')}</h1>
         </div>
-        {/* <div className={styles.select_menu_product}>
-          <button 
-            className={`${styles.dropdownButton} ${isOpen ? styles.activeButton : ''}`}  
-            onClick={toggleDropdown}
-          >
-            {selectedMenu} <IoChevronDown />
-          </button>
-        </div> */}
         <SlideArticlesSecond items={articlesSlide.map(article => ({
           ...article,
               title: stripPTags(getProductName(article)),

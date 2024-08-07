@@ -11,6 +11,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import axios from "axios";
 import SlideArticlesSecond from "../components/slide_articles_second";
 import SlideArticlesSecondMobile from "../components/slide_articles_second_mobile";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'; 
 
 export async function getStaticProps({ locale }) {
   return {
@@ -26,6 +28,7 @@ export default function TipsTricks() {
   const [recipeList, setRecipeList] = useState([]);
   const [articlesSlide, setArticlesSlide] = useState([]);
   const [recentArticles, setRecentArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const articleId = 10;
 
@@ -34,16 +37,16 @@ export default function TipsTricks() {
       try {
         const response = await axios.get(`/api/list-article-category/${articleId}`);
         const articles = response.data.data;
-
+  
         // Mengurutkan artikel berdasarkan tanggal terbaru
         const sortedArticles = articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-
+  
         // Mengambil 2 artikel terbaru
         const recent = sortedArticles.slice(0, 2);
-
+  
         // Menghapus artikel terbaru dari daftar artikel yang akan diacak
         const remainingArticles = sortedArticles.slice(2);
-
+  
         // Fungsi untuk mengacak urutan array
         const shuffleArray = (array) => {
           for (let i = array.length - 1; i > 0; i--) {
@@ -52,18 +55,19 @@ export default function TipsTricks() {
           }
           return array;
         };
-
+  
         const shuffledArticles = shuffleArray(remainingArticles);
         const limitedArticles = shuffledArticles.slice(0, 10); // Membatasi hingga 10 artikel
-
+  
         setArticlesSlide(limitedArticles);
         setRecentArticles(recent);
-        console.log('Fetched articles:', response.data.data);
       } catch (error) {
         console.error('Error fetching articles:', error);
+      } finally {
+        setLoading(false); // Set loading to false once data is fetched
       }
     };
-
+  
     fetchArticlesSlide();
   }, [articleId]);
 
@@ -123,74 +127,6 @@ export default function TipsTricks() {
   }
   };
 
-  const recentBlog = [
-    {
-      id: 1,
-      images: '/images/blog_recent_1.png',
-      date: '10/10/2024',
-      headingBlog: t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 2,
-      images: '/images/blog_recent_2.png',
-      date: '10/10/2024',
-      headingBlog: t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    }
-  ]
-
-  const slideBlog = [
-    {
-      id: 1,
-      images: '/images/blog_recent_1.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 2,
-      images: '/images/blog_recent_2.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 3,
-      images: '/images/blog_recent_1.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 4,
-      images: '/images/blog_recent_2.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 5,
-      images: '/images/blog_recent_1.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-      id: 6,
-      images: '/images/blog_recent_2.png',
-      date: `${t('posted')} 10/10/2024`,
-      headingBlog:  t('headline'),
-      descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-    },
-    {
-        id: 7,
-        images: '/images/blog_recent_1.png',
-        date: `${t('posted')} 10/10/2024`,
-        headingBlog:  t('headline'),
-        descBlog: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis vel dui eu imperdiet. Vestibulum mattis faucibus nisi, sed finibus nunc scelerisque at. Sed quis arcu consequat,'
-      },
-  ];
 
   const secondColor = 'creamColor'
   const paginationStyle = 'old_red_color'
@@ -435,7 +371,24 @@ export default function TipsTricks() {
               <h1 className={styles.heading_main}>{t('newestArticle')}</h1>
             </div>
             <div className={styles.blog_recent_layout}>
-              {recentArticles.map((blog, index) => (
+              {loading ? (
+                <>
+                  {Array.from({ length: 2 }).map((_, index) => (
+                    <div key={index} className={styles.blog_recent_box}>
+                      <div className={styles.blog_recent_image}>
+                        <Skeleton height={300} />
+                      </div>
+                      <div className={styles.blog_recent_content}>
+                        <span><Skeleton width={100} /></span>
+                        <h1><Skeleton width={`100%`} /></h1>
+                        <p><Skeleton count={2} /></p>
+                        <Skeleton width={`100%`} height={40} />
+                      </div>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                recentArticles.map((blog, index) => (
                   <div key={index} className={styles.blog_recent_box}>
                     <div className={styles.blog_recent_image}>
                       <Link href={`/article-detail/[id]`} as={`/article-detail/${blog.id}`}>
@@ -444,12 +397,13 @@ export default function TipsTricks() {
                     </div>
                     <div className={styles.blog_recent_content}>
                       {blog.date && <span>{t('posted')} {formatDate(blog.date)}</span>}
-                      <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getRecipeTitleHeading(blog))  }}></h1>
+                      <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getRecipeTitleHeading(blog)) }}></h1>
                       <p dangerouslySetInnerHTML={{ __html: stripPTags(getDescriptionName(blog)) }}></p>
                       <Link href={`/article-detail/${blog.id}`}><button>{t('section1Home.learnMore')}</button></Link>
                     </div>
                   </div>
-                ))}
+                ))
+              )}
             </div>
           </div>
         </div>
