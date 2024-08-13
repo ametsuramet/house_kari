@@ -52,7 +52,7 @@ const Slide = ({ showNavigation = true, showPagination = true }) => {
         {loading ? (
           // Menampilkan skeleton loader jika data sedang dimuat
           <div className={styles.slideItem}>
-            <Skeleton height={500} /> {/* Adjust height as needed */}
+            <Skeleton height={500} width={1700} />
           </div>
         ) : (
           banners.map((banner, index) => (

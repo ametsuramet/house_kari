@@ -145,6 +145,23 @@
     border-radius: 2vw 2vw 0 0;
     overflow: hidden;
 }
+.section4_video{
+  width: 100%;
+  height:36.6vw;
+  position: relative;
+  border-radius: 2vw 2vw 0 0;
+  overflow: hidden;
+}
+.section4_video iframe{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.hidden_image{
+  display: none;
+}
 .section4_image img{
     position: absolute;
     width: 100%;
@@ -214,7 +231,7 @@
     border-radius: 100%;
     background-color:#363636 ;
 }
-.recipeCara ul{
+.recipeCara ol{
     margin-left: 2vw;
 }
 .recipeCara ul li{
@@ -538,6 +555,10 @@
         height: 40vw;
         border-radius: 5vw 5vw 0 0;
     }
+    .section4_video{
+        height: 50vw;
+        border-radius: 5vw 5vw 0 0;
+    }
     .section4_content{
         padding:5.5vw 6.5vw;
         border-radius: 0 0 5vw 5vw;
@@ -554,7 +575,7 @@
         margin-bottom: 2.2vw;
     }
     .recipeDetail p{
-        font-size: 2.8vw;
+        font-size: 3vw;
     }
     .recipeBahan{
         margin-bottom: 5vw;
@@ -565,7 +586,7 @@
         padding-right: 5vw;
     }
     .recipeBahan ul li{
-        font-size: 2.8vw;
+        font-size: 3vw;
         padding-right: 3vw;
     }
     .recipeBahan ul li::before{
@@ -573,11 +594,11 @@
         left: -2.6vw;
         height: .71vw;
     }
-    .recipeCara ul{
+    .recipeCara ol{
         margin-left: 4vw;
     }
-    .recipeCara ul li{
-        font-size: 2.8vw;
+    .recipeCara ol li{
+        font-size: 3vw;
     }
     .btn_download{
         margin-top: 8vw;

@@ -1,15 +1,12 @@
 import Head from "next/head";
-import styles from '@/styles/CompanyProfile.module.css'
-import banner from '@/styles/Banner.module.css'
+import styles from '@/styles/CompanyProfile.module.css';
+import banner from '@/styles/Banner.module.css';
 import { IoChevronDown } from "react-icons/io5";
 import React, { useRef, useState, useEffect } from 'react';
-// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
+import axios from "axios";
 import 'swiper/css';
 import 'swiper/css/pagination';
-
 import { Pagination } from 'swiper/modules';
 import Link from "next/link";
 import { useTranslation } from 'next-i18next';
@@ -27,63 +24,41 @@ export default function CompanyProfile() {
   const { t } = useTranslation('common');
 
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedMenu, setSelectedMenu] = useState('Marketing');
+  const [menuItems, setMenuItems] = useState([]);
+  const [selectedMenu, setSelectedMenu] = useState('All');
+  const [isMobile, setIsMobile] = useState(false);
+  const [height, setHeight] = useState(360); // Default height
+  const [careersList, setCareersList] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null); // New state for selected category ID
 
-  const menuItems = [
-    'Marketing',
-    'Social Media Specialist',
-  ];
+  useEffect(() => {
+    const fetchCareers = async () => {
+        try {
+            const response = await axios.get('/api/all-careers');
+            setCareersList(response.data.data); // Sesuaikan dengan struktur respons API
+        } catch (error) {
+            console.error('Error fetching careers:', error);
+        }
+    };
 
-  const careers = [
-    {
-      id: 1,
-      headingCareers: 'Marketing Staff',
-      date: '20/05/2024',
-      descCareers: t('descCareers')
-    },
-    {
-      id: 2,
-      headingCareers: 'Social Media Specialist',
-      date: '20/05/2024',
-      descCareers: t('descCareers')
-    },
-    {
-      id: 3,
-      headingCareers: 'Marketing Staff',
-      date: '20/05/2024',
-      descCareers: t('descCareers')
-    },
-    {
-      id: 4,
-      headingCareers: 'Social Media Specialist',
-      date: '20/05/2024',
-      descCareers: t('descCareers')
-    },
-    {
-      id: 5,
-      headingCareers: 'Marketing Staff',
-      date: '20/05/2024',
-      descCareers: t('descCareers')
-    },
-    {
-      id: 6,
-      headingCareers: 'Social Media Specialist',
-      date: '20/05/2024',
-      descCareers: t('descCareers')
-    },
-    {
-      id: 7,
-      headingCareers: 'Marketing Staff',
-      date: '20/05/2024',
-      descCareers: t('descCareers')
-    },
-    {
-      id: 8,
-      headingCareers: 'Social Media Specialist',
-      date: '20/05/2024',
-      descCareers: t('descCareers')
-    },
-  ]
+    fetchCareers();
+  }, []);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('api/career-categories');
+        const categories = response.data.data;
+        const categoryNames = ['All', ...categories.map(category => category.name_en)];
+        setMenuItems(categoryNames);
+        console.log(response);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+  
+    fetchCategories();
+  }, []);
 
   const chunkArray = (array, size) => {
     const chunkedArr = [];
@@ -93,10 +68,18 @@ export default function CompanyProfile() {
     return chunkedArr;
   };
 
+  // Filter careers based on selected category
+  const filterCareers = (careers, selectedCategory) => {
+    if (selectedCategory === 'All') {
+      return careers; // Tampilkan semua karir jika "All" dipilih
+    }
+    return careers.filter(career => career.category.name_en === selectedCategory);
+  };
+  
+  // Terapkan filter ke careersList
+  const filteredCareers = filterCareers(careersList, selectedMenu);
   // Chunked careers array
-  const chunkedCareers = chunkArray(careers, 3); 
-
-
+  const chunkedCareers = chunkArray(filteredCareers, 3);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -104,22 +87,23 @@ export default function CompanyProfile() {
 
   useEffect(() => {
     if (window.innerWidth <= 768) {
-    // Handle overflow on body
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'; // Body tidak bisa di-scroll
-    } else {
-      document.body.style.overflow = 'auto'; // Body bisa di-scroll
-    }
+      // Handle overflow on body
+      if (isOpen) {
+        document.body.style.overflow = 'hidden'; // Body tidak bisa di-scroll
+      } else {
+        document.body.style.overflow = 'auto'; // Body bisa di-scroll
+      }
 
-    // Cleanup function to reset overflow when component unmounts or isOpen changes
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }
+      // Cleanup function to reset overflow when component unmounts or isOpen changes
+      return () => {
+        document.body.style.overflow = 'auto';
+      };
+    }
   }, [isOpen]);
 
-  const handleSelectMenu = (menu) =>  {
+  const handleSelectMenu = (menu, id) => {
     setSelectedMenu(menu);
+    setSelectedCategoryId(id); // Set the selected category ID
     setIsOpen(false);
   };
 
@@ -138,98 +122,96 @@ export default function CompanyProfile() {
     window.addEventListener('scroll', handleScroll);
 
     return () => {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  const [height, setHeight] = useState(360); // Default height
-const [isMobile, setIsMobile] = useState(false);
-const contentRef = useRef(null);
-const startY = useRef(0); // Define startY as a useRef variable
-const startHeight = useRef(0);
-const lastY = useRef(0); // To track the last Y position
-const lastTime = useRef(0); // To track the last time for flick detection
+  const contentRef = useRef(null);
+  const startY = useRef(0); // Define startY as a useRef variable
+  const startHeight = useRef(0);
+  const lastY = useRef(0); // To track the last Y position
+  const lastTime = useRef(0); // To track the last time for flick detection
 
-useEffect(() => {
-  const checkIsMobile = () => {
-    setIsMobile(window.innerWidth <= 768);
-  };
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
 
-  checkIsMobile();
-  window.addEventListener('resize', checkIsMobile);
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
 
-  return () => {
-    window.removeEventListener('resize', checkIsMobile);
-  };
-}, []);
+    return () => {
+      window.removeEventListener('resize', checkIsMobile);
+    };
+  }, []);
 
-useEffect(() => {
-  const contentElement = contentRef.current;
-  if (contentElement) {
-    if (height >= window.innerHeight) {
-      contentElement.style.maxHeight = '100vh';
-      contentElement.style.overflowY = 'scroll';
-    } else {
-      contentElement.style.maxHeight = `${height}px`;
-      contentElement.style.overflowY = 'hidden';
+  useEffect(() => {
+    const contentElement = contentRef.current;
+    if (contentElement) {
+      if (height >= window.innerHeight) {
+        contentElement.style.maxHeight = '100vh';
+        contentElement.style.overflowY = 'scroll';
+      } else {
+        contentElement.style.maxHeight = `${height}px`;
+        contentElement.style.overflowY = 'hidden';
+      }
     }
-  }
-}, [height]);
+  }, [height]);
 
-const handleStart = (clientY) => {
-  if (!isMobile) return;
-  startY.current = clientY;
-  startHeight.current = height;
-  lastY.current = clientY;
-  lastTime.current = Date.now();
-};
+  const handleStart = (clientY) => {
+    if (!isMobile) return;
+    startY.current = clientY;
+    startHeight.current = height;
+    lastY.current = clientY;
+    lastTime.current = Date.now();
+  };
 
-const handleMove = (clientY) => {
-  if (!isMobile) return;
+  const handleMove = (clientY) => {
+    if (!isMobile) return;
 
-  const currentTime = Date.now();
-  const deltaY = clientY - lastY.current;
-  const deltaTime = currentTime - lastTime.current;
+    const currentTime = Date.now();
+    const deltaY = clientY - lastY.current;
+    const deltaTime = currentTime - lastTime.current;
 
-  // Update last positions and times
-  lastY.current = clientY;
-  lastTime.current = currentTime;
+    // Update last positions and times
+    lastY.current = clientY;
+    lastTime.current = currentTime;
 
-  const flickSpeed = deltaY / deltaTime;
+    const flickSpeed = deltaY / deltaTime;
 
-  if (flickSpeed < -0.5) { // Adjust the threshold as needed for flick up
-    setHeight(window.innerHeight);
-  } else if (flickSpeed > 0.5) { // Adjust the threshold as needed for flick down
-    setHeight(360); // Default height
-    setIsOpen(false); // Close dropdown when flicking down
-  }
-};
+    if (flickSpeed < -0.5) { // Adjust the threshold as needed for flick up
+      setHeight(window.innerHeight);
+    } else if (flickSpeed > 0.5) { // Adjust the threshold as needed for flick down
+      setHeight(360); // Default height
+      setIsOpen(false); // Close dropdown when flicking down
+    }
+  };
 
-const handleTouchStart = (e) => {
-  handleStart(e.touches[0].clientY);
-};
+  const handleTouchStart = (e) => {
+    handleStart(e.touches[0].clientY);
+  };
 
-const handleTouchMove = (e) => {
-  handleMove(e.touches[0].clientY);
-};
+  const handleTouchMove = (e) => {
+    handleMove(e.touches[0].clientY);
+  };
 
-const handleMouseDown = (e) => {
-  handleStart(e.clientY);
-  document.addEventListener('mousemove', handleMouseMove);
-  document.addEventListener('mouseup', handleMouseUp);
-};
+  const handleMouseDown = (e) => {
+    handleStart(e.clientY);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
 
-const handleMouseMove = (e) => {
-  handleMove(e.clientY);
-};
+  const handleMouseMove = (e) => {
+    handleMove(e.clientY);
+  };
 
-const handleMouseUp = () => {
-  document.removeEventListener('mousemove', handleMouseMove);
-  document.removeEventListener('mouseup', handleMouseUp);
-};
+  const handleMouseUp = () => {
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
+  };
 
-const pageTitle = `House Kari | ${t('menu.companyProfile')}`;
+  const pageTitle = `House Kari | ${t('menu.companyProfile')}`;
 
   return (
     <>
@@ -280,22 +262,30 @@ const pageTitle = `House Kari | ${t('menu.companyProfile')}`;
           <div className={styles.overlay_misi}></div>
         </div>
       </div>
+
       <div className={styles.careers}>
         <img src="/images/careers_icon.png" alt="House Kari" className={styles.careers_icon}/>
         <div className={styles.headingCareers}>
           <h1>{t('careers')}</h1>
           <div className={styles.select_menu_product}>
-            <button 
-              className={`${styles.dropdownButton} ${isOpen ? styles.activeButton : ''}`}  
-              onClick={toggleDropdown}
-            >
-              {selectedMenu} <IoChevronDown />
-            </button>
-            <div  onTouchStart={handleTouchStart} 
+          <button 
+            className={`${styles.dropdownButton} ${isOpen ? styles.activeButton : ''}`}  
+            onClick={toggleDropdown}
+          >
+            {selectedMenu} <IoChevronDown />
+          </button>
+          <div 
+            onTouchStart={handleTouchStart} 
             onTouchMove={handleTouchMove}
-            onMouseDown={handleMouseDown} className={`${styles.dropdownMenu} ${isOpen ? styles.active : ''}`} style={{ height: isMobile ? `${height}px` : 'auto' }}>
-              <div className={styles.circle_menu}><div className={styles.circle_menu_box}></div></div>
-              {menuItems.map((menu, index) => (
+            onMouseDown={handleMouseDown} 
+            className={`${styles.dropdownMenu} ${isOpen ? styles.active : ''}`} 
+            style={{ height: isMobile ? `${height}px` : 'auto' }}
+          >
+            <div className={styles.circle_menu}>
+              <div className={styles.circle_menu_box}></div>
+            </div>
+            {menuItems.length > 0 ? (
+              menuItems.map((menu, index) => (
                 <div
                   key={index}
                   className={`${styles.dropdownMenuItem} ${selectedMenu === menu ? styles.active : ''}`}
@@ -303,40 +293,49 @@ const pageTitle = `House Kari | ${t('menu.companyProfile')}`;
                 >
                   {menu}
                 </div>
-              ))}
-            </div>
+              ))
+            ) : (
+              <div className={styles.dropdownMenuItem}>No categories available</div>
+            )}
           </div>
+        </div>
 
         </div>
         <Swiper 
-        autoHeight={true}
+          autoHeight={true}
           pagination={{
-            clickable: true,
+              clickable: true,
           }} 
-          
           modules={[Pagination]} 
           className="swiperCareers"
         >
-          {chunkedCareers.map((careerChunk, slideIndex) => (
-          <SwiperSlide key={slideIndex}>
-            {careerChunk.map((career, index) => (
-              <div className={styles.boxCareers} key={index}>
-                <h3>{career.headingCareers}</h3>
-                <p>{career.descCareers}</p>
-                <div className={styles.btnCareers}>
-                  <div className={styles.dateCareers}>
-                    <span>{t('ends')} {career.date}</span>
+          {chunkedCareers.length > 0 ? (
+            chunkedCareers.map((careerChunk, slideIndex) => (
+              <SwiperSlide key={slideIndex}>
+                {careerChunk.map((career, index) => (
+                  <div className={styles.boxCareers} key={index}>
+                    <h3>{career.jobtype.name_en}</h3>
+                    <p>{career.description_en}</p>
+                    <div className={styles.btnCareers}>
+                      <div className={styles.dateCareers}>
+                        <span>{t('ends')} {new Date(career.date_end).toLocaleDateString()}</span>
+                      </div>
+                      <Link href='/'>
+                        <button>{t('apply')}</button>
+                      </Link>
+                    </div>
                   </div>
-                  <Link href='/'><button>{t('apply')}</button></Link>
-                </div>
-              </div>
-            ))}
-          </SwiperSlide>
-          ))}
-          
+                ))}
+              </SwiperSlide>
+            ))
+          ) : (
+            <div className={styles.noJobsMessage}>
+              <h1>No Job Opening Available for Now</h1>
+            </div>
+          )}
         </Swiper>
+
       </div>
     </>
   );
 }
- 

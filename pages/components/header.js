@@ -16,6 +16,8 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { MdSearch } from "react-icons/md";
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'; // Import style jika diperlukan
 
 export async function getStaticProps({ locale }) {
   return {
@@ -34,6 +36,28 @@ const Header = () => {
   const [language, setLanguage] = useState(`${t('selectLanguage')}`);
   const [shareLinks, setShareLinks] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [themeHeader, setThemeHeader] = useState ([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/banner`);
+        const data = await response.json();
+        if (data && data.data) {
+          setThemeHeader(data.data);
+        } else {
+          console.error('Invalid response data format:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching banners:', error);
+      } finally {
+        setLoading(false); // Set loading to false once data is fetched
+      }
+    };
+  
+    fetchData();
+  }, []);
 
   const handleOpenPopup = () => {
     setIsPopupOpen(true);
@@ -321,25 +345,32 @@ const Header = () => {
         <link rel="alternate" hrefLang="x-default" href={asPath} />
       </Head>
       <div className={styles.heading_layout}>
-        <div className={styles.top_menu}>
-          <div className={styles.language}>
-            <button onClick={() => toggleDropdown('language')}>
-              {language} <IoChevronDown />
-            </button>
-            <ul className={openDropdown === 'language' ? styles.show : ''}>
-              <li>
-                <button onClick={() => handleLanguageChange('English')}>English</button>
-              </li>
-              <li>
-                <button onClick={() => handleLanguageChange('Indonesian')}>Indonesian</button>
-              </li>
-            </ul>
-          </div>
-          <div className={styles.search_box}>
-            <input type='text' placeholder={t('searchText')} />
-            <AiOutlineSearch />
-          </div>
-        </div>
+        {loading ? (
+            <Skeleton height={28} width={1800} />
+        ) : (
+            themeHeader.length > 0 && (
+                <div className={styles.top_menu}> 
+                    <div className={styles.language}>
+                        <button onClick={() => toggleDropdown('language')}>
+                            {language} <IoChevronDown />
+                        </button>
+                        <ul className={openDropdown === 'language' ? styles.show : ''}>
+                            <li>
+                                <button onClick={() => handleLanguageChange('English')}>English</button>
+                            </li>
+                            <li>
+                                <button onClick={() => handleLanguageChange('Indonesian')}>Indonesian</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className={styles.search_box}>
+                        <input type='text' placeholder={t('searchText')} />
+                        <AiOutlineSearch />
+                    </div>
+                </div>
+            )
+        )}
+
         <header className={styles.header}>
           <div className={styles.logo}>
             <Link href='/'>

@@ -212,13 +212,26 @@ const RecipeDetail = () => {
       };
 
       function stripH1Tags(str) {
-        return str.replace(/<\/?h1>/gi, '');
+        return str.replace(/<\/?(h1|p)>/gi, '');
       }
 
       function stripTags(str) {
         return str.replace(/<\/?[^>]+(>|$)/g, '');
       }
       
+      function getYouTubeVideoId(url) {
+        const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/;
+        const match = url.match(regex);
+        return match ? match[1] : null;
+      }
+
+      const videoId = detail.link_youtube ? getYouTubeVideoId(detail.link_youtube) : null;
+
+      const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : '';
+
+      const imageClass = detail.link_youtube ? styles.hidden_image : styles.section4_image;
+
+      const section4VideoClass = detail.link_youtube ? styles.section4_video : styles.hidden_image;
 
       // const pageTitle = `House Kari | ${t('menu.recipe')} A`;
       const pageTitle = detail ? `House Kari | ${stripH1Tags(getProductName(detail))}` : 'House Kari';
@@ -238,13 +251,27 @@ const RecipeDetail = () => {
         <div className={styles.section4}>
             <div className={styles.section4_layout}>
                   <div className={styles.section4_image_layout}>
-                    <div className={styles.section4_image}>
+                    <div className={imageClass}>
                         <img src={`https://prahwa.net/storage/${detail.image}`} alt={detail.name} />
                         <div className={styles.section4_overlay}></div>
                     </div>
+                    <div className={section4VideoClass}>
+                        {detail.link_youtube && (
+                            <iframe
+                                width="560"
+                                height="315"
+                                src={embedUrl}
+                                title="YouTube video player"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allowfullscreen
+                            ></iframe>
+                        )}
+                    </div>
                   </div>
                   <div className={styles.section4_content_layout}>
-                    <div className={styles.section4_content}>
+                    <div className={styles.section4_content}> 
                         <div className={styles.recipeDetail}>
                             <h1>{stripH1Tags(getProductName(detail))}</h1>
                             <p>{stripTags(getDescName(detail))}</p>
@@ -294,21 +321,27 @@ const RecipeDetail = () => {
         </div>
         <div className={`${styles.popup} ${isActive ? styles.active : ''}`}>
             <div className={styles.popupContent}>
-              {detail.coockbook_en && (
-                <Link href={`https://prahwa.net/storage/${detail.coockbook_en}`} target='_blank'>
-                  <button>Western Cookbook</button>
-                </Link>
-              )}
-              {detail.coockbook_chi && (
-                <Link href={`https://prahwa.net/storage/${detail.coockbook_chi}`} target='_blank'>
-                  <button>Chinese Cookbook</button>
-                </Link>
-              )}
-              {detail.coockbook && (
-                <Link href={`https://prahwa.net/storage/${detail.coockbook}`} target='_blank'>
-                  <button>Indonesian Cookbook</button>
-                </Link>
-              )}
+                {detail.coockbook_en || detail.coockbook_chi || detail.coockbook ? (
+                    <>
+                        {detail.coockbook_en && (
+                            <Link href={`https://prahwa.net/storage/${detail.coockbook_en}`} target='_blank'>
+                                <button>Western Cookbook</button>
+                            </Link>
+                        )}
+                        {detail.coockbook_chi && (
+                            <Link href={`https://prahwa.net/storage/${detail.coockbook_chi}`} target='_blank'>
+                                <button>Chinese Cookbook</button>
+                            </Link>
+                        )}
+                        {detail.coockbook && (
+                            <Link href={`https://prahwa.net/storage/${detail.coockbook}`} target='_blank'>
+                                <button>Indonesian Cookbook</button>
+                            </Link>
+                        )}
+                    </>
+                ) : (
+                    <p>Sorry, recipe is being created</p>
+                )}
 
                 <span onClick={togglePopup} className={styles.closeButton}>X</span>
             </div>

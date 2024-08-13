@@ -377,7 +377,23 @@
     display: none;
   }
 
+  .noJobsMessage{
+    text-align:center;
+    padding-bottom: 9vw;
+  }
+
+  .noJobsMessage h1{
+    font-size: 2vw;
+    color: #65131880;
+  }
+
   @media (max-width:768px) {
+    .noJobsMessage{
+      padding: 0 19vw;
+    }
+    .noJobsMessage h1{
+      font-size: 4vw;
+    }
     .section1{
       grid-template-columns: 100%;
     }
