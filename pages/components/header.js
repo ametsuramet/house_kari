@@ -38,6 +38,7 @@ const Header = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [themeHeader, setThemeHeader] = useState ([]);
   const [loading, setLoading] = useState(true);
+  const [querySearch, setQuerySearch] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -334,6 +335,13 @@ const Header = () => {
     setSearchActive(false);
   };
 
+  const handleSearchForm = (event) => {
+    event.preventDefault();
+    if (querySearch) {
+      router.push(`/search-page/${querySearch}`);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -363,10 +371,17 @@ const Header = () => {
                             </li>
                         </ul>
                     </div>
-                    <div className={styles.search_box}>
-                        <input type='text' placeholder={t('searchText')} />
-                        <AiOutlineSearch />
-                    </div>
+                    <form onSubmit={handleSearchForm}>
+                      <div className={styles.search_box}>
+                        <input
+                          type='text'
+                          placeholder={t('searchText')}
+                          value={querySearch}
+                          onChange={(e) => setQuerySearch(e.target.value)}
+                        />
+                        <button type='submit'><AiOutlineSearch /></button>
+                      </div>
+                    </form>
                 </div>
             )
         )}

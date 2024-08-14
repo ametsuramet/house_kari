@@ -1,14 +1,11 @@
 import styles from '@/styles/Home.module.css'
 import Slide from './components/slide';
-import SlideProduct from './components/slide_product';
 import Link from 'next/link';
 import { IoChevronDown } from "react-icons/io5";
 import { useState } from 'react';
 import SlideArticles from './components/slide_articles';
 import SlideTestimonials from './components/slide_testimonials';
 import { useEffect, useRef } from 'react';
-import SlideProductMobile from './components/slide_product_mobile';
-import SlideArticlesMobile from './components/slide_articles_mobile';
 import SlideTestimonialsMobile from './components/slide_testimonials_mobile';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -16,7 +13,13 @@ import axios from 'axios';
 import SlideArticlesSecond from './components/slide_articles_second';
 import SlideArticlesSecondMobile from './components/slide_articles_second_mobile';
 import Skeleton from 'react-loading-skeleton';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import 'react-loading-skeleton/dist/skeleton.css';
+import 'swiper/css';
+import 'swiper/css/navigation';
+
+// import required modules
+import { Navigation } from 'swiper/modules';
 
 const items = [
   <img key={1} src='/images/banner-1.png' alt='banner'/>,
@@ -35,10 +38,13 @@ export async function getStaticProps({ locale }) {
 export default function Home() {
   const { t, i18n } = useTranslation('common');
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedMenu, setSelectedMenu] = useState(t('section2Menu.makanSiang'));
+  const [selectedMenu, setSelectedMenu] = useState('Choose Recipe');
   const [articles, setArticles] = useState([]);
   const [articlesSlide, setArticlesSlide] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [menuItems, setMenuItems] = useState([]);
+  const [items, setItems] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
   const fetchArticles = async () => {
     try {
@@ -64,6 +70,57 @@ export default function Home() {
     };
     fetchData();
   }, []);
+
+  const getCategoriesRecipe = (category) => {
+    switch (i18n.language) {
+      case 'en':
+        return category.name_en || category.name;
+      case 'zh':
+        return category.name_chi || category.name;
+      default:
+        return category.name;
+    }
+  };
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('/api/recipe-categories'); // Replace with your API endpoint
+        const data = response.data.data;
+        const formattedMenuItems = data.map(category => ({
+          label: getCategoriesRecipe(category),
+          id: category.id
+        }));
+        setMenuItems(formattedMenuItems);
+        setSelectedCategoryId(formattedMenuItems[0]?.id || null); // Set default category ID
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    if (selectedCategoryId) {
+      const fetchRecipes = async () => {
+        try {
+          const response = await axios.get(`/api/recipeByCategories/${selectedCategoryId}`);
+          // Filter out items with image_png equal to '0'
+          const filteredItems = response.data.data.filter(item => item.image_png !== '0');
+          setItems(filteredItems);
+          console.log('response Resep Slide', response);
+        } catch (error) {
+          console.error('Error fetching recipes:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+  
+      fetchRecipes();
+    }
+  }, [selectedCategoryId]);
+  
 
   useEffect(() => {
     const fetchArticlesSlide = async () => {
@@ -129,14 +186,14 @@ export default function Home() {
     }
   };
 
-  const menuItems = [
-    { label: t('section2Menu.makanSiang') },
-    { label: t('section2Menu.makanSarapan') },
-    { label: t('section2Menu.makanSnack') },
-    { label: t('section2Menu.makanSeafood') },
-    { label: t('section2Menu.makanRoti') },
-    { label: t('section2Menu.makanSayuran') },
-  ];
+  // const menuItems = [
+  //   { label: t('section2Menu.makanSiang') },
+  //   { label: t('section2Menu.makanSarapan') },
+  //   { label: t('section2Menu.makanSnack') },
+  //   { label: t('section2Menu.makanSeafood') },
+  //   { label: t('section2Menu.makanRoti') },
+  //   { label: t('section2Menu.makanSayuran') },
+  // ];
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -160,6 +217,7 @@ export default function Home() {
 
   const handleSelectMenu = (menu) => {
     setSelectedMenu(menu.label);
+    setSelectedCategoryId(menu.id);
     setIsOpen(false);
   };
 
@@ -271,6 +329,32 @@ const handleMouseUp = () => {
 
 // if (articles.length === 0) return <p style={{textAlign: "center"}}>Loading...</p>;
 
+function stripH1Tags(str) {
+  return str.replace(/<\/?(div|h1|h2|h3|h4|h5|h6|p|span|strong|em|a|ul|ol|li|br|hr|b|i|header|footer|nav|section|article|aside|main|table|tr|td|th|caption|form|input|button|select|option|textarea|label|fieldset|legend|datalist|output|iframe|embed|object|param|canvas|svg|video|audio|source|track|figcaption|figure|time|mark|meter|progress|details|summary|dialog|address|small|sub|sup|code|pre|s|del|u|ins|bdi|bdo|ruby|rt|rp|wbr|blockquote|cite|dfn|kbd|samp|var|abbr|address|p|section|article|header|footer|aside|nav|main|figure|figcaption|legend|datalist|output|progress|meter|details|summary|dialog|template|script|style|noscript|title)>/gi, '');
+}
+
+const getRecipeName = (item) => {
+  switch (i18n.language) {
+    case 'en':
+      return item.title_en || item.title;
+    case 'zh':
+      return item.title_chi || item.title;
+    default:
+      return item.title;
+  }
+};
+
+const getProductDesc = (item) => {
+  switch (i18n.language) {
+    case 'en':
+      return item.description_en || item.description;
+    case 'zh':
+      return item.description_chi || item.description;
+    default:
+      return item.description;
+  }
+};
+
   return (
     <>
       <Slide showNavigation={false} showPagination={true} />
@@ -292,19 +376,25 @@ const handleMouseUp = () => {
           <p className={`${styles.desc_main} ${styles.desc_main_margin}`}>{t('section2Home.resepAlaDesc')}</p>
         </div>
         <div className={styles.select_menu_product}>
-          <button 
-            className={`${styles.dropdownButton} ${isOpen ? styles.activeButton : ''}`}  
-            onClick={toggleDropdown}
+        <button 
+          className={`${styles.dropdownButton} ${isOpen ? styles.activeButton : ''}`}  
+          onClick={toggleDropdown}
+        >
+          {selectedMenu} <IoChevronDown />
+        </button>
+        <div 
+            onTouchStart={handleTouchStart} 
+            onTouchMove={handleTouchMove}
+            onMouseDown={handleMouseDown} 
+            className={`${styles.dropdownMenu} ${isOpen ? styles.active : ''}`} 
+            style={{ height: isMobile ? `${height}px` : 'auto' }}
           >
-            {selectedMenu} <IoChevronDown />
-          </button>
-          <div  onTouchStart={handleTouchStart} 
-          onTouchMove={handleTouchMove}
-          onMouseDown={handleMouseDown} className={`${styles.dropdownMenu} ${isOpen ? styles.active : ''}`} style={{ height: isMobile ? `${height}px` : 'auto' }}>
-            <div className={styles.circle_menu}><div className={styles.circle_menu_box}></div></div>
-            {menuItems.map((menu, index) => (
+            <div className={styles.circle_menu}>
+              <div className={styles.circle_menu_box}></div>
+            </div>
+            {menuItems.map((menu) => (
               <div
-                key={index}
+                key={menu.id}
                 className={`${styles.dropdownMenuItem} ${selectedMenu === menu.label ? styles.active : ''}`}
                 onClick={() => handleSelectMenu(menu)}
               >
@@ -313,8 +403,57 @@ const handleMouseUp = () => {
             ))}
           </div>
         </div>
-        <SlideProduct/>
-        <SlideProductMobile/>
+        {items.length > 0 && (
+          <Swiper
+            slidesPerView={3}
+            spaceBetween={80}
+            navigation={true}
+            centeredSlides={true}
+            initialSlide={1}
+            modules={[Navigation]}
+            className="mySwiperProduct"
+            loop={true}
+          >
+            {items.map((item) => (
+              <SwiperSlide key={item.id}>
+                <div className='slideItemProduct'>
+                  <div className='imageContainer'>
+                    <img src={`https://prahwa.net/storage/${item.image_png}`} alt={item.title} />
+                  </div>
+                  <h1>{stripH1Tags(getRecipeName(item))}</h1>
+                  <div className='contectProductContainer'>
+                    <p>{stripH1Tags(getProductDesc(item))}</p>
+                    <Link href={`/recipe/${item.id}`}>
+                      <button>{t('lihatResep')}</button>
+                    </Link>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
+        {items.length > 0 && (
+        <Swiper 
+          navigation={true} 
+          loop={true}
+          modules={[Navigation]} 
+          className="slideProductMobile">
+              {items.map((item) => (
+              <SwiperSlide key={item.id}>
+                  <div className='slideItemProduct'>
+                    <div className='imageContainer'>
+                      <img src={`https://prahwa.net/storage/${item.image_png}`} alt={item.title} />
+                    </div>
+                      <h1>{stripH1Tags(getProductName(item))}</h1>
+                      <div className='contectProductContainer'>
+                        <p>{stripH1Tags(getProductDesc(item))}</p>
+                          <Link href={`/recipe/${item.id}`}><button>{t('lihatResep')}</button></Link>
+                      </div>
+                  </div>
+              </SwiperSlide>
+              ))}
+        </Swiper>
+        )}
         <div className={styles.divider}></div>
       </div>
       <div className={styles.section_4}>

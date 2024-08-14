@@ -212,7 +212,7 @@ const RecipeDetail = () => {
       };
 
       function stripH1Tags(str) {
-        return str.replace(/<\/?(h1|p)>/gi, '');
+        return str.replace(/<\/?(div|h1|h2|h3|h4|h5|h6|p|span|strong|em|a|ul|ol|li|br|hr|b|i|header|footer|nav|section|article|aside|main|table|tr|td|th|caption|form|input|button|select|option|textarea|label|fieldset|legend|datalist|output|iframe|embed|object|param|canvas|svg|video|audio|source|track|figcaption|figure|time|mark|meter|progress|details|summary|dialog|address|small|sub|sup|code|pre|s|del|u|ins|bdi|bdo|ruby|rt|rp|wbr|blockquote|cite|dfn|kbd|samp|var|abbr|address|p|section|article|header|footer|aside|nav|main|figure|figcaption|legend|datalist|output|progress|meter|details|summary|dialog|template|script|style|noscript|title)>/gi, '');
       }
 
       function stripTags(str) {
@@ -235,6 +235,8 @@ const RecipeDetail = () => {
 
       // const pageTitle = `House Kari | ${t('menu.recipe')} A`;
       const pageTitle = detail ? `House Kari | ${stripH1Tags(getProductName(detail))}` : 'House Kari';
+
+      
 
     return(
         <>

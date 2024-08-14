@@ -90,6 +90,13 @@
     cursor: pointer;
 }
 
+.notifPost{
+  text-align: start;
+  color: white;
+  font-size: 1vw;
+  margin-top: 1.4vw;
+}
+
 /* CustomCheckbox.module.css */
 
 .customCheckbox {

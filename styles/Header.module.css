@@ -90,6 +90,15 @@
 .search_box input::placeholder{
     color: white;
 }
+.search_box button{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
 .search_box svg{
     color: white;
     font-size: .86vw;

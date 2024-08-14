@@ -7,6 +7,7 @@ import { useState } from "react";
 import { IoChevronDownOutline } from "react-icons/io5";
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'; 
+import axios from "axios";
 
 export async function getStaticProps({ locale }) {
   return {
@@ -20,38 +21,32 @@ export default function Contact() {
   const { t } = useTranslation('common');
 
   const [isChecked, setIsChecked] = useState(false);
+  const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
     name: '',
-    number: '',
+    phone_number: '',
     email: '',
-    inquiries: '',
+    inquiries: ''
   });
-  const [message, setMessage] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({
+      ...formData,
+      [name]: value
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isChecked) {
-      try {
-        const response = await fetch('/api/send-email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        });
-        if (response.ok) {
-          setMessage('Your message has been sent successfully!');
-        } else {
-          setMessage('Failed to send message. Please try again later.');
-        }
-      } catch (error) {
-        setMessage('Failed to send message. Please try again later.');
-      }
-    } else {
-      setMessage('Please agree to the terms and conditions.');
+
+    try {
+      const response = await axios.post('/api/postForm', formData);
+      setMessage('Form submitted successfully!');
+      console.log(response.data)
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setMessage('Failed to submit form');
     }
   };
 
@@ -102,7 +97,7 @@ export default function Contact() {
                 </div>
                 <div className={styles.form_field}>
                   <label>{t('numberForm')}</label>
-                  <input type="number" name="number" placeholder={t('numberForm')} onChange={handleInputChange} required />
+                  <input type="number" name="phone_number" placeholder={t('numberForm')} onChange={handleInputChange} required />
                 </div>
               </div>
               <div className={styles.form_field}>
@@ -124,7 +119,7 @@ export default function Contact() {
                 {t('haveAgree')}
               </label>
               <button type="submit">{t('submitBtn')}</button>
-              {message && <p>{message}</p>}
+              {message && <p className={styles.notifPost}>{message}</p>}
             </form>
           </div>
           <div className={styles.addressDetail}>

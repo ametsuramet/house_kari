@@ -71,7 +71,7 @@
 .imageProduct img{
     width: 77%;
     position: absolute;
-    height: 77%;
+    height: auto;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -210,7 +210,8 @@
     transform: translate(-50%, -50%);
     object-fit: contain;
     width: 72%;
-    height: 72%;
+    height: auto;
+    border-radius: 2vw;
   }
 
   .section3_content{

@@ -96,15 +96,27 @@ const ProductDetails = () => {
     const fetchRecommends = async () => {
       try {
         const response = await axios.get('/api/product');
-        const limitedRecommends = response.data.data.slice(0, 7); // Batasi hasil fetch hanya menjadi 6
+        const data = response.data.data;
+
+        // Filter out items with matching id
+        const filteredData = data.filter(item => item.id !== id);
+
+        // Shuffle the filtered array
+        const shuffledData = filteredData.sort(() => 0.7 - Math.random());
+
+        // Limit to 7 items
+        const limitedRecommends = shuffledData.slice(0, 6);
+
         setRecommend(limitedRecommends);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
 
-    fetchRecommends();
-  }, []);
+    if (id) {
+      fetchRecommends();
+    }
+  }, [id]);
 
   if (router.isFallback || loading) {
     return <div className="loading_interface">
@@ -229,11 +241,11 @@ const ProductDetails = () => {
               <div className={styles.section3_ecommerce}>
                 <h2>{t('beliSekarang')}</h2>
                 <div className={styles.section3_ecommerce_layout}>
-                    {JSON.parse(detail.ecommerces).map((ecommerce) => (
+                    {/* {JSON.parse(detail.ecommerces).map((ecommerce) => (
                         <Link href={ecommerceLinks[ecommerce]} key={ecommerce} target="blank_">
                             <button>{ecommerce}</button>
                         </Link>
-                    ))}
+                    ))} */}
                     <Link href="/" target="blank_">
                         <button className={styles.whatsappBtn}>Whatsapp</button>
                     </Link>
@@ -260,11 +272,11 @@ const ProductDetails = () => {
                 <div className={styles.section3_ecommerce}>
                     <h2>{t('beliSekarang')}</h2>
                     <div className={styles.section3_ecommerce_layout}>
-                        {JSON.parse(detail.ecommerces).map((ecommerce) => (
+                        {/* {JSON.parse(detail.ecommerces).map((ecommerce) => (
                             <Link href={ecommerceLinks[ecommerce]} key={ecommerce} target="blank_">
                                 <button>{ecommerce}</button>
                             </Link>
-                        ))}
+                        ))} */}
                         <Link href="/" target="blank_">
                           <button className={styles.whatsappBtn}>Whatsapp</button>
                         </Link>
@@ -294,7 +306,7 @@ const ProductDetails = () => {
                 </div>
               ))}
             </div>
-        </div>
+        </div> 
         <div className={styles.divider}></div>
       </div>
       <div className={styles.section5}>

@@ -47,7 +47,7 @@ export default function CompanyProfile() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('api/career-categories');
+        const response = await axios.get('/api/career-categories');
         const categories = response.data.data;
         const categoryNames = ['All', ...categories.map(category => category.name_en)];
         setMenuItems(categoryNames);

@@ -17,13 +17,15 @@
 .slideItemProduct{
   position: relative;
   text-align: center;
+  margin-top: 2vw !important;
 }
 .contectProductContainer{
   display: none;
 }
 .slideItemProduct h1{
   color: white;
-  font-size: 1.2vw;
+  font-size: 1.6vw;
+  width: 100%;
   font-weight: 600;
 }
 .slideItemProduct p{
@@ -36,6 +38,22 @@
 .slideItemProduct button{
   font-size: 1vw;
   cursor: pointer;
+  display: block;
+  font-weight: 700;
+  margin: auto;
+  width: max-content;
+  background-color: var(--cream);
+  border: none;
+  outline: none;
+  color: var(--old_red);
+  padding: .7vw 3.7vw;
+  border-radius: 100vw;
+  border: .12vw solid transparent;
+}
+.slideItemProduct button:hover{
+  border: .12vw solid #651318;
+  background-color: white;
+  box-shadow: 0px 4px 12.1px 0px #6513184F;
 }
 .slideItemProduct a{
   width: max-content;
@@ -59,8 +77,9 @@
   margin: auto;
   padding: 0 2vw;
   margin-bottom: 2.2vw;
+  border-radius: 6vw !important;
 }
-.mySwiperProduct{
+/* .mySwiperProduct{
   transition: 1s all !important;
   padding-top: 1vw !important;
   display: block !important;
@@ -70,7 +89,7 @@
   align-items: flex-end !important;
   justify-content: center !important;
   margin-left: -1.2vw !important;
-}
+} */
 /* .mySwiperProduct .swiper-slide{
   transition: 1s all !important;
   
@@ -84,7 +103,7 @@
   margin: auto !important;
   margin-bottom: 1.8vw !important;
 } */
-.mySwiperProduct .swiper-slide-active .imageContainer{
+/* .mySwiperProduct .swiper-slide-active .imageContainer{
   width: 100% !important;
   position: relative;
   transition: 1s all;
@@ -142,7 +161,7 @@
   margin-bottom: 10vw;
 }
 .mySwiperProduct .swiper-slide-active{
-  width: 43% !important;
+  width: 55% !important;
   margin-bottom: 0;
   margin-right: 0 !important;
 }
@@ -205,6 +224,109 @@
   font-variant: initial;
   line-height: 1;
   width: 8vw !important;
+} */
+.mySwiperProduct .swiper-button-prev, .mySwiperProduct .swiper-button-next{
+  position: absolute;
+  top: inherit !important;
+  bottom: 7vw !important;
+  width: 3vw !important;
+  height: 3vw !important;
+  border-radius: 100vw !important;
+  margin-top: calc(0px -(var(--swiper-navigation-size) / 2));
+  background: #FFFFFF33;
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--swiper-navigation-color, var(--swiper-theme-color));
+}
+.mySwiperProduct .swiper-button-next, .mySwiperProduct .swiper-rtl .swiper-button-prev{
+  right: 12.7vw !important;
+  background: #FFFFFF33;
+  border: .12vw solid white;
+  content: '' !important;
+  width: 3.7vw !important;
+  height: 3.7vw !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mySwiperProduct .swiper-button-prev, .mySwiperProduct .swiper-rtl .swiper-button-next{
+  left: 13.5vw !important;
+  background: #FFFFFF33;
+  border: .12vw solid white;
+  font-size: 1vw;
+  content: '' !important;
+  width: 3.7vw !important;
+  height: 3.7vw !important;
+}
+.mySwiperProduct .swiper-button-next:after, .mySwiperProduct .swiper-rtl .swiper-button-next:after{
+  content: '\2192' !important;
+  color: white;
+  font-size: 2vw !important;
+  text-align: center;
+  margin-top: -.2vw;
+}
+.mySwiperProduct .swiper-button-prev:after, .mySwiperProduct .swiper-rtl .swiper-button-next:after{
+  content: '\2190' !important;
+  color: white;
+  font-size: 2vw !important;
+  text-align: center;
+  margin-top: -.2vw;
+}
+.mySwiperProduct .swiper-button-next:after, .mySwiperProduct .swiper-button-next:after{
+  font-family: inherit !important;
+  font-size: 1vw;
+  text-transform: none !important;
+  letter-spacing: 0;
+  font-variant: initial;
+  line-height: 1;
+  width: 8vw !important;
+}
+ .mySwiperProduct .swiper-wrapper{
+  padding: 9vw 0 !important;
+  padding-bottom: 8vw !important;
+ }
+ .mySwiperProduct .swiper-slide{
+  transform: scale(0.7) !important;
+ }
+ .mySwiperProduct .swiper-slide-active{
+  transform: scale(1.7) !important;
+ }
+ .mySwiperProduct .swiper-slide-active .contectProductContainer{
+  display: block;
+ }
+ .mySwiperProduct .swiper-slide-active .slideItemProduct button{
+  transform: scale(.6);
+ }
+ .mySwiperProduct .swiper-slide-active .imageContainer img{
+  width: 100%;
+  display: block;
+  margin: auto;
+  padding: 0 2vw;
+  
+  margin-bottom: 1vw;
+}
+.mySwiperProduct .swiper-slide-active .slideItemProduct{
+    position: relative;
+    text-align: center;
+    margin-top: 0 !important;
+}
+ .mySwiperProduct .swiper-slide-active .slideItemProduct h1{
+  color: white;
+  font-size: 1vw;
+  font-weight: 600;
+  margin-bottom: .4vw;
+  width: 100%;
+}
+.mySwiperProduct .swiper-slide-active .slideItemProduct p{
+  color: white;
+  font-size: .6vw;
+  font-weight: 300;
+  margin-bottom: .8vw;
+  width: 100%;
+  padding: 0 2vw !important;
 }
 
 .swiperArticles{
