@@ -423,6 +423,17 @@
   display: none;
 }
 
+.notifPost{
+  font-size: 1vw;
+  margin-top: 2vw;
+  color: #651318;
+  width:max-content;
+  background-color: #FFFCF4;
+  border: .1vw solid #5E5E5E;
+  padding: .6vw 1.3vw;
+  border-radius: .3vw;
+}
+
 @media (max-width:768px) {
   .section_2{
     grid-template-columns: repeat(1, 1fr);
@@ -636,6 +647,13 @@
     padding: 1.6vw 3.2vw;
     border-radius: 2vw;
     border: .12vw solid #5E5E5E;
+  }
+  .notifPost{
+    font-size: 3.4vw;
+    margin-top: 4vw;
+    border: .12vw solid #5E5E5E;
+    padding: 1.6vw 3.2vw;
+    border-radius: 2vw;
   }
   .form_fields textarea{
     font-size: 3.4vw;

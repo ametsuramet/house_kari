@@ -327,6 +327,11 @@
   margin-bottom: .8vw;
   width: 100%;
   padding: 0 2vw !important;
+  display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      text-overflow: ellipsis;
 }
 
 .swiperArticles{
@@ -970,6 +975,11 @@
   .slideItemProduct p{
     font-size: 2.7vw;
     margin-bottom: 5.8vw;
+    display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
   }
   .slideProductMobile .swiper-slide-active .slideItemProduct button{
     font-size: 2.7vw;

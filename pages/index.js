@@ -19,7 +19,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 // import required modules
-import { Navigation } from 'swiper/modules';
+import { Navigation ,Pagination } from 'swiper/modules';
 
 const items = [
   <img key={1} src='/images/banner-1.png' alt='banner'/>,
@@ -45,6 +45,93 @@ export default function Home() {
   const [menuItems, setMenuItems] = useState([]);
   const [items, setItems] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [message, setMessage] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
+  const [fileCount, setFileCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [testimonials, setTestimonials] = useState([]);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const response = await axios.get('/api/all-testimonials');
+        setTestimonials(response.data.data); // Access the data array from the response
+        setLoading(false);
+        console.log(response.data)
+      } catch (err) {
+        console.error('Error fetching testimonials:', err);
+        setLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
+  useEffect(() => {
+    if (message) {
+      setIsVisible(true);
+
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 2000); // 2000 milliseconds = 2 seconds
+
+      return () => clearTimeout(timer); // Cleanup timer if component unmounts
+    }
+  }, [message]);
+
+  const [formData, setFormData] = useState({
+    name: '',
+    phone_number: '',
+    title: '',
+    description: '',
+    image: null // Image file will be stored here
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleFileChange = (e) => {
+    const files = e.target.files;
+    setFormData({
+      ...formData,
+      image: files[0], // Store the selected file
+    });
+    setFileCount(files.length); // Update file count
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true); // Start loading
+
+    const data = new FormData();
+    data.append('name', formData.name);
+    data.append('phone_number', formData.phone_number);
+    data.append('title', 'Testimoni');
+    data.append('description', formData.description);
+    if (formData.image) {
+      data.append('image', formData.image);
+    }
+
+    try {
+      const response = await axios.post('/api/postReview', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Important for file uploads
+        },
+      });
+      console.log('Form submitted successfully:', response.data);
+      setMessage('Form submitted successfully!');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setMessage('Failed to submit form');
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  };
 
   const fetchArticles = async () => {
     try {
@@ -521,29 +608,61 @@ const getProductDesc = (item) => {
               <h1 className={styles.heading_main}>{t('headingForm')}</h1>
               <p className={styles.desc_main_margin}>{t('headingFormDesc')}</p>
             </div>
-            <form className={styles.form}>
+            <form className={styles.form} onSubmit={handleSubmit}>
               <div className={styles.form_fields}>
                 <label>{t('nameForm')}</label>
-                <input type='text' placeholder={t('nameForm')}/>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder={t('nameForm')}
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
               <div className={styles.form_fields}>
                 <label>{t('numberForm')}</label>
-                <input type='number' placeholder={t('numberForm')}/>
+                <input
+                  type="number"
+                  name="phone_number"
+                  placeholder={t('numberForm')}
+                  value={formData.phone_number}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
               <div className={styles.form_fields}>
                 <label>{t('reviewForm')}</label>
-                <textarea placeholder={t('reviewForm')}></textarea>
+                <textarea
+                  name="description"
+                  placeholder={t('reviewForm')}
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  required
+                ></textarea>
               </div>
               <div className={styles.form_fields_row}>
                 <div className={styles.fileInputWrapper}>
-                  <input type="file" id="file-input" className={styles.fileInput} />
-                  <label htmlFor="file-input" className={styles.customFileLabel}>
-                    + {t('unggahFile')}
-                  </label>
+                <input
+                  type="file"
+                  id="file-input"
+                  className={styles.fileInput}
+                  onChange={handleFileChange}
+                />
+                <label htmlFor="file-input" className={styles.customFileLabel}>
+                  + {fileCount > 0 ? `${fileCount} ${t('unggahFile')}` : t('unggahFile')}
+                </label>
                 </div>
-                <button>{t('submitBtn')}</button>
+                <button type="submit" disabled={loading} className={styles.submitButton}>
+                  {loading ? (
+                    <span>Loading...</span> // Add your spinner or loading indicator
+                  ) : (
+                    t('submitBtn')
+                  )}
+                </button>
               </div>
             </form>
+            {isVisible && <p className={styles.notifPost}>{message}</p>}
           </div>
       </div>
       <div className={styles.section_7}>
@@ -554,8 +673,12 @@ const getProductDesc = (item) => {
             <h1 className={styles.heading_main}>{t('testimoniHeading')}</h1>
           </div>
         </div>
-        <SlideTestimonialsMobile/>
-        <SlideTestimonials/>
+        <SlideTestimonialsMobile items={testimonials.map(item => ({
+            ...item,
+        }))}/>
+        <SlideTestimonials items={testimonials.map(item => ({
+            ...item,
+        }))}/>
       </div>
     </>
   );

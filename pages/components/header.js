@@ -18,6 +18,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Import style jika diperlukan
+import axios from 'axios';
 
 export async function getStaticProps({ locale }) {
   return {
@@ -37,21 +38,37 @@ const Header = () => {
   const [shareLinks, setShareLinks] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [themeHeader, setThemeHeader] = useState ([]);
+  const [music, setMusic] = useState ([]);
   const [loading, setLoading] = useState(true);
   const [querySearch, setQuerySearch] = useState('');
 
   useEffect(() => {
+    const fetchMusic = async () => {
+      try {
+        const response = await axios.get('/api/music');
+        setMusic(response.data.data);
+        console.log('music',response.data)
+      } catch (err) {
+        console.error('Error fetching music:', err);
+      }
+    };
+
+    fetchMusic();
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/banner`);
+        const response = await fetch(`/api/theme-image`);
         const data = await response.json();
-        if (data && data.data) {
-          setThemeHeader(data.data);
+        if (data && data.data && data.data.header) {
+          setThemeHeader(data.data.header);
+          console.log('Header image:', data.data.header);
         } else {
           console.error('Invalid response data format:', data);
         }
       } catch (error) {
-        console.error('Error fetching banners:', error);
+        console.error('Error fetching header image:', error);
       } finally {
         setLoading(false); // Set loading to false once data is fetched
       }
@@ -145,7 +162,18 @@ const Header = () => {
     router.push({ pathname, query }, asPath, { locale: locale });
   };
 
-  const audioRef = useRef(typeof Audio !== 'undefined' ? new Audio('/media/soundtrack.wav') : undefined);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    if (music && music.link) {
+      if (!audioRef.current) {
+        audioRef.current = new Audio(music.link);
+      } else {
+        audioRef.current.src = music.link;
+      }
+      audioRef.current.loop = true;
+    }
+  }, [music]);
 
   const playAudio = () => {
     if (audioRef.current) {
@@ -162,11 +190,8 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.loop = true; // Set the audio to loop
-    }
-
     const handleUserInteraction = () => {
+      setIsPlaying(true);
       playAudio();
       document.removeEventListener('click', handleUserInteraction);
       document.removeEventListener('keypress', handleUserInteraction);
@@ -353,38 +378,37 @@ const Header = () => {
         <link rel="alternate" hrefLang="x-default" href={asPath} />
       </Head>
       <div className={styles.heading_layout}>
-        {loading ? (
-            <Skeleton height={28} width={1800} />
-        ) : (
-            themeHeader.length > 0 && (
-                <div className={styles.top_menu}> 
-                    <div className={styles.language}>
-                        <button onClick={() => toggleDropdown('language')}>
-                            {language} <IoChevronDown />
-                        </button>
-                        <ul className={openDropdown === 'language' ? styles.show : ''}>
-                            <li>
-                                <button onClick={() => handleLanguageChange('English')}>English</button>
-                            </li>
-                            <li>
-                                <button onClick={() => handleLanguageChange('Indonesian')}>Indonesian</button>
-                            </li>
-                        </ul>
-                    </div>
-                    <form onSubmit={handleSearchForm}>
-                      <div className={styles.search_box}>
-                        <input
-                          type='text'
-                          placeholder={t('searchText')}
-                          value={querySearch}
-                          onChange={(e) => setQuerySearch(e.target.value)}
-                        />
-                        <button type='submit'><AiOutlineSearch /></button>
-                      </div>
-                    </form>
-                </div>
-            )
-        )}
+        <div
+          className={styles.top_menu}
+          style={{
+            backgroundImage: `url(https://prahwa.net/storage/${themeHeader ? themeHeader : 'default-header.jpg'})`
+          }}
+        >
+          <div className={styles.language}>
+            <button onClick={() => toggleDropdown('language')}>
+              {language} <IoChevronDown />
+            </button>
+            <ul className={openDropdown === 'language' ? styles.show : ''}>
+              <li>
+                <button onClick={() => handleLanguageChange('English')}>English</button>
+              </li>
+              <li>
+                <button onClick={() => handleLanguageChange('Indonesian')}>Indonesian</button>
+              </li>
+            </ul>
+          </div>
+          <form onSubmit={handleSearchForm}>
+            <div className={styles.search_box}>
+              <input
+                type="text"
+                placeholder={t('searchText')}
+                value={querySearch}
+                onChange={(e) => setQuerySearch(e.target.value)}
+              />
+              <button type="submit"><AiOutlineSearch /></button>
+            </div>
+          </form>
+        </div>
 
         <header className={styles.header}>
           <div className={styles.logo}>
@@ -497,7 +521,7 @@ const Header = () => {
       </div>
       <div className={styles.fixed_menu}>
         <div className={styles.fixed_menu_box}>
-            <button
+          <button
             className={`${styles.bg_transparent} ${styles.bg_transparent_margin} ${isPlaying ? styles.nonActive : styles.active}`}
             onClick={handleClickPlay}
             style={{ display: isPlaying ? 'none' : 'block' }}

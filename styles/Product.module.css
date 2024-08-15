@@ -199,7 +199,7 @@
   }
   .section3_image{
     width: 100%;
-    height: 34.5vw;
+    height: auto;
     position: relative;
     background: linear-gradient(180deg, #FFF8DD 0%, #FECF57 100%);
   }
@@ -254,7 +254,7 @@
     cursor: pointer;
     transition: .4s all;
     border-radius: 100vw;
-    height: 1.9vw;
+    height: 1.8vw;
     position: relative;
     padding: .55vw;
     color: white;
@@ -275,14 +275,14 @@
     transform: scale(1.06);
   }
   .section3_ecommerce_layout button img{
-    max-width: 3.6vw;
-    max-height: 3.6vw;
+    width: 3.4vw;
     height: auto;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%,  -50%);
     object-fit: contain;
+    filter: brightness(0) invert(1);
   }
  
   .btn_hover{
@@ -330,6 +330,10 @@
     right: 2vw;
     top: -4vw;
     width: 20vw;
+}
+
+.hidden{
+  display: none;
 }
 
 @media (max-width:768px) {
@@ -478,13 +482,14 @@
     border-radius: 0;
   }
   .section3_image{
-    height: 74vw;
+    height: 65vw;
     border-radius: 8vw 8vw 0 0;
     overflow: hidden;
   }
   .section3_image img{
     width: 82%;
-    height: 82%;
+    height: auto;
+    border-radius: 3vw;
   }
   .section3_content{
     padding:5.5vw 6vw;
@@ -526,8 +531,8 @@
     padding: .55vw;
   }
   .section3_ecommerce_layout button img{
-    max-width: 13vw;
-    max-height: 13vw;
+    width: 15.4vw;
+    height: auto;
   }
 
   .section4{

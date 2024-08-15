@@ -214,6 +214,25 @@ const ProductDetails = () => {
   const pageTitle = detail ? `House Kari | ${getProductName(detail)}` : 'House Kari';
   const ecommerceLinks = JSON.parse(detail.ecommerce_links);
 
+  let parsedLinks = {};
+
+  try {
+    // Check if ecommerceLinks is a string that needs parsing
+    if (typeof ecommerceLinks === 'string') {
+      parsedLinks = JSON.parse(ecommerceLinks);
+    } else {
+      parsedLinks = ecommerceLinks; // Assume it's already an object
+    }
+  } catch (error) {
+    console.error('Error parsing ecommerce_links:', error);
+    return <p>Belum ada ecommerce</p>; // Display fallback message on error
+  }
+
+  // Check if any link is valid
+  const hasValidLinks = Object.values(parsedLinks).some(
+    (item) => item.link && typeof item.link === 'string'
+  );
+
   return (
     <>
       <Head>
@@ -241,14 +260,38 @@ const ProductDetails = () => {
               <div className={styles.section3_ecommerce}>
                 <h2>{t('beliSekarang')}</h2>
                 <div className={styles.section3_ecommerce_layout}>
-                    {/* {JSON.parse(detail.ecommerces).map((ecommerce) => (
-                        <Link href={ecommerceLinks[ecommerce]} key={ecommerce} target="blank_">
-                            <button>{ecommerce}</button>
-                        </Link>
-                    ))} */}
-                    <Link href="/" target="blank_">
-                        <button className={styles.whatsappBtn}>Whatsapp</button>
-                    </Link>
+                {hasValidLinks ? (
+                  Object.keys(parsedLinks).map((key) => {
+                    const { link, color_code, logo } = parsedLinks[key];
+
+                    // Skip rendering if link is not a valid string
+                    if (!link || typeof link !== 'string') {
+                      return null;
+                    }
+
+                    return (
+                      <Link href={link} key={key} passHref legacyBehavior>
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <button
+                            style={{
+                              backgroundColor: color_code
+                            }}
+                          >
+                            <img
+                              src={`https://prahwa.net/storage/${logo}`}
+                              alt={key}
+                            />
+                          </button>
+                        </a>
+                      </Link>
+                    );
+                  })
+                ) : (
+                  <p style={{width: 'max-content', color: '#651318'}}>{t('notEcommerce')}</p>
+                )}
                 </div>
               </div>
             </div>
@@ -272,14 +315,38 @@ const ProductDetails = () => {
                 <div className={styles.section3_ecommerce}>
                     <h2>{t('beliSekarang')}</h2>
                     <div className={styles.section3_ecommerce_layout}>
-                        {/* {JSON.parse(detail.ecommerces).map((ecommerce) => (
-                            <Link href={ecommerceLinks[ecommerce]} key={ecommerce} target="blank_">
-                                <button>{ecommerce}</button>
-                            </Link>
-                        ))} */}
-                        <Link href="/" target="blank_">
-                          <button className={styles.whatsappBtn}>Whatsapp</button>
-                        </Link>
+                    {hasValidLinks ? (
+                      Object.keys(parsedLinks).map((key) => {
+                        const { link, color_code, logo } = parsedLinks[key];
+
+                        // Skip rendering if link is not a valid string
+                        if (!link || typeof link !== 'string') {
+                          return null;
+                        }
+
+                        return (
+                          <Link href={link} key={key} passHref legacyBehavior>
+                            <a
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <button
+                                style={{
+                                  backgroundColor: color_code
+                                }}
+                              >
+                                <img
+                                  src={`https://prahwa.net/storage/${logo}`}
+                                  alt={key}
+                                />
+                              </button>
+                            </a>
+                          </Link>
+                        );
+                      })
+                    ) : (
+                      <p style={{width: 'max-content', color: '#651318'}}>{t('notEcommerce')}</p>
+                    )}
                     </div>
                 </div>
                 </div>
