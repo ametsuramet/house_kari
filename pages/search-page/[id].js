@@ -126,7 +126,7 @@ export default function SearchPage({ id }) {
           {results.articles.length > 0 ? (
             <div className={styles.section5}>
               <div className={styles.space_between_heading}>
-                <h1 className={styles.heading_main_red}>{t('headingArticlesSearch')} '{id}'</h1>
+                <h1 className={styles.heading_main_red}>{t('headingArticlesSearch')}  “{id}”</h1>
               </div>
               <SlideArticlesSecond
                 classNames={secondColor}
@@ -156,7 +156,7 @@ export default function SearchPage({ id }) {
               <div className={styles.product_layout}>
                 <div className={styles.divider}></div>
                 <div className={styles.space_between_heading}>
-                  <h1 className={styles.heading_main_white}>{t('productSearchHeading')} '{id}'</h1>
+                  <h1 className={styles.heading_main_white}>{t('productSearchHeading')} “{id}”</h1>
                 </div>
                 <div className={styles.product_search_layout}>
                   {results.products.map(product => (
@@ -183,7 +183,7 @@ export default function SearchPage({ id }) {
             <img src="/images/product_detail_icon.png" className={styles.product_detail_icon} alt="House Kari" />
             <img src="/images/product_detail_icon_2.png" className={styles.product_detail_icon_2} alt="House Kari" />
             <div className={styles.space_between_heading}>
-              <h1 className={styles.heading_main_red}>{t('headingRecipeSearch')} '{id}'</h1>
+              <h1 className={styles.heading_main_red}>{t('headingRecipeSearch')} “{id}”</h1>
             </div>
             <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={results.reseps.slice(0, 13).map(recipe => ({
               ...recipe,
