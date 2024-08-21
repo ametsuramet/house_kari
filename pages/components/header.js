@@ -19,6 +19,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Import style jika diperlukan
 import axios from 'axios';
+import Nav from '@/public/images/nav_bg.png'
 
 export async function getStaticProps({ locale }) {
   return {
@@ -41,6 +42,7 @@ const Header = () => {
   const [music, setMusic] = useState ([]);
   const [loading, setLoading] = useState(true);
   const [querySearch, setQuerySearch] = useState('');
+  const [logo, setLogo] = useState ([]);
 
   useEffect(() => {
     const fetchMusic = async () => {
@@ -65,6 +67,7 @@ const Header = () => {
           setThemeHeader(data.data.header);
           console.log('Header image:', data.data.header);
         } else {
+          setThemeHeader(null)
           console.error('Invalid response data format:', data);
         }
       } catch (error) {
@@ -73,7 +76,7 @@ const Header = () => {
         setLoading(false); // Set loading to false once data is fetched
       }
     };
-  
+
     fetchData();
   }, []);
 
@@ -268,26 +271,50 @@ const Header = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        const response = await fetch(`/api/logo`);
+        const data = await response.json();
+        if (data && data.data) {
+          setLogo(data.data);
+        } else {
+          console.error('Invalid response data format:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching banners:', error);
+      } finally {
+        setLoading(false); // Set loading to false once data is fetched
+      }
+    };
+  
+    fetchLogo();
+  }, []);
+
   const ecommerces = [
     {
       id: 1,
       nameEcommerce: 'shopee',
       imageEcommerce: '/images/shopee_logo.png',
+      urlEcommerce: 'https://shopee.co.id/search?keyword=house%20kari%20ala%20jepang&trackingId=searchhint-1724033850-30172065-5dd1-11ef-bab4-da90c4249c1f'
     },
     {
         id: 2,
         nameEcommerce: 'tokopedia',
         imageEcommerce: '/images/tokopedia_logo.png',
+        urlEcommerce: 'https://www.tokopedia.com/find/house-kari-jepang'
     },
     {
         id: 3,
         nameEcommerce: 'blibli',
         imageEcommerce: '/images/blibli_logo.png',
+        urlEcommerce: 'https://www.blibli.com/cari/house%20kari%20ala%20jepang'
     },
     {
         id: 4,
         nameEcommerce: 'sayurbox',
         imageEcommerce: '/images/sayurbox_logo.png',
+        urlEcommerce: 'https://www.sayurbox.com/product/bumbu-kari-house-eqnvyfqr?touch_point=search_bumbu-kari-house-eqnvyfqr&section_source=search_suggestions_house%20kari%20jepang&item_position=5&product_builder=TEMPLATE_BASE_SUGGESTION&view_grid=3&number_of_scroll=1&search_referrer_page=home'
     },
   ]
 
@@ -367,6 +394,12 @@ const Header = () => {
     }
   };
 
+  const backgroundStyle = {
+    backgroundImage: themeHeader
+      ? `url(https://prahwa.net/storage/${themeHeader})`
+      : 'url(/images/nav_bg.png)'
+  };
+
   return (
     <>
       <Head>
@@ -378,12 +411,10 @@ const Header = () => {
         <link rel="alternate" hrefLang="x-default" href={asPath} />
       </Head>
       <div className={styles.heading_layout}>
-        <div
-          className={styles.top_menu}
-          style={{
-            backgroundImage: `url(https://prahwa.net/storage/${themeHeader ? themeHeader : 'default-header.jpg'})`
-          }}
-        >
+      <div
+        className={styles.top_menu}
+        style={backgroundStyle} // Direct URL path
+      >
           <div className={styles.language}>
             <button onClick={() => toggleDropdown('language')}>
               {language} <IoChevronDown />
@@ -413,7 +444,7 @@ const Header = () => {
         <header className={styles.header}>
           <div className={styles.logo}>
             <Link href='/'>
-              <img src='/images/logo.png' alt="House Kari Logo" />
+              <img src={`https://prahwa.net/storage/${logo.image}`}  alt="House Kari Logo" />
             </Link>
           </div>
           <div className={styles.btnMobile}>
@@ -549,7 +580,7 @@ const Header = () => {
               ))}
             </div>
           </div>
-          <button className={styles.bg_whatsapp}><FaWhatsapp /></button>
+          <Link href="https://wa.link/z7fxyc" target='blank_' style={{display: 'flex', alignItems: 'center'}}><button className={styles.bg_whatsapp}><FaWhatsapp /></button></Link>
           <div className={styles.ecommerceDropdown}>
             <button onClick={toggleDropdownEcommerce} className={`${styles.bg_ecommerce} ${isDropdownOpen ? styles.active : ''}`}>
               <BsCart2 /> <span>{t('ecommerceText')}</span>
@@ -557,7 +588,7 @@ const Header = () => {
             </button>
             <div className={`${styles.dropdown} ${isDropdownOpen ? styles.active : ''}`}>
               {ecommerces.map((ecommerce) => (
-                  <Link href="#" key={ecommerce.id}><button className={styles[ecommerce.nameEcommerce]}><img src={ecommerce.imageEcommerce} alt="House Kari" /></button></Link>
+                  <Link href={ecommerce.urlEcommerce} key={ecommerce.id} target='blank_'><button className={styles[ecommerce.nameEcommerce]}><img src={ecommerce.imageEcommerce} alt="House Kari" /></button></Link>
               ))}
             </div>
           </div>

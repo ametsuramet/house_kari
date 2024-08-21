@@ -17,7 +17,9 @@ export async function getStaticProps({ locale }) {
 const Footer = () => { 
   const { t } = useTranslation('common');
   const [themeHeader, setThemeHeader] = useState ([]);
+  const [address, setAddress] = useState ([]);
   const [loading, setLoading] = useState(true);
+  const [socialMedia, setSocialMedia] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +30,7 @@ const Footer = () => {
           setThemeHeader(data.data.footer);
           console.log('Header image:', data.data.footer);
         } else {
-          console.error('Invalid response data format:', data);
+          setThemeHeader(null); // Ensure themeHeader is null if no valid data
         }
       } catch (error) {
         console.error('Error fetching header image:', error);
@@ -36,8 +38,48 @@ const Footer = () => {
         setLoading(false); // Set loading to false once data is fetched
       }
     };
-  
+
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchAddress = async () => {
+      try {
+        const response = await fetch(`/api/address`);
+        const data = await response.json();
+        if (data && data.data) {
+          setAddress(data.data);
+        } else {
+          console.error('Invalid response data format:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching banners:', error);
+      } finally {
+        setLoading(false); // Set loading to false once data is fetched
+      }
+    };
+  
+    fetchAddress();
+  }, []);
+
+  useEffect(() => {
+    const fetchSocialMedia = async () => {
+      try {
+        const response = await fetch(`/api/social-media`);
+        const data = await response.json();
+        if (data && data.data) {
+          setSocialMedia(data.data);
+        } else {
+          console.error('Invalid response data format:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching social media:', error);
+      } finally {
+        setLoading(false); // Set loading to false once data is fetched
+      }
+    };
+
+    fetchSocialMedia();
   }, []);
 
   return (
@@ -47,24 +89,45 @@ const Footer = () => {
         <img src='/images/logo.png' alt='House Kari Logo' /> 
         <div className={styles.identity_layout}>
           <h1>PT HOUSE AND VOX INDONESIA</h1>
-          <p>{t('address')}</p>
+          <p>{address.address}</p>
           <Link href='/privacy-policy'>{t('privacyPolicy')}</Link>
         </div>
       </div>
       <div className={styles.social_footer}>
-        <Link href='https://www.facebook.com/housekarialajepang' target='blank_'><FaFacebookF/></Link>
-        <Link href='https://www.instagram.com/dapurkarialajepang/' target='blank_'><FaInstagram/></Link>
-        <Link href='https://www.tiktok.com/@masakkariyuk?lang=id-ID' target='blank_'><FaTiktok/></Link>
-        <Link href='https://www.linkedin.com/company/house-and-vox-indonesia/' target='blank_'><FaLinkedin/></Link>
-        <Link href='https://www.youtube.com/@housekarialajepang5318' target='blank_'><FaYoutube/></Link>
+      {socialMedia.length > 0 ? (
+        socialMedia.map((socialmedia, index) => (
+          <Link 
+            key={index} // Menambahkan key untuk setiap elemen
+            href={socialmedia.link} 
+            target='_blank' // Menggunakan '_blank' untuk membuka link di tab baru
+            rel='noopener noreferrer' // Menambahkan rel untuk keamanan
+          >
+            <img 
+              src={`https://prahwa.net/storage/${socialmedia.image}`} 
+              alt={`Social media icon for ${socialmedia.name}`} // Menambahkan alt text
+              className={styles.socialMediaIcon} // Menambahkan kelas jika diperlukan
+            />
+          </Link>
+        ))
+      ) : (
+        <p>No social media links available.</p> // Menampilkan pesan jika tidak ada data
+      )}
       </div>
       <div className={styles.img_footer}>
-        <img 
-          src={`https://prahwa.net/storage/${themeHeader ? themeHeader : 'images/footer_img_product.png'}`} 
-          className="img_footer" 
-          alt="House Kari" 
+      {themeHeader ? (
+        <img
+          src={`https://prahwa.net/storage/${themeHeader}`}
+          className="img_footer"
+          alt="Theme Header"
         />
-
+      ) : (
+        // Show the fallback image if themeHeader is null
+        <img
+          src="/images/footer_img_product.png"
+          className="img_footer"
+          alt="Fallback"
+        />
+      )}
       </div>
     </footer>
     <div className={styles.copyright}>

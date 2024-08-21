@@ -220,14 +220,15 @@ const RecipeDetail = () => {
       }
       
       function getYouTubeVideoId(url) {
-        const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/;
+        const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?.*v=|embed\/|v\/|user\/[\w-]+\/(?:videos|playlist|about|live|featured|channel|community)?\/)?|youtu\.be\/)([^"&?\/\s]{11})/;
         const match = url.match(regex);
         return match ? match[1] : null;
-      }
+    }
 
       const videoId = detail.link_youtube ? getYouTubeVideoId(detail.link_youtube) : null;
 
       const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : '';
+      console.log('link yt',videoId)
 
       const imageClass = detail.link_youtube ? styles.hidden_image : styles.section4_image;
 
@@ -264,10 +265,10 @@ const RecipeDetail = () => {
                                 height="315"
                                 src={embedUrl}
                                 title="YouTube video player"
-                                frameborder="0"
+                                frameBorder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin"
-                                allowfullscreen
+                                referrerPolicy="strict-origin-when-cross-origin"
+                                allowFullScreen
                             ></iframe>
                         )}
                     </div>

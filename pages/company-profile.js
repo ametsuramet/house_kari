@@ -21,7 +21,7 @@ export async function getStaticProps({ locale }) {
 }
 
 export default function CompanyProfile() {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
 
   const [isOpen, setIsOpen] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
@@ -211,6 +211,25 @@ export default function CompanyProfile() {
     document.removeEventListener('mouseup', handleMouseUp);
   };
 
+  const descCareer = (career) => {
+    switch (i18n.language) {
+      case 'en':
+        return career.description_en || career.description;
+      case 'zh':
+        return career.description_chi || career.description;
+      default:
+        return career.description;
+    }
+  };
+
+  const handleApplyClick = (jobType) => {
+    const email = 'info@housefoods.co.id';
+    const subject = `Interested in ${jobType}`;
+    const body = ''; // Bisa diisi dengan teks default untuk isi email
+    const mailtoUrl = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoUrl;
+};
+
   const pageTitle = `House Kari | ${t('menu.companyProfile')}`;
 
   return (
@@ -312,17 +331,19 @@ export default function CompanyProfile() {
           {chunkedCareers.length > 0 ? (
             chunkedCareers.map((careerChunk, slideIndex) => (
               <SwiperSlide key={slideIndex}>
-                {careerChunk.map((career, index) => (
-                  <div className={styles.boxCareers} key={index}>
+                {careerChunk.map(career => (
+                  <div className={styles.boxCareers} key={career.id}>
                     <h3>{career.jobtype.name_en}</h3>
-                    <p>{career.description_en}</p>
+                    <p>{(descCareer(career))}</p>
                     <div className={styles.btnCareers}>
                       <div className={styles.dateCareers}>
                         <span>{t('ends')} {new Date(career.date_end).toLocaleDateString()}</span>
                       </div>
-                      <Link href='/'>
-                        <button>{t('apply')}</button>
-                      </Link>
+                      <button 
+                          onClick={() => handleApplyClick(career.jobtype.name_en)}
+                      >
+                          {t('apply')}
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -330,7 +351,7 @@ export default function CompanyProfile() {
             ))
           ) : (
             <div className={styles.noJobsMessage}>
-              <h1>No Job Opening Available for Now</h1>
+              <h1>{t('noJob')}</h1>
             </div>
           )}
         </Swiper>

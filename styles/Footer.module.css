@@ -38,12 +38,14 @@
 .social_footer{
     display: flex;
     justify-content: center;
-    gap: 1.15vw;
+    gap: 1.4vw;
+    align-items: center;
     margin: auto;
     margin-bottom: 1vw;
 }
-.social_footer svg{
-    font-size: 1.65vw;
+.social_footer img{
+    max-width: 1.5vw;
+    max-height: 1.5vw;
     color: white;
 }
 

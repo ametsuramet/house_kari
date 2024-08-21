@@ -21,6 +21,7 @@ export default function Contact() {
   const { t } = useTranslation('common');
 
   const [isChecked, setIsChecked] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
     name: '',
@@ -40,6 +41,8 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setIsSubmitting(true);
+
     try {
       const response = await axios.post('/api/postForm', formData);
       setMessage('Form submitted successfully!');
@@ -47,6 +50,9 @@ export default function Contact() {
     } catch (error) {
       console.error('Error submitting form:', error);
       setMessage('Failed to submit form');
+    } finally {
+      // Set loading state to false after request is completed
+      setIsSubmitting(false);
     }
   };
 
@@ -54,6 +60,11 @@ export default function Contact() {
     setIsChecked(!isChecked);
   };
 
+  const [email, setEmail] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [companyAddress, setCompanyAddress] = useState('');
+  const [name, setName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [selectedOption1, setSelectedOption1] = useState(`${t('choose')}...`);
   const [isDropdownOpen1, setIsDropdownOpen1] = useState(false);
   const [selectedOption2, setSelectedOption2] = useState(`${t('choose')}...`);
@@ -64,6 +75,50 @@ export default function Contact() {
   const handleSelect = (setSelectedOption, setIsDropdownOpen, option) => {
     setSelectedOption(option);
     setIsDropdownOpen(false);
+  };
+
+  const handleSubmitPartner = async (e) => {
+    e.preventDefault();
+  
+    // Prepare form data
+    const formData = {
+      email,
+      company_name: companyName,
+      company_address: companyAddress,
+      name,
+      phone_number: phoneNumber,
+      company_type: selectedOption1,
+      found_housekari_form: selectedOption2,
+      reason_to_become_reseller: selectedOption3,
+    };
+  
+    // Set loading state to true
+    setIsSubmitting(true);
+  
+    try {
+      const response = await fetch('/api/postPartner', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (response.ok) {
+        // Handle success
+        setMessage('Form submitted successfully!');
+        // Optionally, you can clear the form fields here
+      } else {
+        // Handle error
+        setMessage('Failed to submit form');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setMessage('An error occurred. Please try again later.');
+    } finally {
+      // Set loading state to false after request is completed
+      setIsSubmitting(false);
+    }
   };
 
   const pageTitle = `House Kari | ${t('menu.contact')}`;
@@ -118,7 +173,9 @@ export default function Contact() {
                 <span className={styles.customCheckmark}></span>
                 {t('haveAgree')}
               </label>
-              <button type="submit">{t('submitBtn')}</button>
+              <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Loading...' : t('submitBtn')}
+              </button>
               {message && <p className={styles.notifPost}>{message}</p>}
             </form>
           </div>
@@ -146,33 +203,60 @@ export default function Contact() {
           <img src="/images/contact_icon_2.png" alt="House Kari" className={styles.contact_icon_2}/>
           <div className={`${styles.section1_form} ${styles.section1_form_second}`}>
             <h1>{t('bePartner')}</h1>
-            <form>
+            <form onSubmit={handleSubmitPartner}>
               <div className={styles.form_field}>
                 <label>{t('emailForm')}</label>
-                <input type="text" placeholder={t('emailForm')}/>
+                <input
+                  type="email"
+                  placeholder={t('emailForm')}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
               </div>
               <div className={styles.form_field}>
                 <label>{t('companyName')}</label>
-                <input type="text" placeholder={t('companyName')}/>
+                <input
+                  type="text"
+                  placeholder={t('companyName')}
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  required
+                />
               </div>
               <div className={styles.form_field}>
                 <label>{t('nameForm')}</label>
-                <input type="text" placeholder={t('nameForm')}/>
+                <input
+                  type="text"
+                  placeholder={t('nameForm')}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
               </div>
               <div className={styles.form_field}>
                 <label>{t('numberForm')}</label>
-                <input type="text" placeholder={t('numberForm')}/>
+                <input
+                  type="tel"
+                  placeholder={t('numberForm')}
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  required
+                />
               </div>
 
               <div className={styles.form_field}>
                 <label>{t('choose')}...</label>
                 <div className={styles.custom_select}>
-                  <div className={`${styles.select_value} ${isDropdownOpen1 ? styles.active : ''}`} onClick={() => setIsDropdownOpen1(!isDropdownOpen1)}>
-                    {selectedOption1} <IoChevronDownOutline/>
+                  <div
+                    className={`${styles.select_value} ${isDropdownOpen1 ? styles.active : ''}`}
+                    onClick={() => setIsDropdownOpen1(!isDropdownOpen1)}
+                  >
+                    {selectedOption1} <IoChevronDownOutline />
                   </div>
                   <div className={`${styles.options} ${isDropdownOpen1 ? styles.active : ''}`}>
-                    {[`${t('tradingCompany')}`, `${t('onlineShop')}`, `${t('offlineDistributor')}`, 'HORECA'].map(option => (
-                      <div 
+                    {[t('tradingCompany'), t('onlineShop'), t('offlineDistributor'), 'HORECA'].map((option) => (
+                      <div
                         key={option}
                         className={`${styles.option} ${selectedOption1 === option ? styles.activeOption : ''}`}
                         onClick={() => handleSelect(setSelectedOption1, setIsDropdownOpen1, option)}
@@ -186,18 +270,27 @@ export default function Contact() {
 
               <div className={styles.form_field}>
                 <label>{t('companyAddress')}</label>
-                <input type="text" placeholder={t('companyAddress')}/>
+                <input
+                  type="text"
+                  placeholder={t('companyAddress')}
+                  value={companyAddress}
+                  onChange={(e) => setCompanyAddress(e.target.value)}
+                  required
+                />
               </div>
 
               <div className={styles.form_field}>
                 <label>{t('howDo')}</label>
                 <div className={styles.custom_select}>
-                  <div className={`${styles.select_value} ${isDropdownOpen2 ? styles.active : ''}`} onClick={() => setIsDropdownOpen2(!isDropdownOpen2)}>
-                    {selectedOption2} <IoChevronDownOutline/>
+                  <div
+                    className={`${styles.select_value} ${isDropdownOpen2 ? styles.active : ''}`}
+                    onClick={() => setIsDropdownOpen2(!isDropdownOpen2)}
+                  >
+                    {selectedOption2} <IoChevronDownOutline />
                   </div>
                   <div className={`${styles.options} ${isDropdownOpen2 ? styles.active : ''}`}>
-                    {[`${t('onlineAdvertising')}`, `${t('offlineAdvertising')}`, `${t('supermarket')}`, `${t('ecommerce')}`, `${t('rekan')}`, `${t('other')}`].map(option => (
-                      <div 
+                    {[t('onlineAdvertising'), t('offlineAdvertising'), t('supermarket'), t('ecommerce'), t('rekan'), t('other')].map((option) => (
+                      <div
                         key={option}
                         className={`${styles.option} ${selectedOption2 === option ? styles.activeOption : ''}`}
                         onClick={() => handleSelect(setSelectedOption2, setIsDropdownOpen2, option)}
@@ -212,12 +305,15 @@ export default function Contact() {
               <div className={styles.form_field}>
                 <label>{t('whyAre')}</label>
                 <div className={styles.custom_select}>
-                  <div className={`${styles.select_value} ${isDropdownOpen3 ? styles.active : ''}`} onClick={() => setIsDropdownOpen3(!isDropdownOpen3)}>
-                    <span>{selectedOption3}</span> <IoChevronDownOutline/>
+                  <div
+                    className={`${styles.select_value} ${isDropdownOpen3 ? styles.active : ''}`}
+                    onClick={() => setIsDropdownOpen3(!isDropdownOpen3)}
+                  >
+                    <span>{selectedOption3}</span> <IoChevronDownOutline />
                   </div>
                   <div className={`${styles.options} ${isDropdownOpen3 ? styles.active : ''}`}>
-                    {[`${t('whyAre1')}`, `${t('whyAre2')}`, `${t('whyAre3')}`, `${t('whyAre4')}`].map(option => (
-                      <div 
+                    {[t('whyAre1'), t('whyAre2'), t('whyAre3'), t('whyAre4')].map((option) => (
+                      <div
                         key={option}
                         className={`${styles.option} ${selectedOption3 === option ? styles.activeOption : ''}`}
                         onClick={() => handleSelect(setSelectedOption3, setIsDropdownOpen3, option)}
@@ -228,7 +324,11 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
-              <button>{t('submitBtn')}</button>
+              
+              <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Loading...' : t('submitBtn')}
+              </button>
+              {message && <p className={styles.notifPost}>{message}</p>}
             </form>
           </div>
         </div>
