@@ -17,6 +17,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'react-loading-skeleton/dist/skeleton.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import Image from 'next/image';
 
 // import required modules
 import { Navigation ,Pagination } from 'swiper/modules';
@@ -417,7 +418,15 @@ const handleMouseUp = () => {
 // if (articles.length === 0) return <p style={{textAlign: "center"}}>Loading...</p>;
 
 function stripH1Tags(str) {
-  return str.replace(/<\/?(div|h1|h2|h3|h4|h5|h6|p|span|strong|em|a|ul|ol|li|br|hr|b|i|header|footer|nav|section|article|aside|main|table|tr|td|th|caption|form|input|button|select|option|textarea|label|fieldset|legend|datalist|output|iframe|embed|object|param|canvas|svg|video|audio|source|track|figcaption|figure|time|mark|meter|progress|details|summary|dialog|address|small|sub|sup|code|pre|s|del|u|ins|bdi|bdo|ruby|rt|rp|wbr|blockquote|cite|dfn|kbd|samp|var|abbr|address|p|section|article|header|footer|aside|nav|main|figure|figcaption|legend|datalist|output|progress|meter|details|summary|dialog|template|script|style|noscript|title)>/gi, '');
+  return str
+    .replace(/<\/?(div|h1|h2|h3|h4|h5|h6|p|span|strong|em|a|ul|ol|li|br|hr|b|i|header|footer|nav|section|article|aside|main|table|tr|td|th|caption|form|input|button|select|option|textarea|label|fieldset|legend|datalist|output|iframe|embed|object|param|canvas|svg|video|audio|source|track|figcaption|figure|time|mark|meter|progress|details|summary|dialog|address|small|sub|sup|code|pre|s|del|u|ins|bdi|bdo|ruby|rt|rp|wbr|blockquote|cite|dfn|kbd|samp|var|abbr|address|p|section|article|header|footer|aside|nav|main|figure|figcaption|legend|datalist|output|progress|meter|details|summary|dialog|template|script|style|noscript|title)[^>]*>/gi, '') // Remove HTML tags
+    .replace(/&nbsp;/g, '') // Remove non-breaking spaces
+    .replace(/&ldquo;/g, '"') // Replace HTML entities for left double quotation mark
+    .replace(/&rdquo;/g, '"') // Replace HTML entities for right double quotation mark
+    .replace(/&lsquo;/g, "'") // Replace HTML entities for left single quotation mark
+    .replace(/&rsquo;/g, "'") // Replace HTML entities for right single quotation mark
+    .replace(/<div\s+class="meta"[^>]*>(.*?)<\/div>/gi, '') // Remove <div class="meta">
+    .trim(); // Remove leading/trailing whitespace
 }
 
 const getRecipeName = (item) => {
@@ -573,8 +582,8 @@ const getProductDesc = (item) => {
                 </div>
                 <div className={styles.blog_recent_content}>
                   <span>{t('posted')} {formatDate(article.date)}</span>
-                  <h1>{stripPTags(getProductName(article))}</h1>
-                  <p>{stripPTags(getProductText(article))}</p>
+                  <h1>{stripH1Tags(getProductName(article))}</h1>
+                  <p>{stripH1Tags(getProductText(article))}</p>
                   <Link href={`/article-detail/${article.id}`}><button>{t('section1Home.learnMore')}</button></Link>
                 </div>
               </div>
@@ -591,11 +600,11 @@ const getProductDesc = (item) => {
         </div>
         <SlideArticlesSecond items={articlesSlide.map(article => ({
           ...article,
-              title: stripPTags(getProductName(article)),
+              title: stripH1Tags(getProductName(article)),
         }))} />
         <SlideArticlesSecondMobile items={articlesSlide.map(article => ({
             ...article,
-            title: stripPTags(getProductName(article)),
+            title: stripH1Tags(getProductName(article)),
         }))} /> 
         <div className={styles.divider}></div>
       </div>

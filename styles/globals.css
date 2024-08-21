@@ -383,6 +383,10 @@
 .box_articles_content{
   padding: 1.2vw 1.2vw;
 }
+.box_articles_content a{
+  color: #651318;
+  text-decoration-color: #651318;
+}
 .box_articles_content span{
   font-size: .92vw;
   color: #797979;

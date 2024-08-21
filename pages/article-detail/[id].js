@@ -138,10 +138,17 @@ export default function ArticleDetail({ recipe }) {
         }
     };
 
-    const stripTags = (html, tagName) => {
-        const regex = new RegExp(`<\/?${tagName}[^>]*>`, 'gi');
-        return html.replace(regex, '');
-    };
+    function stripH1Tags(str) {
+        return str
+          .replace(/<\/?(div|h1|h2|h3|h4|h5|h6|p|span|strong|em|a|ul|ol|li|br|hr|b|i|header|footer|nav|section|article|aside|main|table|tr|td|th|caption|form|input|button|select|option|textarea|label|fieldset|legend|datalist|output|iframe|embed|object|param|canvas|svg|video|audio|source|track|figcaption|figure|time|mark|meter|progress|details|summary|dialog|address|small|sub|sup|code|pre|s|del|u|ins|bdi|bdo|ruby|rt|rp|wbr|blockquote|cite|dfn|kbd|samp|var|abbr|address|p|section|article|header|footer|aside|nav|main|figure|figcaption|legend|datalist|output|progress|meter|details|summary|dialog|template|script|style|noscript|title)[^>]*>/gi, '') // Remove HTML tags
+          .replace(/&nbsp;/g, '') // Remove non-breaking spaces
+          .replace(/&ldquo;/g, '"') // Replace HTML entities for left double quotation mark
+          .replace(/&rdquo;/g, '"') // Replace HTML entities for right double quotation mark
+          .replace(/&lsquo;/g, "'") // Replace HTML entities for left single quotation mark
+          .replace(/&rsquo;/g, "'") // Replace HTML entities for right single quotation mark
+          .replace(/<div\s+class="meta"[^>]*>(.*?)<\/div>/gi, '') // Remove <div class="meta">
+          .trim(); // Remove leading/trailing whitespace
+      }
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -158,7 +165,7 @@ export default function ArticleDetail({ recipe }) {
         });
     };
 
-    const pageTitle = detail ? `House Kari | ${stripTags(getProductName(detail), 'h1')}` : 'House Kari';
+    const pageTitle = detail ? `House Kari | ${stripH1Tags(getProductName(detail), 'h1')}` : 'House Kari';
 
     const formattedMeta = `POSTED BY : ${detail.penulis} / ON : ${formatDate(detail.date)} / IN : ${getProductCategory(detail)}`;
 
@@ -184,14 +191,14 @@ export default function ArticleDetail({ recipe }) {
                 <img src="/images/recipe_banner.png" alt="House Kari Website" />
             </div> 
             <div className={banner.breadcrumbs}>
-                <p>{t('menu.home')} / {t('menu.article')} / <span>{stripTags(getProductName(detail), 'h1')}</span></p>
+                <p>{t('menu.home')} / {t('menu.article')} / <span>{stripH1Tags(getProductName(detail), 'h1')}</span></p>
             </div>
             <div className={styles.sectionDetail}>
                 <img src="/images/article_detail_icon_2.png" alt="House Kari" className={styles.article_detail_icon_2} />
                 <div className={styles.sectionDetail_image}>
                     <img src={`https://prahwa.net/storage/${detail.image}`} alt={detail.name} />
                 </div>
-                <h1>{stripTags(getProductName(detail), 'h1')}</h1>
+                <h1>{stripH1Tags(getProductName(detail), 'h1')}</h1>
                 <h5 className={styles.articleDate}>{t('postedBy')} {detail.penulis} / {t('on')} {formatDate(detail.date)} / {t('in')} {(getProductCategory(detail))}</h5>
                 <div className={styles.sectionDetail_content}>
                     <div dangerouslySetInnerHTML={{ __html: modifiedContent }}></div>
@@ -203,11 +210,11 @@ export default function ArticleDetail({ recipe }) {
                 </div>
                 <SlideArticlesSecond items={articlesSlide.map(detail => ({
                 ...detail,
-                    title: stripPTags(getProductName(detail)),
+                    title: stripH1Tags(getProductName(detail)),
                 }))} />
                 <SlideArticlesSecondMobile items={articlesSlide.map(detail => ({
                     ...detail,
-                    title: stripPTags(getProductName(detail)),
+                    title: stripH1Tags(getProductName(detail)),
                 }))} /> 
             </div>  
         </>

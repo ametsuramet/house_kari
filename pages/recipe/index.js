@@ -219,6 +219,18 @@ useEffect(() => {
       }
   };
 
+  function stripH1Tags(str) {
+    return str
+      .replace(/<\/?(div|h1|h2|h3|h4|h5|h6|p|span|strong|em|a|ul|ol|li|br|hr|b|i|header|footer|nav|section|article|aside|main|table|tr|td|th|caption|form|input|button|select|option|textarea|label|fieldset|legend|datalist|output|iframe|embed|object|param|canvas|svg|video|audio|source|track|figcaption|figure|time|mark|meter|progress|details|summary|dialog|address|small|sub|sup|code|pre|s|del|u|ins|bdi|bdo|ruby|rt|rp|wbr|blockquote|cite|dfn|kbd|samp|var|abbr|address|p|section|article|header|footer|aside|nav|main|figure|figcaption|legend|datalist|output|progress|meter|details|summary|dialog|template|script|style|noscript|title)[^>]*>/gi, '') // Remove HTML tags
+      .replace(/&nbsp;/g, '') // Remove non-breaking spaces
+      .replace(/&ldquo;/g, '"') // Replace HTML entities for left double quotation mark
+      .replace(/&rdquo;/g, '"') // Replace HTML entities for right double quotation mark
+      .replace(/&lsquo;/g, "'") // Replace HTML entities for left single quotation mark
+      .replace(/&rsquo;/g, "'") // Replace HTML entities for right single quotation mark
+      .replace(/<div\s+class="meta"[^>]*>(.*?)<\/div>/gi, '') // Remove <div class="meta">
+      .trim(); // Remove leading/trailing whitespace
+  }
+
   const chunkedRecipes = chunkArray(recipes, 2);
 
   return (
@@ -316,7 +328,7 @@ useEffect(() => {
                         <img src={`https://prahwa.net/storage/${recipe.image}`} alt={recipe.title} />
                       </div>
                       <div className='contentRecipe'>
-                        <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getProductName(recipe)) }}></h1>
+                        <h1 dangerouslySetInnerHTML={{ __html: stripH1Tags(getProductName(recipe)) }}></h1>
                         <p dangerouslySetInnerHTML={{ __html: getDescriptionName(recipe) }}></p>
                         <Link href={`/recipe/[id]`} as={`/recipe/${recipe.id}`}><button>{t('section1Home.learnMore')}</button></Link>
                       </div>
@@ -348,7 +360,7 @@ useEffect(() => {
                             <img src={`https://prahwa.net/storage/${recipe.image}`} alt={recipe.name} />
                           </div>
                           <div className="contentRecipe">
-                            <h1 dangerouslySetInnerHTML={{ __html: stripPTags(getProductName(recipe)) }}></h1>
+                            <h1 dangerouslySetInnerHTML={{ __html: stripH1Tags(getProductName(recipe)) }}></h1>
                             <p dangerouslySetInnerHTML={{ __html: getDescriptionName(recipe) }}></p>
                             <Link href={`/recipe/[id]`} as={`/recipe/${recipe.id}`}><button>{t('section1Home.learnMore')}</button></Link>
                           </div>
@@ -369,11 +381,11 @@ useEffect(() => {
         </div>
         <SlideArticles items={recipeList.map(recipe => ({
             ...recipe,
-            title: stripPTags(getRecipeTitle(recipe)),
+            title: stripH1Tags(getRecipeTitle(recipe)),
         }))} />
          <SlideArticlesMobile items={recipeList.map(recipe => ({
             ...recipe,
-            title: stripPTags(getRecipeTitle(recipe)), 
+            title: stripH1Tags(getRecipeTitle(recipe)), 
         }))} />
         <div className={styles.divider}></div>
       </div>
@@ -384,11 +396,11 @@ useEffect(() => {
           </div>
           <SlideArticlesSecond classNames={secondColor} paginationClass={paginationStyle} items={articlesSlide.map(detail => ({
           ...detail,
-              title: stripPTags(getProductName(detail)),
+              title: stripH1Tags(getProductName(detail)),
           }))} />
           <SlideArticlesSecondMobile classNames={secondColor} paginationClass={paginationStyle} items={articlesSlide.map(detail => ({
               ...detail,
-              title: stripPTags(getProductName(detail)),
+              title: stripH1Tags(getProductName(detail)),
           }))} /> 
       </div>
     </>

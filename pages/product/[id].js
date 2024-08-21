@@ -211,6 +211,18 @@ const ProductDetails = () => {
     return formattedWeight;
   };
 
+  function stripH1Tags(str) {
+    return str
+      .replace(/<\/?(div|h1|h2|h3|h4|h5|h6|p|span|strong|em|a|ul|ol|li|br|hr|b|i|header|footer|nav|section|article|aside|main|table|tr|td|th|caption|form|input|button|select|option|textarea|label|fieldset|legend|datalist|output|iframe|embed|object|param|canvas|svg|video|audio|source|track|figcaption|figure|time|mark|meter|progress|details|summary|dialog|address|small|sub|sup|code|pre|s|del|u|ins|bdi|bdo|ruby|rt|rp|wbr|blockquote|cite|dfn|kbd|samp|var|abbr|address|p|section|article|header|footer|aside|nav|main|figure|figcaption|legend|datalist|output|progress|meter|details|summary|dialog|template|script|style|noscript|title)[^>]*>/gi, '') // Remove HTML tags
+      .replace(/&nbsp;/g, '') // Remove non-breaking spaces
+      .replace(/&ldquo;/g, '"') // Replace HTML entities for left double quotation mark
+      .replace(/&rdquo;/g, '"') // Replace HTML entities for right double quotation mark
+      .replace(/&lsquo;/g, "'") // Replace HTML entities for left single quotation mark
+      .replace(/&rsquo;/g, "'") // Replace HTML entities for right single quotation mark
+      .replace(/<div\s+class="meta"[^>]*>(.*?)<\/div>/gi, '') // Remove <div class="meta">
+      .trim(); // Remove leading/trailing whitespace
+  }
+
   const pageTitle = detail ? `House Kari | ${getProductName(detail)}` : 'House Kari';
   const ecommerceLinks = JSON.parse(detail.ecommerce_links);
 
@@ -243,7 +255,7 @@ const ProductDetails = () => {
         <img src="/images/product_page_banner.png" alt="House Kari Website" />
       </div>
       <div className={banner.breadcrumbs}>
-        <p>{t('menu.home')} / {t('menu.product')} / <span>{getProductName(detail)}</span></p>
+        <p>{t('menu.home')} / {t('menu.product')} / <span>{stripH1Tags(getProductName(detail))}</span></p>
       </div>
       <div className={styles.section3}>
         <div className={styles.section3_layout}>
@@ -253,7 +265,7 @@ const ProductDetails = () => {
               <img src={`https://prahwa.net/storage/${detail.image}`} alt={detail.name} />
             </div>
             <div className={styles.section3_content}>
-              <h1>{getProductName(detail)} {formatWeight(detail.weight)}</h1>
+              <h1>{stripH1Tags(getProductName(detail))} {formatWeight(detail.weight)}</h1>
               <div className={styles.section3_content_desc}>
                 <p dangerouslySetInnerHTML={{ __html: getProductDesc(detail) }}></p>
               </div>
@@ -384,11 +396,11 @@ const ProductDetails = () => {
         </div>
         <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={recipeList.map(recipe => ({
           ...recipe,
-          title: stripPTags(getRecipeTitle(recipe)),
+          title: stripH1Tags(getRecipeTitle(recipe)),
         }))} />
         <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={recipeList.map(recipe => ({
           ...recipe,
-          title: stripPTags(getRecipeTitle(recipe)),
+          title: stripH1Tags(getRecipeTitle(recipe)),
         }))} />
       </div>
     </>

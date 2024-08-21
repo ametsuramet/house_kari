@@ -5,7 +5,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import Link from 'next/link';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Import style jika diperlukan
-
+import Image from 'next/image';
 
 const Slide = ({ showNavigation = true, showPagination = true }) => {
   const [activeIndex, setActiveIndex] = useState(0);

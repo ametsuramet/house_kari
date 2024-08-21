@@ -288,7 +288,7 @@
 .sectionDetail_content{
     margin-bottom: 2.7vw;
 }
-.sectionDetail_content h3{
+.sectionDetail_content h3, .sectionDetail_content h4, .sectionDetail_content h5, .sectionDetail_content h6{
     font-size: .97vw;
     color: #651318;
     font-weight: 700;
@@ -615,7 +615,7 @@
   .sectionDetail_content{
       margin-bottom: 5vw;
   }
-  .sectionDetail_content h3{
+  .sectionDetail_content h3,   .sectionDetail_content h4,   .sectionDetail_content h5,   .sectionDetail_content h6{
       font-size: 2.8vw;
       margin-bottom: 2.5vw;
   }

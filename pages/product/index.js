@@ -150,6 +150,17 @@ export default function Product() {
     }
   };
 
+  function stripH1Tags(str) {
+    return str
+      .replace(/<\/?(div|h1|h2|h3|h4|h5|h6|p|span|strong|em|a|ul|ol|li|br|hr|b|i|header|footer|nav|section|article|aside|main|table|tr|td|th|caption|form|input|button|select|option|textarea|label|fieldset|legend|datalist|output|iframe|embed|object|param|canvas|svg|video|audio|source|track|figcaption|figure|time|mark|meter|progress|details|summary|dialog|address|small|sub|sup|code|pre|s|del|u|ins|bdi|bdo|ruby|rt|rp|wbr|blockquote|cite|dfn|kbd|samp|var|abbr|address|p|section|article|header|footer|aside|nav|main|figure|figcaption|legend|datalist|output|progress|meter|details|summary|dialog|template|script|style|noscript|title)[^>]*>/gi, '') // Remove HTML tags
+      .replace(/&nbsp;/g, '') // Remove non-breaking spaces
+      .replace(/&ldquo;/g, '"') // Replace HTML entities for left double quotation mark
+      .replace(/&rdquo;/g, '"') // Replace HTML entities for right double quotation mark
+      .replace(/&lsquo;/g, "'") // Replace HTML entities for left single quotation mark
+      .replace(/&rsquo;/g, "'") // Replace HTML entities for right single quotation mark
+      .replace(/<div\s+class="meta"[^>]*>(.*?)<\/div>/gi, '') // Remove <div class="meta">
+      .trim(); // Remove leading/trailing whitespace
+  }
  
  
   return (
@@ -236,11 +247,11 @@ export default function Product() {
           <>
             <SlideArticles items={recipeList.map(recipe => ({
               ...recipe,
-              title: stripPTags(getRecipeTitle(recipe)), 
+              title: stripH1Tags(getRecipeTitle(recipe)), 
             }))} />
             <SlideArticlesMobile items={recipeList.map(recipe => ({
               ...recipe,
-              title: stripPTags(getRecipeTitle(recipe)), 
+              title: stripH1Tags(getRecipeTitle(recipe)), 
             }))} />
           </>
         )}

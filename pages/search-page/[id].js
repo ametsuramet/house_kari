@@ -78,6 +78,35 @@ export default function SearchPage({ id }) {
     }
   };
 
+  const getArticleName = (detail) => {
+    switch (i18n.language) {
+        case 'en':
+            return detail.title_en || detail.title;
+        case 'zh':
+            return detail.title_chi || detail.title;
+        default:
+            return detail.title;
+    }
+};
+
+  function stripH1Tags(str) {
+    if (typeof str !== 'string') {
+        console.error('Expected a string but got:', typeof str);
+        return ''; // Return an empty string if input is not a string
+    }
+
+    return str
+      .replace(/<\/?(div|h1|h2|h3|h4|h5|h6|p|span|strong|em|a|ul|ol|li|br|hr|b|i|header|footer|nav|section|article|aside|main|table|tr|td|th|caption|form|input|button|select|option|textarea|label|fieldset|legend|datalist|output|iframe|embed|object|param|canvas|svg|video|audio|source|track|figcaption|figure|time|mark|meter|progress|details|summary|dialog|address|small|sub|sup|code|pre|s|del|u|ins|bdi|bdo|ruby|rt|rp|wbr|blockquote|cite|dfn|kbd|samp|var|abbr|address|p|section|article|header|footer|aside|nav|main|figure|figcaption|legend|datalist|output|progress|meter|details|summary|dialog|template|script|style|noscript|title)[^>]*>/gi, '') // Remove HTML tags
+      .replace(/&nbsp;/g, '') // Remove non-breaking spaces
+      .replace(/&ldquo;/g, '"') // Replace HTML entities for left double quotation mark
+      .replace(/&rdquo;/g, '"') // Replace HTML entities for right double quotation mark
+      .replace(/&lsquo;/g, "'") // Replace HTML entities for left single quotation mark
+      .replace(/&rsquo;/g, "'") // Replace HTML entities for right single quotation mark
+      .replace(/<div\s+class="meta"[^>]*>(.*?)<\/div>/gi, '') // Remove <div class="meta">
+      .trim(); // Remove leading/trailing whitespace
+}
+
+
   const formatWeight = (weight) => {
     const weightStr = weight.toString();
   
@@ -133,7 +162,7 @@ export default function SearchPage({ id }) {
                 paginationClass={paginationStyle}
                 items={results.articles.slice(0, 13).map(detail => ({
                   ...detail,
-                  title: stripPTags(getProductName(detail)),
+                  title: stripH1Tags(getArticleName(detail)),
                 }))}
               />
               <SlideArticlesSecondMobile
@@ -141,7 +170,7 @@ export default function SearchPage({ id }) {
                 paginationClass={paginationStyle}
                 items={results.articles.slice(0, 13).map(detail => ({
                   ...detail,
-                  title: stripPTags(getProductName(detail)),
+                  title: stripH1Tags(getArticleName(detail)),
                 }))}
               />
             </div>
@@ -187,11 +216,11 @@ export default function SearchPage({ id }) {
             </div>
             <SlideArticles classNames={secondColor} paginationClass={paginationStyle} items={results.reseps.slice(0, 13).map(recipe => ({
               ...recipe,
-              title: stripPTags(getRecipeTitle(recipe)),
+              title: stripH1Tags(getRecipeTitle(recipe)),
             }))} />
             <SlideArticlesMobile classNames={secondColor} paginationClass={paginationStyle} items={results.reseps.slice(0, 13).map(recipe => ({
               ...recipe,
-              title: stripPTags(getRecipeTitle(recipe)),
+              title: stripH1Tags(getRecipeTitle(recipe)),
             }))} />
           </div>
           ) : (
