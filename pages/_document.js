@@ -19,6 +19,9 @@ class MyDocument extends Document {
               `,
             }}
           />
+        </Head>
+        <body>
+          <Main />
           <script
             src="https://prahwa.net/tracking.js"
             strategy="afterInteractive" // Atur strategi pemuatan skrip
@@ -29,9 +32,6 @@ class MyDocument extends Document {
               console.error('Error loading tracking script:', e);
             }}
           />
-        </Head>
-        <body>
-          <Main />
           <NextScript />
         </body>
       </Html>
