@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+import Script from 'next/script';
 
 class MyDocument extends Document {
   render() {
@@ -22,6 +23,7 @@ class MyDocument extends Document {
         </Head>
         <body>
           <Main />
+          <NextScript />
           <script
             src="https://prahwa.net/tracking.js"
             strategy="afterInteractive" // Atur strategi pemuatan skrip
@@ -32,7 +34,6 @@ class MyDocument extends Document {
               console.error('Error loading tracking script:', e);
             }}
           />
-          <NextScript />
         </body>
       </Html>
     );
