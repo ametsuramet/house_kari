@@ -13,7 +13,9 @@ class MyDocument extends Document {
           <link rel="alternate" hrefLang="zh" href="/zh" />
           <link rel="alternate" hrefLang="x-default" href="/" />
           <link rel="icon" href="/favicon.png" />
-          <script
+          <Script
+            id="tracking-api-key"
+            strategy="beforeInteractive"
             dangerouslySetInnerHTML={{
               __html: `
                 window.trackingApiKey = 'mhHoCDQEPiYD7vU37K5AX0bKuP86a31wU2P8N86L';
@@ -24,9 +26,9 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <script
+          <Script
             src="https://prahwa.net/tracking.js"
-            strategy="afterInteractive" // Atur strategi pemuatan skrip
+            strategy="afterInteractive"
             onLoad={() => {
               console.log('Tracking script loaded successfully.');
             }}
