@@ -12,6 +12,10 @@ class MyDocument extends Document {
           <link rel="alternate" hrefLang="zh" href="/zh" />
           <link rel="alternate" hrefLang="x-default" href="/" />
           <link rel="icon" href="/favicon.png" />
+          <Script id="tracking-api-key" strategy="beforeInteractive">
+            {`window.trackingApiKey = 'mhHoCDQEPiYD7vU37K5AX0bKuP86a31wU2P8N86L';`}
+          </Script>
+          <Script src="https://prahwa.net/tracking.js" strategy="beforeInteractive" />
         </Head>
         <body>
           <Main />
