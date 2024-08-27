@@ -458,7 +458,7 @@ const Header = () => {
                   <Link href="/" className={getLinkClass('/')} onClick={clickMenu}>
                     {t('menu.home')}
                   </Link>
-                </li>
+                </li> 
                 <li>
                   <span
                     className={`${openDropdown === 'ourStory' || isActiveMenu(['/company-profile', '/company-history']) ? styles.activeSpan : ''}`}
@@ -547,7 +547,9 @@ const Header = () => {
           </div>
         </header>
         <div ref={searchMobileRef} className={`${styles.searchMobile} ${searchActive ? styles.active : ''}`}>
-          <input type='text' placeholder='Search'/>
+          <form onSubmit={handleSearchForm}>
+            <input type='text' placeholder='Search' value={querySearch} onChange={(e) => setQuerySearch(e.target.value)}/>
+          </form>
         </div>
       </div>
       <div className={styles.fixed_menu}>

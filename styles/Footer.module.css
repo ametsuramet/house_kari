@@ -49,7 +49,7 @@
     color: white;
 }
 
-.img_footer{
+.img_footer{ 
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
@@ -99,12 +99,17 @@
         display: block;
     }
     .social_footer{
-        gap: 3vw;
+        gap: 3.6vw;
         margin-bottom: 0;
         justify-content: flex-start;
         margin-right: auto;
         margin-left: inherit;
         margin-top: 8.5vw;
+    }
+    .social_footer img{
+        max-width: 4.2vw;
+        max-height: 4.2vw;
+        color: white;
     }
     .social_footer svg{
         font-size: 4.5vw;
