@@ -342,6 +342,12 @@
   }
 
   @media (max-width:768px) {
+    .notifPost{
+      text-align: start;
+      color: #fff;
+      font-size: 3.6vw;
+      margin-top: 4.4vw;
+    }
     .section1{
       grid-template-columns: 100%;
       padding-bottom: 1.2vw;
