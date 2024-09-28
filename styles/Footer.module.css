@@ -1,14 +1,16 @@
 .footer{
     display: grid;
-    grid-template-columns: 33% 25% 41%;
+    grid-template-columns: 33% 25% 42%;
     width: 100%;
-    padding: 3vw 10.5vw;
-    padding-right: 4vw;
-    padding-bottom: 0;
-    background-image: url(../public/images/footer_bg.png);
+    padding: 3.6vw 10.5vw;
+    padding-right: 0;
+    padding-bottom: 3vw;
+    background-image: url(../public/images/footer_batik.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;
 }
 .identity img{
     filter: brightness(0) invert(1);
@@ -55,8 +57,12 @@
     justify-content: flex-end;
 }
 .img_footer img{
-    width: 100%;
+    width: 42vw;
     margin-bottom: 0;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
 }
 
 .copyright{
