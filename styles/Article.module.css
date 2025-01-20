@@ -50,7 +50,7 @@
     background: transparent;
     border: .11vw solid var(--old_red);
     border-radius: 100vw;
-    font-size: .89vw;
+    font-size: .8vw;
     font-weight: 700;
     color: var(--old_red);
     width: 100%;
@@ -73,7 +73,7 @@
     font-weight: 400;
   }
   .heading_main{
-    font-size: 1.8vw;
+    font-size: 1.4vw;
     color: var(--old_red);
     margin-bottom: .5vw;
   }
@@ -110,13 +110,13 @@
   }
   
   .blog_recent_content span{
-    font-size: .92vw;
+    font-size: .8vw;
     color: #797979;
     font-weight: 400; 
   }
   .blog_recent_content h1{
     margin-top: .3vw;
-    font-size: 1.55vw;
+    font-size: 1vw;
     font-weight: 600;
     margin-bottom: .4vw;
     display: -webkit-box;
@@ -126,7 +126,7 @@
       text-overflow: ellipsis;
   }
   .blog_recent_content p{
-    font-size: .97vw;
+    font-size: .83vw;
     color: black; 
     display: -webkit-box;
       -webkit-box-orient: vertical;
@@ -136,11 +136,11 @@
     margin-bottom: 1.8vw;
   }
   .blog_recent_content p h1, .blog_recent_content p h2, .blog_recent_content p h3, .blog_recent_content p h4, .blog_recent_content p h5{
-    font-size: .97vw;
+    font-size: .83vw;
     font-weight: 400;
   }
   .blog_recent_content p h1 strong, .blog_recent_content p h2 strong, .blog_recent_content p h3 strong, .blog_recent_content p h4 strong, .blog_recent_content p h5 strong{
-    font-size: .97vw;
+    font-size: .83vw;
     font-weight: 400;
   }
   .blog_recent_content button{
@@ -148,7 +148,7 @@
     border: none;
     outline: none;
     color: white;
-    font-size: .84vw;
+    font-size: .8vw;
     font-weight: 600;
     padding: .76vw 3.2vw;
     border-radius: 100vw;
@@ -182,13 +182,13 @@
     width: 26.3vw;
 }
   .heading_main_white{
-    font-size: 1.8vw;
+    font-size: 1.4vw;
     color: white;
     font-weight: 600;
     margin-bottom: .5vw;
   }
   .heading_main_red{
-    font-size: 1.8vw;
+    font-size: 1.4vw;
     color: var(--old_red);
   }
   .divider{
@@ -273,13 +273,13 @@
     border-radius: 3vw;
 }
 .sectionDetail h1{
-    font-size: 1.8vw;
+    font-size: 1.3vw;
     color: #651318;
     text-transform: uppercase;
     margin-bottom: .6vw;
 }
 .articleDate{
-    font-size: .93vw;
+    font-size: .84vw;
     color: #8A8A8A;
     font-weight: 400;
     margin-bottom: 1.3vw;
@@ -289,19 +289,19 @@
     margin-bottom: 2.7vw;
 }
 .sectionDetail_content h3, .sectionDetail_content h4, .sectionDetail_content h5, .sectionDetail_content h6{
-    font-size: .97vw;
+    font-size: .83vw;
     color: #651318;
     font-weight: 700;
     margin-bottom: 1.1vw;
 }
 .sectionDetail_content p{
-    font-size: .97vw;
+    font-size: .83vw;
     color: #363636;
     line-height: 1.4;
     margin-bottom: 1.2vw;
 }
 .sectionDetail_content p strong{
-  font-size: .97vw;
+  font-size: .83vw;
   color: #651318;
   line-height: 1.4;
 }
@@ -334,7 +334,7 @@
   justify-content: space-between;
   width: max-content;
   outline: none;
-  font-size: .85vw;
+  font-size: .8vw;
   font-weight: 700;
   color: #651318;
   gap: 1.3vw;
@@ -483,7 +483,7 @@
   .section1_tab button{
     padding: 1.8vw 5vw;
     border: .11vw solid var(--old_red);
-    font-size: 3.4vw;
+    font-size: 2.8vw;
   }
   .space_between_heading{
     margin-bottom: 1.85vw;
@@ -491,10 +491,10 @@
     justify-content: center;
   }
   .desc_main_margin{
-    font-size: 4.1vw;
+    font-size: 3.8vw;
   }
   .heading_main{
-    font-size: 4.1vw;
+    font-size: 3.8vw;
     margin-bottom: 3.6vw;
   }
   .blog_recent_layout{
@@ -517,7 +517,7 @@
   }
   .blog_recent_content h1{
     margin-top: 1.4vw;
-    font-size: 4.1vw;
+    font-size: 3.6vw;
     margin-bottom: 1.3vw;
   }
   .blog_recent_content p{
@@ -605,7 +605,7 @@
     position: relative;
   }
   .sectionDetail h1{
-    font-size: 4.1vw;
+    font-size: 3.7vw;
     margin-bottom: 2.5vw;
   }
   .articleDate{
@@ -649,5 +649,8 @@
   .article_detail_icon{
     top: -8vw;
     width: 40vw;
+  }
+  .sectionDetail_content ul, .sectionDetail_content ol{
+    margin-left: 4vw;
   }
 }

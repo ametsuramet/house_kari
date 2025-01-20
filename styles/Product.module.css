@@ -24,7 +24,7 @@
   background: transparent;
   border: .11vw solid var(--old_red);
   border-radius: 100vw; 
-  font-size: .89vw;
+  font-size: .85vw;
   font-weight: 600;
   color: var(--old_red);
   outline: none;
@@ -88,12 +88,12 @@
     text-align: center;
 }
 .contentProduct h1{
-    font-size: 1.24vw;
+    font-size: 1vw;
     color: var(--old_red);
     font-weight: 700;
 }
 .contentProduct span{
-    font-size: 1.1vw;
+    font-size: .9vw;
     font-weight: 400;
     color: var(--old_red);
     font-style: italic;
@@ -107,7 +107,7 @@
     background-color: var(--old_red);
     color: white;
     font-weight: 600;
-    font-size: .89vw;
+    font-size: .8vw;
     padding: .7vw ;
     border-radius: 100vw;
 }
@@ -149,14 +149,14 @@
     padding: 0 10.5vw;
   }
   .heading_main_white{
-    font-size: 1.8vw;
+    font-size: 1.4vw;
     color: white;
     font-weight: 600;
     margin-bottom: .5vw;
   }
   .heading_main_red{
     color: var(--old_red);
-    font-size: 1.8vw;
+    font-size: 1.4vw;
   }
   .divider{
     width: 100%;
@@ -218,7 +218,7 @@
     padding: 3vw 3.8vw;
   }
   .section3_content h1{
-    font-size: 1.8vw;
+    font-size: 1.4vw;
     color: var(--old_red);
     margin-bottom: .8vw;
   }
@@ -231,19 +231,19 @@
   }
   .section3_content p{
     color: #363636;
-    font-size: 1.046vw;
+    font-size: .9vw;
     margin-bottom: 1.14vw;
   }
   .section3_ecommerce{
     margin-top: 2vw;
   }
   .section3_ecommerce h2{
-    font-size: 1.3vw;
+    font-size: 1vw;
   }
 
   .section3_ecommerce_layout{
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-gap: .6vw;
     margin-top: .75vw;
   }
@@ -254,7 +254,7 @@
     cursor: pointer;
     transition: .4s all;
     border-radius: 100vw;
-    height: 1.8vw;
+    height: 2.2vw;
     position: relative;
     padding: .55vw;
     color: white;
@@ -275,7 +275,7 @@
     transform: scale(1.06);
   }
   .section3_ecommerce_layout button img{
-    width: 3.4vw;
+    width: 6.5vw;
     height: auto;
     position: absolute;
     top: 50%;
@@ -307,7 +307,7 @@
   }
   .section4_heading h1{
     color: white;
-    font-size: 1.8vw;
+    font-size: 1.4vw;
   }
 
   .section5{
@@ -363,7 +363,7 @@
     background: transparent;
     border: .11vw solid var(--old_red);
     border-radius: 100vw; 
-    font-size: 3.5vw;
+    font-size: 3vw;
     font-weight: 600;
     color: var(--old_red);
     outline: none;
@@ -406,7 +406,7 @@
     padding: 4vw 3vw;
   }
   .contentProduct h1{
-    font-size: 3.4vw;
+    font-size: 3vw;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;

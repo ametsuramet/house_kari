@@ -388,13 +388,14 @@
   text-decoration-color: #651318;
 }
 .box_articles_content span{
-  font-size: .92vw;
+  font-size: .85vw;
   color: #797979;
   font-weight: 400;
-  margin-bottom: .6vw;
+  margin-bottom: .75vw;
+  display: block;
 }
 .box_articles_content h1{
-  font-size: 1.5vw;
+  font-size: 1.1vw;
   font-weight: 600;
   margin-bottom: .6vw;
   text-transform: capitalize;
@@ -405,14 +406,14 @@
       text-overflow: ellipsis;
 }
 .box_articles_content p{
-  font-size: .97vw;
+  font-size: .9vw;
   color: black;
   margin-bottom: 1.8vw;
   display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 3;
-      overflow: hidden;
-      text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-weight: 400 !important;
 }
 .box_articles_content p strong{
@@ -420,14 +421,14 @@
 }
 .box_articles_content p h4, .box_articles_content p h5, .box_articles_content p h3, .box_articles_content p h2, .box_articles_content p h1{
   font-weight: 400 !important;
-  font-size: .97vw;
+  font-size: .9vw;
 }
 .box_articles_content button{
   background-color: var(--old_red);
   border: none;
   outline: none;
   color: white;
-  font-size: .84vw;
+  font-size: .8vw;
   font-weight: 600;
   padding: .76vw 3.2vw;
   border-radius: 100vw;
@@ -684,7 +685,7 @@
 }
 .contentTestimonials p{
   color: white;
-  font-size: 1vw;
+  font-size: .9vw;
   font-weight: 300;
   margin-bottom: 1.6vw;
   height: 3.8vw;
@@ -697,7 +698,7 @@
   margin-top: 3vw;
 } */
 .dateTestimonials h5{
-  font-size: .94vw;
+  font-size: .86vw;
   color: white;
   font-weight: 600;
   margin-bottom: .6vw;
@@ -705,7 +706,7 @@
 .dateTestimonials span{
   color: white;
   font-weight: 200;
-  font-size: .9vw;
+  font-size: .86vw;
 }
 .divider{
   width: 100%;
@@ -771,7 +772,7 @@
   background-color: #FFFCF4;
 }
 .contentRecipe h1{
-  font-size: 1.8vw;
+  font-size: 1.4vw;
   margin-bottom: 1vw;
   color: var(--old_red);
 }
@@ -782,7 +783,7 @@
   padding-bottom: .9vw;
   border: none;
   outline: none;
-  font-size: .89vw;
+  font-size: .8vw;
   border-radius: 100vw;
   background-color: var(--red);
   font-weight: 600;
@@ -810,7 +811,7 @@
   padding:2.9vw 2.7vw;
 }
 .mySwiperRecipe .swiper-slide .contentRecipe h1{
-  font-size: 1.4vw;
+  font-size: 1vw;
   margin-bottom: 1vw;
 }
 .mySwiperRecipe .swiper-slide .contentRecipe p{
@@ -828,7 +829,7 @@
   padding-bottom: .6vw;
   border: none;
   outline: none;
-  font-size: .76vw;
+  font-size: .7vw;
 }
 .mySwiperRecipe .swiper-slide-active .contentRecipe button{
   margin-top: 6.2vw;
@@ -836,13 +837,13 @@
   padding-bottom: .9vw;
   border: none;
   outline: none;
-  font-size: .89vw;
+  font-size: .8vw;
 }
 .mySwiperRecipe .swiper-slide-active{
   width: 60% !important;
 }
 .mySwiperRecipe .swiper-slide-active .contentRecipe h1{
-  font-size: 1.8vw;
+  font-size: 1.4vw;
   margin-bottom: 1vw;
 }
 .mySwiperRecipe .swiper-slide-active .contentRecipe p{
@@ -875,7 +876,7 @@
   object-position: center;
 }
 .headingRecipeSlide{
-  font-size: 1.8vw;
+  font-size: 1.4vw;
   margin-bottom: 3.5vw;
   color: var(--old_red);
   padding: 0 10.5vw;
@@ -1090,9 +1091,9 @@
     margin-bottom: 0;
   }
   .box_articles_content h1{
-    margin-top: 1.4vw;
-    font-size: 4.1vw;
-    margin-bottom: 1.3vw;
+    margin-top: 1.7vw;
+    font-size: 3.2vw;
+    margin-bottom: 2.3vw;
   }
   .box_articles_content p{
     font-size: 2.7vw;

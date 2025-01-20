@@ -119,7 +119,7 @@
     list-style: none;
     display: flex;
     align-items: baseline;
-    gap: 2vw;
+    gap: 1.5vw;
 }
 
 .nav ul li {
@@ -132,7 +132,7 @@
     font-weight: 400;
     cursor: pointer;
     align-items: center;
-    font-size: 1.11vw;
+    font-size: 1vw;
 }
 
 .nav ul li span {

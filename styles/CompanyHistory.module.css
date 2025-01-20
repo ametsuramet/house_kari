@@ -16,17 +16,17 @@
     padding-right: 11.5vw;
 }
 .historyHeading{
-    font-size: 1.8vw;
+    font-size: 1.3vw;
     color: var(--old_red);
     margin-bottom: .5vw;
 }
 .historySubHeading{
-    font-size: 1.35vw;
+    font-size: 1.1vw;
     color: var(--old_red);
 }
 .historyDesc{
     margin-top: 1.3vw;
-    font-size: 1.05vw;
+    font-size: .9vw;
     color: black;
 }
 

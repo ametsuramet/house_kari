@@ -21,16 +21,16 @@
     padding-right: 12.5vw;
 }
 .section1_content h1{
-    font-size: 1.8vw;
+    font-size: 1.4vw;
     color: var(--old_red);
     margin-bottom: .5vw;
 }
 .section1_content h3{
-    font-size: 1.35vw;
+    font-size: 1vw;
     color: var(--old_red);
 }
 .section1_content p{
-    margin-top: 1.3vw;
+    margin-top: .9vw;
     font-size: 1.05vw;
     color: black;
 }
@@ -52,12 +52,12 @@
     transform: translateX(-50%);
 }
 .section2 h1{
-    font-size: 1.8vw;
+    font-size: 1.4vw;
     color: var(--old_red);
     margin-bottom: 2.3vw;
 }
 .section2 p{
-    font-size: 1.35vw;
+    font-size: 1vw;
     font-style: italic;
     width: 34vw;
     text-align: center;
@@ -125,7 +125,7 @@
     background-blend-mode: multiply;
   }
   .vision_box h1{
-    font-size: 2.5vw;
+    font-size: 1.7vw;
     color: white;
     z-index: 1;
     transform: scale(1);
@@ -192,7 +192,7 @@
     background-blend-mode: multiply;
   }
   .mision_box h1{
-    font-size: 2.5vw;
+    font-size: 1.7vw;
     color: #651318;
     z-index: 1;
     transform: scale(1);
