@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   const { id } = req.query;
 
   try {
-    const response = await axios.get(`https://prahwa.net/api/articles?id=${id}`, {
+    const response = await axios.get(`https://prahwa.net/apiv2/articles?id=${id}`, {
       headers: { 'api-key': 'mhHoCDQEPiYD7vU37K5AX0bKuP86a31wU2P8N86L' }
     });
     res.status(200).json(response.data);

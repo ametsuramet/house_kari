@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export default async function handler(req, res) {
   try {
-    const response = await axios.get('https://prahwa.net/api/review', {
+    const response = await axios.get('https://prahwa.net/apiv2/review', {
       headers: {
         'api-key': 'mhHoCDQEPiYD7vU37K5AX0bKuP86a31wU2P8N86L' // Ganti dengan API key Anda
       }
@@ -16,4 +16,3 @@ export default async function handler(req, res) {
     res.status(500).json({ error: 'Internal server error' });
   }
 }
- 

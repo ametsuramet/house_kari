@@ -7,7 +7,7 @@
 //   if (req.method === 'POST') {
 //     try {
 //       const form = new FormData();
-      
+
 //       // Mengambil data dari body request
 //       const { email, company_name, company_address, found_housekari_form, reason_to_become_reseller, company_type, name, phone_number } = req.body;
 
@@ -20,16 +20,16 @@
 //       form.append('company_type', company_type || '');
 //       form.append('name', name || '');
 //       form.append('phone_number', phone_number || '');
-      
+
 //       // Mengirim request POST ke API eksternal
-//       const response = await axios.post('https://prahwa.net/api/become-partners', form, {
+//       const response = await axios.post('https://prahwa.net/apiv2/become-partners', form, {
 //         headers: {
 //           ...form.getHeaders(),
 //           'Accept': 'application/json',
 //           'api_key': 'mhHoCDQEPiYD7vU37K5AX0bKuP86a31wU2P8N86L',
 //         },
 //       });
-      
+
 //       // Mengirim response dari API eksternal ke client
 //       res.status(response.status).json(response.data);
 //     } catch (error) {
@@ -61,7 +61,7 @@ export default async function handler(req, res) {
 
       // Make a request to the external API
       const response = await axios.post(
-        'https://prahwa.net/api/become-partners',
+        'https://prahwa.net/apiv2/become-partners',
         formData,
         {
           headers: {

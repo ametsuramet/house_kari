@@ -41,7 +41,7 @@ export default async function handler(req, res) {
         }
 
         // Make a request to the external API
-        const response = await axios.post('https://prahwa.net/api/review', formData, {
+        const response = await axios.post('https://prahwa.net/apiv2/review', formData, {
           headers: {
             ...formData.getHeaders(),
             'api-key': 'mhHoCDQEPiYD7vU37K5AX0bKuP86a31wU2P8N86L',

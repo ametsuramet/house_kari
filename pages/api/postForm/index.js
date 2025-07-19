@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
       // Make a request to the external API
       const response = await axios.post(
-        'https://prahwa.net/api/contacts',
+        'https://prahwa.net/apiv2/contacts',
         formData,
         {
           headers: {
